@@ -1,0 +1,236 @@
+{
+  "nav": {
+    "home": "Accueil",
+    "portfolio": "Portfolio",
+    "about": "À propos",
+    "contact": "Contact"
+  },
+  "hero": {
+    "title": "Bienvenue dans mon futur",
+    "subtitle": "Aujourd'hui, je construis mon avenir.",
+    "intro1": "Je suis Herman Vanel, et je ne me contente pas d'imaginer le futur — je le code.",
+    "intro2": "J'expérimente, je prototype, j'automatise. Je construis des systèmes qui résolvent de vrais problèmes.",
+    "intro3": "Ce site n'est pas un CV classique. C'est une démonstration vivante."
+  },
+  "currentStatus": {
+    "title": "Où j'en suis aujourd'hui",
+    "subtitle": "Une vision claire de ma situation actuelle",
+    "academic": {
+      "emoji": "🎓",
+      "title": "Étudiant en BUT TC",
+      "description": "Actuellement en 3e année de BUT Techniques de Commercialisation, en alternance. Cette formation me donne une vision structurée du business, une compréhension du marché et des compétences stratégiques.",
+      "tags": ["Vision business", "Analyse stratégique", "Marketing"]
+    },
+    "builder": {
+      "emoji": "🤖",
+      "title": "Constructeur de systèmes",
+      "description": "En parallèle, je construis. Trading depuis 3 ans pour comprendre les systèmes et la rigueur. Automatisation et bots pour créer des outils qui fonctionnent de manière autonome.",
+      "tags": ["Automatisation", "Trading algo", "Systèmes IA"]
+    },
+    "whyThisSite": {
+      "title": "Pourquoi ce site remplace un CV classique",
+      "living": {
+        "emoji": "📄→💻",
+        "title": "Vivant",
+        "description": "Un CV papier est figé. Ce site évolue, s'enrichit, démontre ma capacité à créer."
+      },
+      "testable": {
+        "emoji": "🔬",
+        "title": "Testable",
+        "description": "Vous ne me croyez pas sur les automatisations ? Testez-les directement sur ce site."
+      },
+      "vision": {
+        "emoji": "🚀",
+        "title": "Vision",
+        "description": "Je ne cherche pas un poste, je construis mon futur. Ce site en est la preuve."
+      }
+    },
+    "summary": {
+      "part1": "Ma formation académique",
+      "part1Suffix": " me donne la structure business.",
+      "part2": "Mes projets personnels",
+      "part2Suffix": " me donnent la maîtrise technique.",
+      "part3": "Ensemble",
+      "part3Suffix": ", ils me préparent à créer des systèmes qui ont du sens."
+    }
+  },
+  "projects": {
+    "title": "Ce que je construis",
+    "subtitle": "Des projets concrets qui démontrent ma vision",
+    "items": [
+      {
+        "title": "Trading algorithmique",
+        "subtitle": "La porte d'entrée vers les systèmes",
+        "description": "Le trading n'est pas une fin en soi, c'est un déclencheur. C'est là que j'ai découvert la rigueur des systèmes, la logique des algorithmes, et la puissance de l'automatisation.",
+        "tags": ["Python", "Algorithmes", "Analyse de données", "Discipline"]
+      },
+      {
+        "title": "Automatisations intelligentes",
+        "subtitle": "Des flux de travail qui travaillent pour moi",
+        "description": "J'utilise n8n pour créer des automatisations complexes : génération d'images par IA, traitement de données, intégrations multi-plateformes. Des systèmes qui tournent 24/7.",
+        "tags": ["n8n", "IA", "APIs", "Webhooks"]
+      },
+      {
+        "title": "Bots & assistants autonomes",
+        "subtitle": "Des agents qui agissent",
+        "description": "Des bots qui répondent, analysent, décident. Des systèmes autonomes qui comprennent le contexte et exécutent des tâches sans intervention humaine.",
+        "tags": ["Bots", "Automatisation", "IA conversationnelle", "Systèmes autonomes"]
+      }
+    ]
+  },
+  "skills": {
+    "title": "Ce que j'ai appris en construisant",
+    "subtitle": "Mes compétences ne viennent pas seulement de cours — elles viennent de projets réels, d'erreurs corrigées, et d'expériences variées.",
+    "items": [
+      {
+        "icon": "⚙️",
+        "title": "Logique système",
+        "description": "Comprendre comment les pièces s'assemblent. Penser en flux, en processus, en architecture."
+      },
+      {
+        "icon": "🤖",
+        "title": "Automatisation",
+        "description": "n8n, webhooks, APIs. Créer des systèmes qui tournent sans supervision humaine constante."
+      },
+      {
+        "icon": "🧠",
+        "title": "Intelligence artificielle",
+        "description": "Intégrer l'IA dans des workflows concrets. GPT, génération d'images, analyse de données."
+      },
+      {
+        "icon": "🎯",
+        "title": "Discipline & rigueur",
+        "description": "Le trading m'a appris la patience, l'analyse méthodique et la gestion du risque."
+      },
+      {
+        "icon": "💡",
+        "title": "Autonomie",
+        "description": "Apprendre par soi-même. Chercher, tester, échouer, itérer, réussir."
+      },
+      {
+        "icon": "🎓",
+        "title": "Transmission",
+        "description": "Professeur et coach de break dance pendant des années. J'ai appris à enseigner, motiver et guider."
+      }
+    ],
+    "origin": {
+      "title": "D'où viennent ces compétences ?",
+      "paragraph1": "Ces compétences ne sortent pas de nulle part. Elles sont le fruit d'un parcours qui combine formation académique (BUT TC en alternance), expériences terrain (animation, hip-hop, immersions professionnelles), et constructions personnelles (trading, automatisation, bots).",
+      "paragraph2": "J'ai appris que la pédagogie et le leadership acquis en enseignant sont tout aussi importants que la maîtrise technique. L'un sans l'autre est incomplet.",
+      "paragraph3": "→ Voir mon parcours détaillé dans la section chronologique ci-dessus",
+      "academic": "formation académique",
+      "field": "expériences terrain",
+      "personal": "constructions personnelles",
+      "pedagogy": "pédagogie",
+      "leadership": "leadership",
+      "technical": "maîtrise technique"
+    }
+  },
+  "timeline": {
+    "title": "Mon parcours",
+    "subtitle": "Un cheminement cohérent entre formation académique, expériences terrain et constructions personnelles",
+    "events": [
+      {
+        "period": "Premières expériences",
+        "year": "2018-2020",
+        "title": "Animateur & Assistant professeur de hip-hop",
+        "description": "Encadrement de jeunes, transmission de techniques, gestion de groupes. J'ai développé des compétences en pédagogie, responsabilité et leadership.",
+        "icon": "🎓",
+        "skills": ["Pédagogie", "Leadership", "Communication"]
+      },
+      {
+        "period": "Immersions professionnelles",
+        "year": "2020-2022",
+        "title": "Découverte du monde professionnel",
+        "description": "Stages en industrie et missions de bénévolat pour comprendre le fonctionnement concret des organisations, les dynamiques d'équipe et les processus opérationnels.",
+        "icon": "🏭",
+        "skills": ["Organisation", "Travail d'équipe", "Adaptabilité"]
+      },
+      {
+        "period": "Formation actuelle",
+        "year": "2022-2025",
+        "title": "BUT Techniques de Commercialisation (3e année)",
+        "description": "Formation en alternance qui m'apporte une vision business structurée, une compréhension du marché et des compétences en stratégie commerciale et marketing.",
+        "icon": "📚",
+        "skills": ["Vision business", "Analyse marché", "Stratégie"]
+      },
+      {
+        "period": "Constructions personnelles",
+        "year": "2022-2025",
+        "title": "Trading & Automatisation",
+        "description": "Trading algorithmique depuis 3 ans : porte d'entrée vers la rigueur, la logique des systèmes et l'automatisation. Développement de bots et workflows automatisés en parallèle.",
+        "icon": "🤖",
+        "skills": ["Systèmes", "Automatisation", "Rigueur analytique"]
+      },
+      {
+        "period": "Projection",
+        "year": "2025-2027",
+        "title": "Master IA & Développement",
+        "description": "Poursuite d'études envisagée en master orienté intelligence artificielle et développement (type Epitech ou équivalent) pour approfondir mes compétences techniques.",
+        "icon": "🚀",
+        "skills": ["IA", "Développement avancé", "Innovation"]
+      }
+    ],
+    "coherence": "Chaque étape de ce parcours m'a apporté des compétences complémentaires. La formation académique structure ma vision business, tandis que mes constructions personnelles développent ma maîtrise technique.",
+    "academicBold": "La formation académique structure ma vision business",
+    "personalBold": "mes constructions personnelles développent ma maîtrise technique"
+  },
+  "vision": {
+    "title": "Ce que je veux construire demain",
+    "intro1": "Je ne construis pas pour construire.",
+    "intro1Bold": " Je construis pour être libre.",
+    "intro2": "Libre de choisir mes projets. Libre de travailler sur ce qui a du sens. Libre d'expérimenter sans limites.",
+    "intro3": "La technologie n'est pas une fin — c'est un ",
+    "intro3Bold": "levier",
+    "intro3End": ". Un moyen de créer des systèmes qui fonctionnent, qui durent, qui servent.",
+    "myVision": "Ma vision ?",
+    "goals": [
+      "Créer des systèmes d'automatisation qui simplifient le quotidien",
+      "Exploiter l'IA pour résoudre des problèmes concrets",
+      "Construire des outils qui donnent du pouvoir aux autres",
+      "Rester curieux, apprendre en continu, expérimenter sans cesse"
+    ],
+    "conclusion1": "Je ne suis pas en train de chercher un travail.",
+    "conclusion2": "Je suis en train de construire mon futur."
+  },
+  "demo": {
+    "title": "Testez mon automatisation",
+    "subtitle": "Une démonstration concrète de mes compétences",
+    "howItWorks": {
+      "title": "Comment ça marche ?",
+      "intro": "Ce formulaire est connecté à un ",
+      "introBold": "workflow n8n automatisé",
+      "introEnd": " qui :",
+      "steps": [
+        "Reçoit votre description via webhook",
+        "Envoie la demande à une API d'IA (ex: DALL-E ou Stable Diffusion)",
+        "Génère une image et vous la retourne",
+        "Fonctionne 24/7 sans intervention manuelle"
+      ],
+      "note": "Cette démo illustre ma capacité à créer des systèmes automatisés complets."
+    },
+    "form": {
+      "label": "Décrivez une image à générer :",
+      "placeholder": "Ex : Un robot futuriste dans une ville cyberpunk au coucher de soleil",
+      "buttonIdle": "🚀 Lancer l'automatisation",
+      "buttonLoading": "Génération en cours...",
+      "successMessage": "🚀 Automatisation en cours de connexion. Le webhook n8n sera bientôt actif ici.",
+      "errorMessage": "Une erreur est survenue. Réessayez."
+    },
+    "technical": {
+      "title": "💡 Architecture technique",
+      "description": "Cette fonctionnalité est prête à être connectée à un workflow n8n. Elle démontre ma capacité à intégrer des APIs, gérer des webhooks, et créer des interfaces utilisateur réactives. Le code est structuré pour être facilement extensible et maintenable."
+    }
+  },
+  "footer": {
+    "title": "Envie d'échanger ?",
+    "subtitle": "Je suis ouvert aux opportunités, collaborations et discussions sur la tech.",
+    "email": "📧 Email",
+    "linkedin": "💼 LinkedIn",
+    "github": "🔧 GitHub",
+    "note1": "Ce site est un ",
+    "note1Bold": "portfolio vivant",
+    "note1End": ", conçu pour évoluer dans le temps.",
+    "copyright": "© {year} Herman Vanel. Construit avec Next.js, TypeScript et Tailwind CSS."
+  }
+}

@@ -1,0 +1,21 @@
+# Placeholder
+
+Ce dossier est destiné à contenir vos images.
+
+Exemples :
+- public/images/projects/
+- public/images/logo.png
+- public/images/background.jpg
+
+Pour utiliser une image dans un composant :
+
+```tsx
+import Image from 'next/image';
+
+<Image
+  src="/images/mon-image.png"
+  alt="Description"
+  width={500}
+  height={300}
+/>
+```
