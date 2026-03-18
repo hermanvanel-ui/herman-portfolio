@@ -1,189 +1,84 @@
 "use client";
 
-const timelineEvents = [
-  {
-    period: "Premières expériences",
-    year: "2018-2020",
-    title: "Animateur & Assistant professeur de hip-hop",
-    description: "Encadrement de jeunes, transmission de techniques, gestion de groupes. J'ai développé des compétences en pédagogie, responsabilité et leadership.",
-    icon: "🎓",
-    skills: ["Pédagogie", "Leadership", "Communication"],
-  },
-  {
-    period: "Immersions professionnelles",
-    year: "2020-2022",
-    title: "Découverte du monde professionnel",
-    description: "Stages en industrie et missions de bénévolat pour comprendre le fonctionnement concret des organisations, les dynamiques d'équipe et les processus opérationnels.",
-    icon: "🏭",
-    skills: ["Organisation", "Travail d'équipe", "Adaptabilité"],
-  },
-  {
-    period: "Formation actuelle",
-    year: "2022-2025",
-    title: "BUT Techniques de Commercialisation (3e année)",
-    description: "Formation en alternance qui m'apporte une vision business structurée, une compréhension du marché et des compétences en stratégie commerciale et marketing.",
-    icon: "📚",
-    skills: ["Vision business", "Analyse marché", "Stratégie"],
-    highlight: true,
-  },
-  {
-    period: "Constructions personnelles",
-    year: "2022-2025",
-    title: "Trading & Automatisation",
-    description: "Trading algorithmique depuis 3 ans : porte d'entrée vers la rigueur, la logique des systèmes et l'automatisation. Développement de bots et workflows automatisés en parallèle.",
-    icon: "🤖",
-    skills: ["Systèmes", "Automatisation", "Rigueur analytique"],
-    highlight: true,
-  },
-  {
-    period: "Projection",
-    year: "2025-2027",
-    title: "Master IA & Développement",
-    description: "Poursuite d'études envisagée en master orienté intelligence artificielle et développement (type Epitech ou équivalent) pour approfondir mes compétences techniques.",
-    icon: "🚀",
-    skills: ["IA", "Développement avancé", "Innovation"],
-    future: true,
-  },
+import { useEffect, useRef } from "react";
+
+const events = [
+  { period: "Premières expériences", year: "2018-2020", title: "🎮 Animateur & Assistant", desc: "Animateur en centre de loisirs, assistant professeur de hip-hop. Premières responsabilités et contact humain.", skills: ["Communication", "Responsabilité", "Créativité"], side: "right" as const, highlight: false, future: false },
+  { period: "Immersions pro", year: "2020-2022", title: "🏭 Stages & Bénévolat", desc: "Stages en industrie, bénévolat associatif. Découverte du monde professionnel et du travail d'équipe.", skills: ["Terrain", "Organisation", "Adaptabilité"], side: "left" as const, highlight: false, future: false },
+  { period: "Formation actuelle", year: "2022-2025", title: "📚 BUT Techniques de Commercialisation", desc: "Alternance : vision business, analyse de marché, stratégie commerciale. Compétences transversales essentielles.", skills: ["Vision business", "Marché", "Stratégie"], side: "right" as const, highlight: true, future: false },
+  { period: "Constructions perso", year: "2022-2025", title: "🤖 Trading & Automatisation", desc: "Trading algo depuis 3 ans. Développement de bots et workflows automatisés en parallèle de la formation.", skills: ["Systèmes", "Automatisation", "Rigueur"], side: "left" as const, highlight: true, future: false },
+  { period: "Projection", year: "2025-2027", title: "🚀 Master IA & Développement", desc: "Master orienté intelligence artificielle et développement pour approfondir mes compétences techniques.", skills: ["IA", "Dev avancé", "Innovation"], side: "right" as const, highlight: false, future: true },
 ];
 
 export default function Timeline() {
+  const progressRef = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting && progressRef.current) {
+            progressRef.current.style.height = "100%";
+          }
+        });
+      },
+      { threshold: 0.2 }
+    );
+    if (sectionRef.current) observer.observe(sectionRef.current);
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <section id="timeline" className="min-h-screen py-20 px-6 md:px-12">
-      <div className="max-w-6xl mx-auto">
-        {/* Titre de section */}
-        <div className="mb-16 text-center">
-          <h2 className="text-4xl md:text-5xl font-bold mb-4 text-cyan-300">
-            Mon parcours
-          </h2>
-          <p className="text-gray-400 text-lg max-w-3xl mx-auto">
-            Un cheminement cohérent entre formation académique, expériences terrain et constructions personnelles
-          </p>
+    <section id="timeline" ref={sectionRef} className="section-base">
+      <div className="max-w-[1100px] mx-auto">
+        <div className="mb-16 reveal">
+          <div className="section-label">// parcours</div>
+          <h2 className="section-title">Chaque étape m&apos;a <span style={{ color: "var(--cyan)", textShadow: "0 0 20px rgba(0,240,255,.3)" }}>préparé</span></h2>
         </div>
 
-        {/* Timeline */}
-        <div className="relative">
-          {/* Ligne verticale centrale (desktop) */}
-          <div className="hidden md:block absolute left-1/2 transform -translate-x-1/2 h-full w-0.5 bg-gradient-to-b from-cyan-500/50 via-blue-500/50 to-purple-500/50" />
-
-          {/* Events */}
-          <div className="space-y-12">
-            {timelineEvents.map((event, index) => {
-              const isLeft = index % 2 === 0;
-              const animationDelay = index * 150;
-
-              return (
-                <div
-                  key={index}
-                  className={`
-                    relative flex items-center gap-8
-                    ${isLeft ? 'md:flex-row' : 'md:flex-row-reverse'}
-                    animate-slide-up
-                  `}
-                  style={{ animationDelay: `${animationDelay}ms` }}
-                >
-                  {/* Contenu */}
-                  <div className={`flex-1 ${isLeft ? 'md:text-right' : 'md:text-left'}`}>
-                    <div
-                      className={`
-                        p-6 rounded-2xl border
-                        ${event.highlight
-                          ? 'bg-gradient-to-br from-cyan-500/20 to-blue-500/20 border-cyan-500/50'
-                          : event.future
-                          ? 'bg-gradient-to-br from-purple-500/10 to-pink-500/10 border-purple-500/30'
-                          : 'bg-white/5 border-cyan-500/20'
-                        }
-                        hover:scale-105 transition-all duration-300
-                        ${event.highlight ? 'shadow-lg shadow-cyan-500/20' : ''}
-                      `}
-                    >
-                      {/* Header */}
-                      <div className="mb-4">
-                        <div className="flex items-center gap-2 mb-2 justify-start md:justify-start">
-                          {isLeft ? (
-                            <>
-                              <span className="text-sm text-cyan-400 font-medium">{event.period}</span>
-                              <span className="text-gray-500">•</span>
-                              <span className="text-sm text-gray-400">{event.year}</span>
-                            </>
-                          ) : (
-                            <div className="md:flex md:flex-row-reverse md:w-full">
-                              <div className="flex items-center gap-2">
-                                <span className="text-sm text-gray-400">{event.year}</span>
-                                <span className="text-gray-500">•</span>
-                                <span className="text-sm text-cyan-400 font-medium">{event.period}</span>
-                              </div>
-                            </div>
-                          )}
-                        </div>
-                        <h3 className="text-xl md:text-2xl font-bold text-white">
-                          {event.title}
-                        </h3>
-                      </div>
-
-                      {/* Description */}
-                      <p className="text-gray-300 leading-relaxed mb-4 text-left">
-                        {event.description}
-                      </p>
-
-                      {/* Skills */}
-                      <div className="flex flex-wrap gap-2 justify-start">
-                        {event.skills.map((skill, skillIndex) => (
-                          <span
-                            key={skillIndex}
-                            className={`
-                              px-3 py-1 rounded-full text-xs font-medium
-                              ${event.highlight
-                                ? 'bg-cyan-500/30 text-cyan-200 border border-cyan-500/50'
-                                : event.future
-                                ? 'bg-purple-500/20 text-purple-200 border border-purple-500/30'
-                                : 'bg-white/10 text-gray-300 border border-white/20'
-                              }
-                            `}
-                          >
-                            {skill}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Icône centrale */}
-                  <div className="hidden md:flex absolute left-1/2 transform -translate-x-1/2 w-16 h-16 items-center justify-center">
-                    <div
-                      className={`
-                        w-16 h-16 rounded-full flex items-center justify-center text-2xl
-                        ${event.highlight
-                          ? 'bg-gradient-to-br from-cyan-500 to-blue-500 shadow-lg shadow-cyan-500/50'
-                          : event.future
-                          ? 'bg-gradient-to-br from-purple-500 to-pink-500 shadow-lg shadow-purple-500/30'
-                          : 'bg-gradient-to-br from-gray-700 to-gray-800 border-2 border-cyan-500/30'
-                        }
-                      `}
-                    >
-                      {event.icon}
-                    </div>
-                  </div>
-
-                  {/* Icône mobile */}
-                  <div className="md:hidden flex-shrink-0 w-12 h-12 rounded-full flex items-center justify-center text-xl bg-gradient-to-br from-cyan-500 to-blue-500">
-                    {event.icon}
-                  </div>
-
-                  {/* Spacer pour desktop */}
-                  <div className="hidden md:block flex-1" />
-                </div>
-              );
-            })}
+        <div className="relative max-w-[900px] mx-auto">
+          {/* Line */}
+          <div className="absolute left-1/2 w-[2px] h-full -translate-x-1/2 md:block hidden">
+            <div ref={progressRef} className="w-full h-0 transition-[height] duration-[2s] ease-out" style={{ background: "linear-gradient(to bottom, var(--cyan), var(--purple), var(--pink))", boxShadow: "0 0 15px rgba(0,240,255,.3)" }} />
           </div>
-        </div>
 
-        {/* Note de cohérence */}
-        <div className="mt-16 p-6 bg-gradient-to-r from-cyan-500/10 to-blue-500/10 border border-cyan-500/30 rounded-xl text-center">
-          <p className="text-gray-300 leading-relaxed">
-            Chaque étape de ce parcours m'a apporté des compétences complémentaires.
-            <span className="text-white font-semibold"> La formation académique structure ma vision business</span>,
-            tandis que <span className="text-cyan-300 font-semibold">mes constructions personnelles développent ma maîtrise technique</span>.
-          </p>
+          {events.map((ev, i) => (
+            <div key={i} className={`flex items-start mb-12 relative reveal reveal-delay-${Math.min(i + 1, 4)} ${ev.side === "left" ? "md:flex-row-reverse" : ""}`}>
+              {/* Node */}
+              <div className={`absolute left-1/2 -translate-x-1/2 z-[2] rounded-full hidden md:block transition-all duration-300 ${ev.highlight ? "w-5 h-5 shadow-[0_0_20px_var(--cyan)]" : "w-4 h-4 border-2"}`}
+                style={{
+                  top: "1.5rem",
+                  background: ev.highlight ? "var(--cyan)" : ev.future ? "var(--bg)" : "var(--bg)",
+                  borderColor: ev.future ? "var(--purple)" : ev.highlight ? "transparent" : "var(--cyan)",
+                }}
+              />
+
+              {/* Content */}
+              <div className={`md:w-[calc(50%-40px)] w-full p-6 transition-all duration-500 hover:border-[rgba(0,240,255,.3)] hover:shadow-[0_0_30px_rgba(0,240,255,.05)]`}
+                style={{
+                  background: ev.highlight ? "linear-gradient(135deg, rgba(0,240,255,.08), rgba(59,130,246,.08))" : ev.future ? "linear-gradient(135deg, rgba(180,74,255,.04), rgba(236,72,153,.04))" : "var(--surface)",
+                  border: `1px solid ${ev.highlight ? "rgba(0,240,255,.3)" : ev.future ? "rgba(180,74,255,.2)" : "rgba(0,240,255,.1)"}`,
+                  boxShadow: ev.highlight ? "0 0 20px rgba(0,240,255,.05)" : "none",
+                }}>
+                <span style={{ fontFamily: "var(--font-mono)", fontSize: ".65rem", color: ev.future ? "var(--purple)" : "var(--cyan)", letterSpacing: "2px", textTransform: "uppercase" }}>{ev.period}</span>
+                <span style={{ color: "var(--text-faint)", margin: "0 .5rem" }}>·</span>
+                <span style={{ fontFamily: "var(--font-mono)", fontSize: ".65rem", color: "var(--text-faint)" }}>{ev.year}</span>
+                <h3 style={{ fontFamily: "var(--font-display)", fontSize: ".95rem", fontWeight: 600, letterSpacing: "1px", color: "#fff", margin: ".5rem 0" }}>{ev.title}</h3>
+                <p style={{ color: "var(--text-mid)", fontSize: ".85rem", lineHeight: 1.7, fontWeight: 400, marginBottom: ".75rem" }}>{ev.desc}</p>
+                <div className="flex flex-wrap gap-1.5">
+                  {ev.skills.map((s, j) => (
+                    <span key={j} className="status-tag" style={{
+                      fontFamily: "var(--font-mono)", fontSize: ".6rem", letterSpacing: "1px", textTransform: "uppercase",
+                      border: `1px solid ${ev.future ? "rgba(180,74,255,.2)" : "rgba(0,240,255,.2)"}`,
+                      color: ev.future ? "var(--purple)" : "var(--cyan)",
+                      background: ev.future ? "rgba(180,74,255,.05)" : "rgba(0,240,255,.05)",
+                    }}>{s}</span>
+                  ))}
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </section>

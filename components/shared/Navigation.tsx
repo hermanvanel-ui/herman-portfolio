@@ -1,118 +1,60 @@
 "use client";
 
-import { useState } from "react";
-import Link from "next/link";
-import { useTranslations } from "next-intl";
-import LanguageSwitcher from "./LanguageSwitcher";
+import { useState, useEffect } from "react";
 
 interface NavigationProps {
   locale: string;
 }
 
-export default function Navigation({ locale }: NavigationProps) {
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const t = useTranslations('nav');
+const navItems = [
+  { label: "_accueil", href: "#hero" },
+  { label: "_aujourd'hui", href: "#current" },
+  { label: "_projets", href: "#projects" },
+  { label: "_parcours", href: "#timeline" },
+  { label: "_vision", href: "#vision" },
+  { label: "_demo", href: "#demo" },
+];
 
-  const navItems = [
-    { labelKey: "home", href: "/" },
-    { labelKey: "portfolio", href: "/portfolio" },
-    { labelKey: "about", href: "/about" },
-    { labelKey: "contact", href: "/contact", highlight: true },
-  ];
+export default function Navigation({ locale }: NavigationProps) {
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 50);
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-black/80 backdrop-blur-md border-b border-cyan-500/20 shadow-lg">
-      <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-        {/* Logo / Nom */}
-        <Link
-          href={`/${locale}`}
-          className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-blue-400 hover:from-cyan-300 hover:to-blue-300 transition-all"
-        >
-          Herman Vanel
-        </Link>
-
-        {/* Navigation desktop */}
-        <div className="hidden md:flex items-center gap-6">
+    <nav
+      className={`fixed top-0 left-0 right-0 z-[1000] px-8 transition-all duration-400 ${
+        scrolled
+          ? "bg-[rgba(5,5,16,.92)] backdrop-blur-[20px] border-b border-[rgba(0,240,255,.1)]"
+          : ""
+      }`}
+    >
+      <div className="max-w-[1200px] mx-auto flex items-center justify-between h-[70px]">
+        <div className="font-[var(--font-display)] font-extrabold text-base tracking-[3px] uppercase" style={{ fontFamily: "var(--font-display)" }}>
+          <span className="text-[var(--cyan)]" style={{ textShadow: "0 0 20px rgba(0,240,255,.5)" }}>
+            HERMAN
+          </span>
+          <span className="text-[var(--green)]">.</span>
+          <span className="text-[var(--cyan)]">DEV</span>
+        </div>
+        <ul className="hidden md:flex list-none gap-8">
           {navItems.map((item) => (
-            <Link
-              key={item.href}
-              href={`/${locale}${item.href}`}
-              className={`
-                transition-all duration-300
-                ${
-                  item.highlight
-                    ? "px-4 py-2 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-lg font-semibold hover:from-cyan-600 hover:to-blue-600 hover:shadow-lg hover:shadow-cyan-500/50"
-                    : "text-gray-300 hover:text-cyan-300"
-                }
-              `}
-            >
-              {t(item.labelKey)}
-            </Link>
-          ))}
-
-          {/* Language Switcher */}
-          <LanguageSwitcher currentLocale={locale} />
-        </div>
-
-        {/* Bouton menu mobile */}
-        <button
-          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          className="md:hidden text-gray-300 hover:text-cyan-300 focus:outline-none"
-        >
-          <svg
-            className="w-6 h-6"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            {isMobileMenuOpen ? (
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M6 18L18 6M6 6l12 12"
-              />
-            ) : (
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M4 6h16M4 12h16M4 18h16"
-              />
-            )}
-          </svg>
-        </button>
-      </div>
-
-      {/* Menu mobile */}
-      {isMobileMenuOpen && (
-        <div className="md:hidden bg-black/95 backdrop-blur-md border-t border-cyan-500/20">
-          <div className="px-6 py-4 space-y-4">
-            {navItems.map((item) => (
-              <Link
-                key={item.href}
-                href={`/${locale}${item.href}`}
-                onClick={() => setIsMobileMenuOpen(false)}
-                className={`
-                  block py-2 transition-all
-                  ${
-                    item.highlight
-                      ? "px-4 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-lg font-semibold text-center"
-                      : "text-gray-300 hover:text-cyan-300"
-                  }
-                `}
+            <li key={item.href}>
+              <a
+                href={item.href}
+                className="text-[var(--text-dim)] no-underline text-xs tracking-[2px] uppercase transition-all duration-300 relative hover:text-[var(--cyan)] group"
+                style={{ fontFamily: "var(--font-mono)" }}
               >
-                {t(item.labelKey)}
-              </Link>
-            ))}
-
-            {/* Language Switcher Mobile */}
-            <div className="pt-4 border-t border-cyan-500/20">
-              <LanguageSwitcher currentLocale={locale} />
-            </div>
-          </div>
-        </div>
-      )}
+                {item.label}
+                <span className="absolute -bottom-1 left-0 w-0 h-px bg-[var(--cyan)] shadow-[0_0_8px_var(--cyan)] transition-all duration-300 group-hover:w-full" />
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
     </nav>
   );
 }

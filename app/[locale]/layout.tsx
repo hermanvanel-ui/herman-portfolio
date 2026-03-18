@@ -2,6 +2,9 @@ import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import Navigation from '@/components/shared/Navigation';
+import MatrixRain from '@/components/effects/MatrixRain';
+import ScrollReveal from '@/components/effects/ScrollReveal';
+import HoloTilt from '@/components/effects/HoloTilt';
 import type { Metadata } from 'next';
 
 const locales = ['fr', 'en', 'it', 'es'];
@@ -22,7 +25,6 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params;
 
-  // Metadata per locale - will be enhanced later with translations
   const titles: Record<string, string> = {
     fr: 'Herman Vanel - Construire le futur',
     en: 'Herman Vanel - Building the Future',
@@ -31,10 +33,10 @@ export async function generateMetadata({
   };
 
   const descriptions: Record<string, string> = {
-    fr: 'Portfolio futuriste d\'Herman Vanel - Automatisation, systèmes, et vision technologique',
-    en: 'Herman Vanel\'s futuristic portfolio - Automation, systems, and technological vision',
-    it: 'Portfolio futuristico di Herman Vanel - Automazione, sistemi e visione tecnologica',
-    es: 'Portafolio futurista de Herman Vanel - Automatización, sistemas y visión tecnológica'
+    fr: 'Portfolio futuriste - Automatisation, systèmes, et vision technologique',
+    en: 'Futuristic portfolio - Automation, systems, and technological vision',
+    it: 'Portfolio futuristico - Automazione, sistemi e visione tecnologica',
+    es: 'Portafolio futurista - Automatización, sistemas y visión tecnológica'
   };
 
   return {
@@ -50,21 +52,22 @@ export default async function LocaleLayout({
 }: Props) {
   const { locale } = await params;
 
-  // Ensure that the incoming `locale` is valid
   if (!locales.includes(locale)) {
     notFound();
   }
 
-  // Providing all messages to the client
-  // side is the easiest way to get started
   const messages = await getMessages();
 
   return (
     <html lang={locale}>
       <body>
         <NextIntlClientProvider messages={messages} locale={locale}>
+          <MatrixRain />
+          <div className="scanlines" />
           <Navigation locale={locale} />
           {children}
+          <ScrollReveal />
+          <HoloTilt />
         </NextIntlClientProvider>
       </body>
     </html>

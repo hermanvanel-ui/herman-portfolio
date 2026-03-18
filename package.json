@@ -13,12 +13,14 @@
     "next-intl": "^4.7.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "sharp": "^0.34.5"
+    "sharp": "^0.34.5",
+    "three": "^0.160.0"
   },
   "devDependencies": {
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@types/three": "^0.160.0",
     "autoprefixer": "^10.4.20",
     "eslint": "^8",
     "eslint-config-next": "^15.1.0",

@@ -1,57 +1,23 @@
 "use client";
 
 export default function Footer() {
-  const currentYear = new Date().getFullYear();
-
   return (
-    <footer className="py-12 px-6 bg-gradient-to-t from-black to-transparent border-t border-cyan-500/20">
-      <div className="max-w-6xl mx-auto">
-        {/* Contact et réseaux */}
-        <div className="text-center mb-8">
-          <h3 className="text-2xl font-bold text-cyan-300 mb-4">
-            Envie d&apos;échanger ?
-          </h3>
-          <p className="text-gray-400 mb-6">
-            Je suis ouvert aux opportunités, collaborations et discussions sur la tech.
-          </p>
-
-          {/* Liens de contact (à personnaliser) */}
-          <div className="flex flex-wrap justify-center gap-4">
-            <a
-              href="mailto:herman.vanel@example.com"
-              className="px-6 py-3 bg-white/10 hover:bg-white/20 border border-cyan-500/30 hover:border-cyan-500/50 rounded-lg transition-all text-gray-300 hover:text-cyan-300"
-            >
-              📧 Email
-            </a>
-            <a
-              href="https://linkedin.com/in/hermanvanel"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="px-6 py-3 bg-white/10 hover:bg-white/20 border border-cyan-500/30 hover:border-cyan-500/50 rounded-lg transition-all text-gray-300 hover:text-cyan-300"
-            >
-              💼 LinkedIn
-            </a>
-            <a
-              href="https://github.com/hermanvanel"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="px-6 py-3 bg-white/10 hover:bg-white/20 border border-cyan-500/30 hover:border-cyan-500/50 rounded-lg transition-all text-gray-300 hover:text-cyan-300"
-            >
-              🔧 GitHub
-            </a>
-          </div>
-        </div>
-
-        {/* Note sur le site */}
-        <div className="text-center text-gray-500 text-sm border-t border-white/10 pt-6">
-          <p className="mb-2">
-            Ce site est un <span className="text-cyan-400 font-semibold">portfolio vivant</span>, conçu pour évoluer dans le temps.
-          </p>
-          <p>
-            © {currentYear} Herman Vanel. Construit avec Next.js, TypeScript et Tailwind CSS.
-          </p>
-        </div>
+    <footer className="relative z-5 py-20 px-6 text-center border-t border-[rgba(0,240,255,.08)]">
+      <h2 style={{ fontFamily: "var(--font-display)", fontSize: "1.4rem", fontWeight: 700, letterSpacing: "2px", color: "#fff", marginBottom: ".5rem" }}>ENVIE D&apos;ÉCHANGER ?</h2>
+      <p style={{ color: "var(--text-mid)", fontWeight: 400, marginBottom: "2.5rem" }}>Ouvert aux opportunités, collaborations et discussions tech.</p>
+      <div className="flex justify-center gap-10 mb-12">
+        {[
+          { icon: "📧", label: "Email", href: "mailto:herman.vanel@example.com" },
+          { icon: "💼", label: "LinkedIn", href: "https://linkedin.com/in/hermanvanel" },
+          { icon: "🔧", label: "GitHub", href: "https://github.com/hermanvanel-ui" },
+        ].map((l, i) => (
+          <a key={i} href={l.href} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 transition-all duration-300 hover:text-[var(--cyan)]" style={{ color: "var(--text-mid)", textDecoration: "none", fontFamily: "var(--font-mono)", fontSize: ".8rem", letterSpacing: "1px" }}>
+            {l.icon} {l.label}
+          </a>
+        ))}
       </div>
+      <p style={{ color: "var(--text-faint)", fontSize: ".85rem", marginBottom: ".5rem" }}>Ce site est un <strong style={{ color: "var(--cyan)", fontWeight: 500 }}>portfolio vivant</strong>, conçu pour évoluer.</p>
+      <p style={{ color: "var(--text-faint)", fontSize: ".7rem", fontFamily: "var(--font-mono)", letterSpacing: "1px" }}>© 2025 HERMAN VANEL — NEXT.JS + TYPESCRIPT + TAILWIND CSS</p>
     </footer>
   );
 }
