@@ -6,21 +6,21 @@ import { usePathname } from "next/navigation";
 const sections = [
   {
     title: "Mes projets",
-    desc: "Trading algo, automatisations n8n, bots IA — ce que je construis au quotidien.",
+    desc: "Un Expert Advisor MT5 en MQL5, des workflows n8n qui tournent tout seuls, et une agence d'automatisation IA en construction.",
     href: "/portfolio",
     accent: "var(--cyan)",
     num: "01",
   },
   {
     title: "Mon parcours",
-    desc: "De l'animation au trading, du BUT TC aux systèmes autonomes — chaque étape a compté.",
+    desc: "Né en Éthiopie, 15 ans de break dance, BAFA, BUT TC à Nice, alternance chez PAAL, et du code le soir.",
     href: "/about",
     accent: "var(--purple)",
     num: "02",
   },
   {
     title: "Contact & Demo",
-    desc: "Testez mon automatisation en direct et échangeons sur vos projets.",
+    desc: "Un workflow n8n testable en direct, et mes coordonnées si vous voulez échanger.",
     href: "/contact",
     accent: "var(--green)",
     num: "03",
@@ -37,9 +37,9 @@ export default function HomeNav() {
         <div className="mb-16 reveal">
           <div className="section-label">// explorer</div>
           <h2 className="section-title">
-            Découvrir{" "}
+            La{" "}
             <span style={{ color: "var(--cyan)", textShadow: "0 0 20px rgba(0,240,255,.3)" }}>
-              mon univers
+              suite
             </span>
           </h2>
         </div>
@@ -99,7 +99,7 @@ export default function HomeNav() {
                   textTransform: "uppercase",
                 }}
               >
-                <span>Explorer</span>
+                <span>Voir</span>
                 <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
               </div>
             </Link>

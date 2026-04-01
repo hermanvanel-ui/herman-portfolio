@@ -13,7 +13,7 @@ export default function Demo() {
     setIsLoading(true);
     setResult(null);
     await new Promise((r) => setTimeout(r, 2000));
-    setResult("Automatisation en cours de connexion. Le webhook n8n sera bientôt actif ici.");
+    setResult("Webhook n8n en cours de connexion. Cette démo sera bientôt fonctionnelle.");
     setIsLoading(false);
   };
 
@@ -21,30 +21,31 @@ export default function Demo() {
     <section id="demo" className="section-base" style={{ background: "linear-gradient(180deg, var(--bg), rgba(5,5,25,1))" }}>
       <div className="max-w-[1100px] mx-auto">
         <div className="mb-16 reveal">
-          <div className="section-label" style={{ color: "var(--green)" }}>// live demo</div>
-          <h2 className="section-title">Testez mon <span style={{ color: "var(--cyan)", textShadow: "0 0 20px rgba(0,240,255,.3)" }}>automatisation</span></h2>
+          <div className="section-label" style={{ color: "var(--green)" }}>// demo</div>
+          <h2 className="section-title">Tester <span style={{ color: "var(--cyan)", textShadow: "0 0 20px rgba(0,240,255,.3)" }}>en vrai</span></h2>
+          <p className="mt-4" style={{ color: "var(--text-mid)", fontSize: "1.05rem", lineHeight: 1.7, fontWeight: 400, maxWidth: "700px" }}>
+            Dire que je sais automatiser, c&apos;est facile. Le prouver, c&apos;est mieux.
+            Ce formulaire est connecté à un workflow n8n qui tourne sur mon serveur.
+          </p>
         </div>
 
         <div className="max-w-[700px] mx-auto">
           <div className="reveal reveal-delay-1 p-6 border border-[rgba(0,255,65,.1)] mb-8" style={{ background: "rgba(0,255,65,.02)" }}>
-            <h3 style={{ fontFamily: "var(--font-display)", fontSize: ".9rem", color: "#fff", letterSpacing: "1px", marginBottom: ".75rem" }}>Comment ça marche ?</h3>
-            <p style={{ color: "var(--text-mid)", fontSize: ".9rem", marginBottom: ".75rem", fontWeight: 400 }}>
-              Ce formulaire est connecté à un <span style={{ color: "var(--green)", fontWeight: 600 }}>workflow n8n automatisé</span> qui :
+            <h3 style={{ fontFamily: "var(--font-display)", fontSize: ".9rem", color: "#fff", letterSpacing: "1px", marginBottom: ".75rem" }}>Ce qui se passe quand vous cliquez</h3>
+            <p style={{ color: "var(--text-mid)", fontSize: ".9rem", lineHeight: 1.8, fontWeight: 400 }}>
+              Votre texte part en webhook vers mon instance n8n. Le workflow récupère
+              la demande, l&apos;envoie à une API d&apos;IA pour générer une image,
+              et vous renvoie le résultat. Pas de magie, juste des APIs qui se parlent
+              et un workflow qui orchestre le tout. C&apos;est exactement le type de
+              système que je construis pour Async Agency.
             </p>
-            <ul className="space-y-1">
-              {["Reçoit votre description via webhook", "Envoie la demande à une API d'IA (DALL-E / Stable Diffusion)", "Génère une image et vous la retourne", "Fonctionne 24/7 sans intervention manuelle"].map((s, i) => (
-                <li key={i} className="flex items-center gap-3" style={{ color: "var(--text-mid)", fontSize: ".85rem", fontWeight: 400, padding: ".4rem 0" }}>
-                  <span style={{ fontFamily: "var(--font-mono)", color: "var(--green)", fontSize: ".7rem" }}>&gt;</span>{s}
-                </li>
-              ))}
-            </ul>
           </div>
 
           <form onSubmit={handleSubmit} className="reveal reveal-delay-2">
             <textarea
               value={prompt}
               onChange={(e) => setPrompt(e.target.value)}
-              placeholder="Ex : Un robot futuriste dans une ville cyberpunk au coucher de soleil"
+              placeholder="Décrivez une image (ex : un robot qui code dans un café à Nice)"
               required
               className="w-full p-5 min-h-[120px] resize-none outline-none transition-all duration-300 focus:border-[var(--cyan)] focus:shadow-[0_0_20px_rgba(0,240,255,.08),inset_0_0_20px_rgba(0,240,255,.02)]"
               style={{ background: "rgba(255,255,255,.03)", border: "1px solid rgba(0,240,255,.15)", color: "var(--text)", fontFamily: "var(--font-body)", fontSize: "1rem", fontWeight: 400 }}
@@ -57,7 +58,7 @@ export default function Demo() {
             >
               <span className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-400" style={{ background: "linear-gradient(135deg, var(--cyan), var(--purple))", zIndex: -1 }} />
               <span className="group-hover:text-white group-hover:drop-shadow-[0_0_10px_rgba(255,255,255,.5)]">
-                {isLoading ? "PROCESSING..." : "▶  LANCER L'AUTOMATISATION"}
+                {isLoading ? "EN COURS..." : "LANCER"}
               </span>
             </button>
           </form>
@@ -69,9 +70,11 @@ export default function Demo() {
           )}
 
           <div className="reveal reveal-delay-3 mt-8 p-6 border border-[rgba(180,74,255,.15)]" style={{ background: "rgba(180,74,255,.03)" }}>
-            <h4 style={{ fontFamily: "var(--font-mono)", fontSize: ".8rem", color: "var(--purple)", letterSpacing: "1px", marginBottom: ".5rem" }}>// Architecture technique</h4>
-            <p style={{ color: "var(--text-mid)", fontSize: ".8rem", lineHeight: 1.7, fontWeight: 400 }}>
-              Cette fonctionnalité est prête à être connectée à un workflow n8n. Intégration APIs, webhooks, et interfaces réactives. Code structuré, extensible et maintenable.
+            <h4 style={{ fontFamily: "var(--font-mono)", fontSize: ".8rem", color: "var(--purple)", letterSpacing: "1px", marginBottom: ".5rem" }}>// sous le capot</h4>
+            <p style={{ color: "var(--text-mid)", fontSize: ".85rem", lineHeight: 1.7, fontWeight: 400 }}>
+              Webhook n8n → traitement de la requête → appel API (DALL-E ou Stable Diffusion) → renvoi du résultat.
+              Le code de ce site est sur <a href="https://github.com/hermanvanel-ui/herman-portfolio" target="_blank" rel="noopener noreferrer" style={{ color: "var(--cyan)", textDecoration: "underline" }}>GitHub</a>.
+              Vous pouvez vérifier.
             </p>
           </div>
         </div>

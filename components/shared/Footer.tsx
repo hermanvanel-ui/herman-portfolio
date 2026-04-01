@@ -3,11 +3,14 @@
 export default function Footer() {
   return (
     <footer className="relative z-5 py-20 px-6 text-center border-t border-[rgba(0,240,255,.08)]">
-      <h2 style={{ fontFamily: "var(--font-display)", fontSize: "1.4rem", fontWeight: 700, letterSpacing: "2px", color: "#fff", marginBottom: ".5rem" }}>ENVIE D&apos;ÉCHANGER ?</h2>
-      <p style={{ color: "var(--text-mid)", fontWeight: 400, marginBottom: "2.5rem" }}>Ouvert aux opportunités, collaborations et discussions tech.</p>
+      <h2 style={{ fontFamily: "var(--font-display)", fontSize: "1.4rem", fontWeight: 700, letterSpacing: "2px", color: "#fff", marginBottom: "1rem" }}>ON ÉCHANGE ?</h2>
+      <p style={{ color: "var(--text-mid)", fontWeight: 400, marginBottom: "2.5rem", maxWidth: "500px", margin: "0 auto 2.5rem", lineHeight: 1.7 }}>
+        Je cherche une école (Epitech), des missions en automatisation,
+        ou juste à discuter avec des gens qui construisent des trucs.
+      </p>
       <div className="flex justify-center gap-10 mb-12">
         {[
-          { icon: "📧", label: "Email", href: "mailto:herman.vanel@example.com" },
+          { icon: "📧", label: "Email", href: "mailto:herman.vanel@gmail.com" },
           { icon: "💼", label: "LinkedIn", href: "https://linkedin.com/in/hermanvanel" },
           { icon: "🔧", label: "GitHub", href: "https://github.com/hermanvanel-ui" },
         ].map((l, i) => (
@@ -16,8 +19,7 @@ export default function Footer() {
           </a>
         ))}
       </div>
-      <p style={{ color: "var(--text-faint)", fontSize: ".85rem", marginBottom: ".5rem" }}>Ce site est un <strong style={{ color: "var(--cyan)", fontWeight: 500 }}>portfolio vivant</strong>, conçu pour évoluer.</p>
-      <p style={{ color: "var(--text-faint)", fontSize: ".7rem", fontFamily: "var(--font-mono)", letterSpacing: "1px" }}>© 2025 HERMAN VANEL — NEXT.JS + TYPESCRIPT + TAILWIND CSS</p>
+      <p style={{ color: "var(--text-faint)", fontSize: ".7rem", fontFamily: "var(--font-mono)", letterSpacing: "1px" }}>© 2025 HERMAN VANEL · NICE · NEXT.JS + TYPESCRIPT</p>
     </footer>
   );
 }
