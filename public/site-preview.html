@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Herman Vanel — Portfolio</title>
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands@0.4.1675469240/hands.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils@0.3.1675466862/camera_utils.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" defer></script>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#050510;--surface:rgba(255,255,255,.02);--cyan:#00f0ff;--cyan-bright:#40f8ff;--purple:#b44aff;--purple-bright:#c77dff;--green:#00ff41;--pink:#ec4899;--text:#e2e8f0;--text-mid:#94a3b8;--text-dim:#64748b;--text-faint:#475569;}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:'Rajdhani',sans-serif;min-height:100vh;overflow-x:hidden;line-height:1.6;}
+a{color:inherit;text-decoration:none;}
+
+/* ===== NAV ===== */
+.nav{position:fixed;top:0;left:0;right:0;z-index:1000;height:60px;display:flex;align-items:center;padding:0 2rem;background:rgba(5,5,16,.92);backdrop-filter:blur(20px);border-bottom:1px solid rgba(0,240,255,.1);}
+.nav-inner{max-width:1200px;margin:0 auto;width:100%;display:flex;align-items:center;justify-content:space-between;}
+.nav-logo{font-family:'Orbitron',sans-serif;font-weight:800;font-size:.95rem;letter-spacing:3px;cursor:pointer;}
+.nav-logo .c{color:var(--cyan);text-shadow:0 0 20px rgba(0,240,255,.5);}
+.nav-logo .g{color:var(--green);}
+.nav-links{list-style:none;display:flex;gap:2rem;}
+.nav-links li a{font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:2px;text-transform:uppercase;color:var(--text-dim);transition:color .3s;cursor:pointer;position:relative;padding-bottom:4px;}
+.nav-links li a:hover,.nav-links li a.active{color:var(--cyan);}
+.nav-links li a.active::after{content:'';position:absolute;bottom:0;left:0;width:100%;height:1px;background:var(--cyan);box-shadow:0 0 8px var(--cyan);}
+
+/* ===== GENERAL ===== */
+.page{display:none;padding-top:60px;}
+.page.active{display:block;}
+.section{padding:5rem 1.5rem;}
+.max-w{max-width:1100px;margin:0 auto;}
+.s-label{font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:3px;text-transform:uppercase;color:var(--green);margin-bottom:.75rem;}
+.s-title{font-family:'Orbitron',sans-serif;font-size:clamp(1.4rem,3.5vw,2.2rem);font-weight:800;letter-spacing:2px;color:#fff;text-transform:uppercase;}
+.s-title .hl{color:var(--cyan);text-shadow:0 0 20px rgba(0,240,255,.3);}
+.holo-card{position:relative;padding:1.75rem;border:1px solid rgba(0,240,255,.12);background:var(--surface);transition:all .4s;}
+.holo-card:hover{border-color:rgba(0,240,255,.3);box-shadow:0 0 30px rgba(0,240,255,.04);}
+.corner{position:absolute;width:10px;height:10px;}
+.c-tl{top:-1px;left:-1px;border-top:1px solid var(--cyan);border-left:1px solid var(--cyan);}
+.c-tr{top:-1px;right:-1px;border-top:1px solid var(--cyan);border-right:1px solid var(--cyan);}
+.c-bl{bottom:-1px;left:-1px;border-bottom:1px solid var(--cyan);border-left:1px solid var(--cyan);}
+.c-br{bottom:-1px;right:-1px;border-bottom:1px solid var(--cyan);border-right:1px solid var(--cyan);}
+.tag{display:inline-block;padding:2px 8px;font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:1px;text-transform:uppercase;border:1px solid rgba(0,240,255,.2);color:var(--cyan);background:rgba(0,240,255,.05);}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;}
+@media(max-width:768px){.grid-2,.grid-3{grid-template-columns:1fr;}}
+.accent-line{height:1px;background:linear-gradient(90deg,transparent,var(--cyan),var(--purple),transparent);}
+h3.card-title{font-family:'Orbitron',sans-serif;font-size:.95rem;font-weight:600;letter-spacing:1px;color:#fff;margin-bottom:.75rem;}
+p.card-text{color:var(--text-mid);font-size:.95rem;line-height:1.75;font-weight:400;}
+p.card-sub{color:var(--text-mid);font-size:.9rem;line-height:1.75;font-weight:400;margin-top:.75rem;}
+.footer{padding:4rem 1.5rem;text-align:center;border-top:1px solid rgba(0,240,255,.08);}
+.footer-links{display:flex;justify-content:center;gap:2rem;margin:2rem 0;}
+.footer-links a{color:var(--text-mid);font-family:'JetBrains Mono',monospace;font-size:.75rem;letter-spacing:1px;transition:color .3s;}
+.footer-links a:hover{color:var(--cyan);}
+
+/* ===== HERO ===== */
+.hero{min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;position:relative;overflow:hidden;}
+.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 50%,rgba(0,240,255,.05) 0%,transparent 60%),radial-gradient(ellipse at 20% 80%,rgba(180,74,255,.03) 0%,transparent 40%);}
+.hero-content{position:relative;z-index:10;padding:3rem;background:radial-gradient(ellipse at center,rgba(5,5,16,.7),rgba(5,5,16,.3) 50%,transparent 70%);border-radius:20px;}
+.hero h1{font-family:'Orbitron',sans-serif;font-weight:900;font-size:clamp(2rem,6vw,4rem);letter-spacing:4px;color:#fff;}
+.hero .name-sub{font-size:.45em;letter-spacing:8px;color:var(--text-mid);font-weight:400;display:block;margin-bottom:.5rem;}
+.hero .gradient-text{background:linear-gradient(135deg,var(--cyan),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 0 25px rgba(0,240,255,.3));}
+.typing{font-family:'JetBrains Mono',monospace;font-size:clamp(.8rem,1.4vw,1rem);color:var(--green);letter-spacing:2px;margin-top:1.25rem;border-right:2px solid var(--green);white-space:nowrap;overflow:hidden;display:inline-block;animation:typing 3s steps(40) forwards,blink .8s step-end infinite;width:0;}
+@keyframes typing{to{width:100%;}}
+@keyframes blink{50%{border-color:transparent;}}
+.hero-desc{margin-top:1.5rem;max-width:600px;margin-left:auto;margin-right:auto;font-size:clamp(.95rem,1.8vw,1.15rem);color:var(--text-mid);line-height:1.8;}
+
+/* ===== PROJECTS ===== */
+.proj-card{position:relative;padding:1.75rem;border:1px solid rgba(255,255,255,.05);background:var(--surface);overflow:hidden;transition:all .4s;}
+.proj-card:hover{border-color:rgba(0,240,255,.2);transform:translateY(-2px);}
+.proj-num{position:absolute;top:.75rem;right:1.25rem;font-family:'Orbitron',sans-serif;font-size:2.5rem;font-weight:900;opacity:.12;line-height:1;}
+
+/* ===== TIMELINE ===== */
+.tl{position:relative;max-width:900px;margin:0 auto;}
+.tl-line{position:absolute;left:50%;width:2px;height:100%;transform:translateX(-50%);background:linear-gradient(to bottom,var(--cyan),var(--purple),var(--pink));box-shadow:0 0 10px rgba(0,240,255,.2);}
+.tl-item{display:flex;align-items:flex-start;margin-bottom:2.5rem;position:relative;}
+.tl-item.left{flex-direction:row-reverse;}
+.tl-dot{position:absolute;left:50%;transform:translateX(-50%);top:1.25rem;z-index:2;width:12px;height:12px;border-radius:50%;border:2px solid var(--cyan);background:var(--bg);}
+.tl-dot.hl{width:16px;height:16px;background:var(--cyan);border-color:transparent;box-shadow:0 0 15px var(--cyan);}
+.tl-dot.future{border-color:var(--purple);}
+.tl-card{width:calc(50% - 35px);padding:1.25rem;background:var(--surface);border:1px solid rgba(0,240,255,.1);transition:all .4s;}
+.tl-card:hover{border-color:rgba(0,240,255,.3);}
+.tl-card.hl{background:linear-gradient(135deg,rgba(0,240,255,.07),rgba(59,130,246,.07));border-color:rgba(0,240,255,.25);}
+.tl-card.future{background:linear-gradient(135deg,rgba(180,74,255,.04),rgba(236,72,153,.04));border-color:rgba(180,74,255,.2);}
+@media(max-width:768px){.tl-line{display:none;}.tl-dot{display:none;}.tl-item,.tl-item.left{flex-direction:column;}.tl-card{width:100%;}}
+
+/* ===== MATRIX ===== */
+#matrixCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1;opacity:.035;pointer-events:none;}
+
+/* ===== DEMO AREA ===== */
+.demo-container{position:relative;overflow:hidden;border:1px solid rgba(0,240,255,.15);background:#000;height:70vh;min-height:450px;max-height:720px;}
+.demo-container video{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;transform:scaleX(-1);}
+.demo-container .skel-canvas{position:absolute;top:0;left:0;width:100%;height:100%;z-index:2;pointer-events:none;}
+.demo-container .three-wrap{position:absolute;inset:0;z-index:3;pointer-events:none;}
+.demo-scanlines{position:absolute;inset:0;z-index:4;pointer-events:none;opacity:.02;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(255,100,0,.08) 2px,rgba(255,100,0,.08) 4px);}
+.demo-corners{position:absolute;inset:.75rem;z-index:5;pointer-events:none;}
+.dc{position:absolute;width:14px;height:14px;}
+.dc-tl{top:0;left:0;border-top:2px solid rgba(0,200,255,.5);border-left:2px solid rgba(0,200,255,.5);}
+.dc-tr{top:0;right:0;border-top:2px solid rgba(200,70,255,.5);border-right:2px solid rgba(200,70,255,.5);}
+.dc-bl{bottom:0;left:0;border-bottom:2px solid rgba(0,200,255,.5);border-left:2px solid rgba(0,200,255,.5);}
+.dc-br{bottom:0;right:0;border-bottom:2px solid rgba(200,70,255,.5);border-right:2px solid rgba(200,70,255,.5);}
+.demo-overlay{position:absolute;inset:0;z-index:20;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(5,5,16,.93);transition:opacity .5s;}
+.demo-overlay.hidden{opacity:0;pointer-events:none;}
+.demo-start-btn{padding:.7rem 2.5rem;border:1px solid var(--cyan);background:rgba(0,240,255,.08);color:var(--cyan);font-family:'Orbitron',sans-serif;font-size:.85rem;font-weight:600;letter-spacing:2px;cursor:pointer;transition:all .3s;}
+.demo-start-btn:hover{background:rgba(0,240,255,.2);box-shadow:0 0 30px rgba(0,240,255,.15);}
+.demo-loading{font-family:'JetBrains Mono',monospace;font-size:.75rem;color:var(--cyan);margin-top:1.25rem;display:none;}
+.demo-loading.show{display:block;animation:pulse 1s ease-in-out infinite;}
+@keyframes pulse{0%,100%{opacity:.4;}50%{opacity:1;}}
+.demo-stop-btn{padding:.2rem .6rem;border:1px solid rgba(255,80,80,.4);background:rgba(255,80,80,.06);color:#ff5050;font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:1px;cursor:pointer;transition:all .3s;display:none;}
+.demo-stop-btn.show{display:inline-block;}
+.demo-stop-btn:hover{background:rgba(255,80,80,.15);}
+.badge-row{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:.75rem;}
+.badge{display:inline-flex;align-items:center;gap:.3rem;padding:.15rem .5rem;font-family:'JetBrains Mono',monospace;font-size:.55rem;letter-spacing:1px;border:1px solid;}
+.badge .dot{width:5px;height:5px;border-radius:50%;}
+.no-hand-msg{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:10;font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--text-faint);background:rgba(5,5,16,.6);padding:.5rem 1.5rem;border:1px solid rgba(255,100,0,.15);backdrop-filter:blur(10px);transition:opacity .4s;pointer-events:none;}
+</style>
+</head>
+<body>
+<canvas id="matrixCanvas"></canvas>
+
+<!-- NAV -->
+<div class="nav"><div class="nav-inner">
+  <div class="nav-logo" onclick="go('accueil')"><span class="c">HERMAN</span><span class="g">.</span><span class="c">DEV</span></div>
+  <ul class="nav-links">
+    <li><a onclick="go('accueil')" id="n-accueil" class="active">_accueil</a></li>
+    <li><a onclick="go('projets')" id="n-projets">_projets</a></li>
+    <li><a onclick="go('about')" id="n-about">_à propos</a></li>
+    <li><a onclick="go('contact')" id="n-contact">_contact</a></li>
+  </ul>
+</div></div>
+
+<!-- =============== ACCUEIL =============== -->
+<div class="page active" id="p-accueil">
+<section class="hero"><div class="hero-bg"></div>
+<div class="hero-content">
+  <h1><span class="name-sub">Herman Vanel</span><span class="gradient-text">J'automatise tout.</span></h1>
+  <div style="display:flex;justify-content:center;margin-top:1.25rem;overflow:hidden;"><div class="typing">$ 21 ans · Nice · trading · n8n · agents IA</div></div>
+  <p class="hero-desc">Étudiant en BUT TC en alternance le jour, je code des bots de trading et des agents IA la nuit. Ce site n'est pas un CV. C'est ce que je sais faire, en vrai, avec du code qui tourne.</p>
+</div></section>
+
+<section class="section"><div class="max-w">
+  <div style="margin-bottom:3rem;"><div class="s-label">// aujourd'hui</div><h2 class="s-title">Deux vies <span class="hl">en parallèle</span></h2></div>
+  <div class="grid-2" style="margin-bottom:2.5rem;">
+    <div class="holo-card"><div class="corner c-tl"></div><div class="corner c-tr"></div><div class="corner c-bl"></div><div class="corner c-br"></div>
+      <h3 class="card-title">Le jour : commerce & terrain</h3>
+      <p class="card-text">Je suis en 3e année de BUT Techniques de Commercialisation à l'IUT de Nice. Mon alternance, c'est chez <span style="color:var(--cyan-bright);font-weight:600;">PAAL</span>, une entreprise de menuiserie aluminium à Contes. Assistant marketing et commercial : prospection téléphonique, développement marketing, gestion des réseaux sociaux.</p>
+      <p class="card-sub">Ça m'a appris à parler à des gens, à vendre, à comprendre comment une boîte fonctionne de l'intérieur. C'est pas du code, mais c'est la base pour monter un business.</p>
+    </div>
+    <div class="holo-card"><div class="corner c-tl"></div><div class="corner c-tr"></div><div class="corner c-bl"></div><div class="corner c-br"></div>
+      <h3 class="card-title">Le soir : code & automatisation</h3>
+      <p class="card-text">En parallèle, je développe un <span style="color:var(--purple-bright);font-weight:600;">Expert Advisor en MQL5</span> pour trader le Forex et le Gold sur MT5. Je monte des workflows n8n pour automatiser tout ce qui peut l'être. Et avec un associé, on construit <span style="color:var(--purple-bright);font-weight:600;">Async Agency</span>, une agence d'automatisation et d'agents IA pour entreprises.</p>
+      <p class="card-sub">Personne ne m'a demandé d'apprendre Python, JavaScript ou MQL5. Je l'ai fait parce que j'avais des problèmes à résoudre.</p>
+    </div>
+  </div>
+  <div style="padding:2rem;border:1px solid rgba(0,240,255,.15);background:linear-gradient(135deg,rgba(0,240,255,.04),rgba(180,74,255,.04));position:relative;">
+    <div class="accent-line" style="position:absolute;top:-1px;left:20%;right:20%;"></div>
+    <h3 style="font-family:'Orbitron',sans-serif;font-size:.9rem;letter-spacing:2px;color:#fff;text-align:center;margin-bottom:1.5rem;">POURQUOI CE SITE ET PAS UN CV</h3>
+    <p style="color:var(--text-mid);font-size:.95rem;line-height:1.85;text-align:center;max-width:750px;margin:0 auto;">Un CV tient sur une page et dit que je suis "motivé et autonome". Tout le monde écrit ça. Ce site, c'est différent : le code source est sur GitHub, la démo d'automatisation fonctionne, et vous pouvez juger par vous-même si je sais coder ou pas. Je préfère montrer que raconter.</p>
+  </div>
+</div></section>
+
+<section class="section"><div class="max-w">
+  <div style="margin-bottom:3rem;"><div class="s-label">// explorer</div><h2 class="s-title">La <span class="hl">suite</span></h2></div>
+  <div class="grid-3">
+    <div class="holo-card" style="cursor:pointer;" onclick="go('projets')"><div class="corner c-tl"></div><div class="corner c-tr"></div><div class="corner c-bl"></div><div class="corner c-br"></div>
+      <div class="proj-num" style="color:var(--cyan);">01</div>
+      <h3 class="card-title">Mes projets</h3>
+      <p style="color:var(--text-mid);font-size:.85rem;line-height:1.7;">Un Expert Advisor MT5 en MQL5, des workflows n8n qui tournent tout seuls, et une agence d'automatisation IA en construction.</p>
+      <div style="margin-top:1rem;font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--cyan);letter-spacing:2px;">VOIR →</div>
+    </div>
+    <div class="holo-card" style="cursor:pointer;" onclick="go('about')"><div class="corner c-tl"></div><div class="corner c-tr"></div><div class="corner c-bl"></div><div class="corner c-br"></div>
+      <div class="proj-num" style="color:var(--purple);">02</div>
+      <h3 class="card-title">Mon parcours</h3>
+      <p style="color:var(--text-mid);font-size:.85rem;line-height:1.7;">Né en Éthiopie, 15 ans de break dance, BAFA, BUT TC à Nice, alternance chez PAAL, et du code le soir.</p>
+      <div style="margin-top:1rem;font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--purple);letter-spacing:2px;">VOIR →</div>
+    </div>
+    <div class="holo-card" style="cursor:pointer;" onclick="go('contact')"><div class="corner c-tl"></div><div class="corner c-tr"></div><div class="corner c-bl"></div><div class="corner c-br"></div>
+      <div class="proj-num" style="color:var(--green);">03</div>
+      <h3 class="card-title">Contact & Demo</h3>
+      <p style="color:var(--text-mid);font-size:.85rem;line-height:1.7;">Une démo interactive hand-sculpting 3D, et mes coordonnées si vous voulez échanger.</p>
+      <div style="margin-top:1rem;font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--green);letter-spacing:2px;">VOIR →</div>
+    </div>
+  </div>
+</div></section>
+<footer class="footer"><h2 style="font-family:'Orbitron',sans-serif;font-size:1.2rem;font-weight:700;letter-spacing:2px;color:#fff;">ON ÉCHANGE ?</h2><p style="color:var(--text-mid);max-width:450px;margin:.75rem auto 2rem;line-height:1.7;font-size:.95rem;">Je cherche une école (Epitech), des missions en automatisation, ou juste à discuter avec des gens qui construisent des trucs.</p><div class="footer-links"><a href="mailto:herman.vanel@gmail.com">Email</a><a href="#">LinkedIn</a><a href="https://github.com/hermanvanel-ui" target="_blank">GitHub</a></div><p style="color:var(--text-faint);font-size:.65rem;font-family:'JetBrains Mono',monospace;letter-spacing:1px;">© 2025 HERMAN VANEL · NICE</p></footer>
+</div>
+
+<!-- =============== PROJETS =============== -->
+<div class="page" id="p-projets">
+<section class="section" style="padding-top:6rem;"><div class="max-w">
+  <div style="margin-bottom:3rem;"><div class="s-label">// projets</div><h2 class="s-title">Ce que je <span class="hl">construis</span></h2>
+  <p style="color:var(--text-mid);font-size:1rem;line-height:1.7;max-width:650px;margin-top:.75rem;">Pas de projets scolaires ici. Ce sont des trucs que je fais parce que j'en ai envie, le soir, le week-end, entre deux cours. Certains marchent, d'autres pas encore.</p></div>
+  <div class="grid-3">
+    <div class="proj-card"><div class="proj-num" style="color:#ff6b35;">01</div><h3 class="card-title">Expert Advisor MT5</h3><div style="font-family:'JetBrains Mono',monospace;font-size:.65rem;color:#ff6b35;letter-spacing:1px;text-transform:uppercase;margin-bottom:.75rem;">Trading automatisé Forex & Gold</div><p style="color:var(--text-mid);font-size:.85rem;line-height:1.7;margin-bottom:.75rem;">Je développe un bot de trading en MQL5 qui passe des ordres sur le Forex et le XAUUSD via MetaTrader 5. J'analyse les données de marché, je code des stratégies, je backteste, je corrige, je recommence. C'est encore en phase de développement, pas de résultats miraculeux à annoncer.</p><p style="color:var(--text-dim);font-size:.8rem;line-height:1.7;font-style:italic;margin-bottom:1rem;">Le trading m'a appris la discipline. Quand ton argent est en jeu, tu ne codes pas n'importe comment.</p><div style="display:flex;flex-wrap:wrap;gap:.4rem;"><span class="tag" style="border-color:rgba(255,107,53,.3);color:#ff6b35;background:rgba(255,107,53,.06);">MQL5</span><span class="tag" style="border-color:rgba(255,107,53,.3);color:#ff6b35;background:rgba(255,107,53,.06);">Python</span><span class="tag" style="border-color:rgba(255,107,53,.3);color:#ff6b35;background:rgba(255,107,53,.06);">MT5</span><span class="tag" style="border-color:rgba(255,107,53,.3);color:#ff6b35;background:rgba(255,107,53,.06);">Forex</span></div></div>
+    <div class="proj-card"><div class="proj-num" style="color:var(--cyan);">02</div><h3 class="card-title">Workflows n8n</h3><div style="font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--cyan);letter-spacing:1px;text-transform:uppercase;margin-bottom:.75rem;">Automatisations qui tournent 24/7</div><p style="color:var(--text-mid);font-size:.85rem;line-height:1.7;margin-bottom:.75rem;">J'utilise n8n pour connecter des services entre eux : un workflow qui capte des ordres de trading sur Telegram et les relaye vers MT5, un générateur de planning pour Metricool, des intégrations multi-plateformes avec webhooks.</p><p style="color:var(--text-dim);font-size:.8rem;line-height:1.7;font-style:italic;margin-bottom:1rem;">Si je fais la même chose plus de deux fois, je l'automatise.</p><div style="display:flex;flex-wrap:wrap;gap:.4rem;"><span class="tag">n8n</span><span class="tag">Webhooks</span><span class="tag">APIs</span><span class="tag">Telegram</span></div></div>
+    <div class="proj-card"><div class="proj-num" style="color:var(--purple);">03</div><h3 class="card-title">Async Agency</h3><div style="font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--purple);letter-spacing:1px;text-transform:uppercase;margin-bottom:.75rem;">Agence d'automatisation & agents IA</div><p style="color:var(--text-mid);font-size:.85rem;line-height:1.7;margin-bottom:.75rem;">Avec mon associé, on monte Async Agency. L'idée : proposer des automatisations pour les tâches répétitives et des agents IA autonomes capables d'exécuter plusieurs actions à partir d'une seule demande.</p><p style="color:var(--text-dim);font-size:.8rem;line-height:1.7;font-style:italic;margin-bottom:1rem;">On développe en code pur ou en no-code avec n8n selon le besoin du client.</p><div style="display:flex;flex-wrap:wrap;gap:.4rem;"><span class="tag" style="border-color:rgba(180,74,255,.3);color:var(--purple);background:rgba(180,74,255,.06);">Agents IA</span><span class="tag" style="border-color:rgba(180,74,255,.3);color:var(--purple);background:rgba(180,74,255,.06);">Python</span><span class="tag" style="border-color:rgba(180,74,255,.3);color:var(--purple);background:rgba(180,74,255,.06);">n8n</span></div></div>
+  </div>
+</div></section>
+
+<section class="section"><div class="max-w">
+  <div style="margin-bottom:3rem;"><div class="s-label">// outils & compétences</div><h2 class="s-title">Ce avec quoi je <span class="hl">travaille</span></h2>
+  <p style="color:var(--text-mid);font-size:1rem;line-height:1.7;max-width:650px;margin-top:.75rem;">Je ne suis pas développeur senior. Je suis quelqu'un qui apprend vite et qui n'a pas peur de casser des trucs pour comprendre comment ils marchent.</p></div>
+  <h3 style="font-family:'Orbitron',sans-serif;font-size:.8rem;letter-spacing:2px;color:var(--cyan);margin-bottom:1.25rem;">TECHNIQUE</h3>
+  <div class="grid-3" style="margin-bottom:2.5rem;">
+    <div style="padding:1rem;border:1px solid rgba(0,240,255,.08);background:var(--surface);"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.4rem;"><span style="font-family:'Orbitron',sans-serif;font-size:.8rem;font-weight:600;color:#fff;">Python</span><span class="tag">Intermédiaire</span></div><p style="color:var(--text-dim);font-size:.75rem;">Scripts, automatisations, analyse</p></div>
+    <div style="padding:1rem;border:1px solid rgba(0,240,255,.08);background:var(--surface);"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.4rem;"><span style="font-family:'Orbitron',sans-serif;font-size:.8rem;font-weight:600;color:#fff;">JavaScript</span><span class="tag">Intermédiaire</span></div><p style="color:var(--text-dim);font-size:.75rem;">Web, API, bots</p></div>
+    <div style="padding:1rem;border:1px solid rgba(0,240,255,.08);background:var(--surface);"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.4rem;"><span style="font-family:'Orbitron',sans-serif;font-size:.8rem;font-weight:600;color:#fff;">MQL5</span><span class="tag">En apprentissage</span></div><p style="color:var(--text-dim);font-size:.75rem;">Expert Advisors MetaTrader 5</p></div>
+    <div style="padding:1rem;border:1px solid rgba(0,240,255,.08);background:var(--surface);"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.4rem;"><span style="font-family:'Orbitron',sans-serif;font-size:.8rem;font-weight:600;color:#fff;">n8n</span><span class="tag">Avancé</span></div><p style="color:var(--text-dim);font-size:.75rem;">Workflows, webhooks, intégrations</p></div>
+    <div style="padding:1rem;border:1px solid rgba(0,240,255,.08);background:var(--surface);"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.4rem;"><span style="font-family:'Orbitron',sans-serif;font-size:.8rem;font-weight:600;color:#fff;">APIs REST</span><span class="tag">Intermédiaire</span></div><p style="color:var(--text-dim);font-size:.75rem;">OpenAI, Telegram, trading</p></div>
+    <div style="padding:1rem;border:1px solid rgba(0,240,255,.08);background:var(--surface);"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.4rem;"><span style="font-family:'Orbitron',sans-serif;font-size:.8rem;font-weight:600;color:#fff;">Next.js / React</span><span class="tag">En apprentissage</span></div><p style="color:var(--text-dim);font-size:.75rem;">Ce site est construit avec</p></div>
+  </div>
+  <h3 style="font-family:'Orbitron',sans-serif;font-size:.8rem;letter-spacing:2px;color:var(--purple);margin-bottom:1.25rem;">CE QUE LE CODE N'APPREND PAS</h3>
+  <div class="grid-2">
+    <div style="padding:1rem;border:1px solid rgba(180,74,255,.08);background:var(--surface);"><span style="font-family:'Orbitron',sans-serif;font-size:.8rem;font-weight:600;color:#fff;">Persévérant</span><p style="color:var(--text-dim);font-size:.8rem;margin-top:.4rem;">15 ans de breakdance. On n'apprend pas un headspin en une semaine.</p></div>
+    <div style="padding:1rem;border:1px solid rgba(180,74,255,.08);background:var(--surface);"><span style="font-family:'Orbitron',sans-serif;font-size:.8rem;font-weight:600;color:#fff;">Autonome</span><p style="color:var(--text-dim);font-size:.8rem;margin-top:.4rem;">Personne ne m'a dit d'apprendre Python. J'avais un bot à coder, j'ai appris.</p></div>
+    <div style="padding:1rem;border:1px solid rgba(180,74,255,.08);background:var(--surface);"><span style="font-family:'Orbitron',sans-serif;font-size:.8rem;font-weight:600;color:#fff;">Leader naturel</span><p style="color:var(--text-dim);font-size:.8rem;margin-top:.4rem;">Délégué de classe pendant des années. Prof de break depuis 5 ans.</p></div>
+    <div style="padding:1rem;border:1px solid rgba(180,74,255,.08);background:var(--surface);"><span style="font-family:'Orbitron',sans-serif;font-size:.8rem;font-weight:600;color:#fff;">Adaptable</span><p style="color:var(--text-dim);font-size:.8rem;margin-top:.4rem;">De l'animation enfants à la prospection B2B en passant par le trading algo.</p></div>
+  </div>
+</div></section>
+<footer class="footer"><h2 style="font-family:'Orbitron',sans-serif;font-size:1.2rem;font-weight:700;letter-spacing:2px;color:#fff;">ON ÉCHANGE ?</h2><p style="color:var(--text-mid);max-width:450px;margin:.75rem auto 2rem;line-height:1.7;font-size:.95rem;">Je cherche une école (Epitech), des missions en automatisation, ou juste à discuter.</p><div class="footer-links"><a href="mailto:herman.vanel@gmail.com">Email</a><a href="#">LinkedIn</a><a href="https://github.com/hermanvanel-ui" target="_blank">GitHub</a></div><p style="color:var(--text-faint);font-size:.65rem;font-family:'JetBrains Mono',monospace;letter-spacing:1px;">© 2025 HERMAN VANEL · NICE</p></footer>
+</div>
+
+<!-- =============== À PROPOS =============== -->
+<div class="page" id="p-about">
+<section class="section" style="padding-top:6rem;"><div class="max-w">
+  <div style="margin-bottom:3rem;"><div class="s-label">// parcours</div><h2 class="s-title">D'où je <span class="hl">viens</span></h2>
+  <p style="color:var(--text-mid);font-size:1rem;line-height:1.7;max-width:650px;margin-top:.75rem;">Mon parcours n'est pas linéaire. Animation, break dance, commerce, trading, code. Ça a l'air décousu, mais chaque étape m'a apporté quelque chose que la suivante a utilisé.</p></div>
+  <div class="tl"><div class="tl-line"></div>
+    <div class="tl-item"><div class="tl-dot"></div><div class="tl-card" style="margin-left:auto;"><span style="font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--cyan);letter-spacing:2px;">LES RACINES · 2005</span><h3 style="font-family:'Orbitron',sans-serif;font-size:.85rem;font-weight:600;color:#fff;margin:.4rem 0;">Né en Éthiopie, adopté à 2 ans</h3><p style="color:var(--text-mid);font-size:.8rem;line-height:1.7;">Je suis né en Éthiopie. J'ai été adopté à l'âge de 2 ans et j'ai grandi en France, dans le sud.</p></div></div>
+    <div class="tl-item left"><div class="tl-dot"></div><div class="tl-card" style="margin-right:auto;"><span style="font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--cyan);letter-spacing:2px;">LA DANSE · ~2011 → AUJOURD'HUI</span><h3 style="font-family:'Orbitron',sans-serif;font-size:.85rem;font-weight:600;color:#fff;margin:.4rem 0;">15 ans de breakdance</h3><p style="color:var(--text-mid);font-size:.8rem;line-height:1.7;">J'ai commencé le break vers 6 ans. Depuis 5-6 ans, j'enseigne. J'ai donné des cours à Menton pendant un an, et aujourd'hui j'enseigne à Nice avec mon professeur.</p><div style="display:flex;gap:.3rem;margin-top:.6rem;"><span class="tag">Discipline</span><span class="tag">Transmission</span><span class="tag">Créativité</span></div></div></div>
+    <div class="tl-item"><div class="tl-dot"></div><div class="tl-card" style="margin-left:auto;"><span style="font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--cyan);letter-spacing:2px;">PREMIÈRES EXPÉRIENCES · 2020-2022</span><h3 style="font-family:'Orbitron',sans-serif;font-size:.85rem;font-weight:600;color:#fff;margin:.4rem 0;">Animation, bénévolat, industrie</h3><p style="color:var(--text-mid);font-size:.8rem;line-height:1.7;">Animateur au collège Nazareth. Bénévole en épicerie solidaire. Stage chez MEI Industries. BAFA avec qualification surveillant de baignade.</p><div style="display:flex;gap:.3rem;margin-top:.6rem;"><span class="tag">BAFA</span><span class="tag">Terrain</span><span class="tag">Adaptabilité</span></div></div></div>
+    <div class="tl-item left"><div class="tl-dot hl"></div><div class="tl-card hl" style="margin-right:auto;"><span style="font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--cyan);letter-spacing:2px;">FORMATION · 2022-2025</span><h3 style="font-family:'Orbitron',sans-serif;font-size:.85rem;font-weight:600;color:#fff;margin:.4rem 0;">BUT TC à l'IUT de Nice + PAAL</h3><p style="color:var(--text-mid);font-size:.8rem;line-height:1.7;">Trois ans de formation en Techniques de Commercialisation. Alternance chez PAAL : prospection, marketing, réseaux sociaux. C'est aussi pendant cette période que j'ai commencé le trading et la programmation, seul.</p><div style="display:flex;gap:.3rem;margin-top:.6rem;"><span class="tag">Marketing</span><span class="tag">Prospection</span></div></div></div>
+    <div class="tl-item"><div class="tl-dot hl"></div><div class="tl-card hl" style="margin-left:auto;"><span style="font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--cyan);letter-spacing:2px;">EN PARALLÈLE · 2022-2025</span><h3 style="font-family:'Orbitron',sans-serif;font-size:.85rem;font-weight:600;color:#fff;margin:.4rem 0;">Trading algo, n8n, Async Agency</h3><p style="color:var(--text-mid);font-size:.8rem;line-height:1.7;">Trading sur Forex et Gold, Expert Advisor en MQL5, workflows n8n, agents IA. Lancement d'Async Agency avec un associé. Tout ça en parallèle de la formation.</p><div style="display:flex;gap:.3rem;margin-top:.6rem;"><span class="tag">MQL5</span><span class="tag">Python</span><span class="tag">n8n</span><span class="tag">JS</span></div></div></div>
+    <div class="tl-item left"><div class="tl-dot future"></div><div class="tl-card future" style="margin-right:auto;"><span style="font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--purple);letter-spacing:2px;">OBJECTIF · 2025-2027</span><h3 style="font-family:'Orbitron',sans-serif;font-size:.85rem;font-weight:600;color:#fff;margin:.4rem 0;">Epitech, spécialisation IA</h3><p style="color:var(--text-mid);font-size:.8rem;line-height:1.7;">Je vise Epitech pour approfondir l'IA et le développement. Ce portfolio fait partie de ma candidature.</p><div style="display:flex;gap:.3rem;margin-top:.6rem;"><span class="tag" style="border-color:rgba(180,74,255,.2);color:var(--purple);background:rgba(180,74,255,.05);">IA</span><span class="tag" style="border-color:rgba(180,74,255,.2);color:var(--purple);background:rgba(180,74,255,.05);">Epitech</span></div></div></div>
+  </div>
+</div></section>
+
+<section class="section"><div class="max-w">
+  <div style="margin-bottom:3rem;"><div class="s-label">// la suite</div><h2 class="s-title">Où je <span class="hl">vais</span></h2></div>
+  <div style="max-width:700px;margin:0 auto;">
+    <p style="color:var(--text-mid);font-size:1.1rem;line-height:1.85;">Mon BUT TC se termine en 2025. La suite, c'est <span style="color:#fff;font-weight:600;">Epitech</span>, avec une spécialisation en intelligence artificielle. Je veux les compétences techniques qui me manquent encore.</p>
+    <p style="color:var(--text-mid);font-size:1.1rem;line-height:1.85;margin-top:1.25rem;">En parallèle, je continue de développer <span style="color:var(--cyan);font-weight:500;">Async Agency</span> avec mon associé. L'objectif à 5 ans : en vivre. Freelance, entrepreneur, ou les deux.</p>
+    <p style="color:var(--text-mid);font-size:1.1rem;line-height:1.85;margin-top:1.25rem;">Ce qui me motive, c'est pas d'avoir un titre sur une carte de visite. C'est de pouvoir choisir sur quoi je travaille.</p>
+  </div>
+  <div style="max-width:700px;margin:2.5rem auto 0;padding:2rem;border:1px solid rgba(0,240,255,.15);background:linear-gradient(135deg,rgba(0,240,255,.03),rgba(180,74,255,.03));">
+    <h4 style="font-family:'Orbitron',sans-serif;font-size:.9rem;color:var(--cyan);letter-spacing:2px;margin-bottom:1.25rem;">CONCRÈTEMENT</h4>
+    <div style="display:flex;flex-direction:column;gap:.75rem;">
+      <div style="display:flex;gap:.75rem;color:var(--text);font-size:.95rem;line-height:1.7;"><span style="color:var(--green);font-family:'JetBrains Mono',monospace;">&gt;</span><span>Intégrer Epitech en spécialisation IA (2025)</span></div>
+      <div style="display:flex;gap:.75rem;color:var(--text);font-size:.95rem;line-height:1.7;"><span style="color:var(--green);font-family:'JetBrains Mono',monospace;">&gt;</span><span>Développer Async Agency jusqu'à en vivre</span></div>
+      <div style="display:flex;gap:.75rem;color:var(--text);font-size:.95rem;line-height:1.7;"><span style="color:var(--green);font-family:'JetBrains Mono',monospace;">&gt;</span><span>Devenir freelance ou entrepreneur dans l'automatisation IA</span></div>
+      <div style="display:flex;gap:.75rem;color:var(--text);font-size:.95rem;line-height:1.7;"><span style="color:var(--green);font-family:'JetBrains Mono',monospace;">&gt;</span><span>Continuer à apprendre en construisant, pas en regardant des tutos</span></div>
+    </div>
+  </div>
+  <div style="text-align:center;margin-top:3rem;font-family:'Orbitron',sans-serif;font-size:clamp(1rem,2.2vw,1.35rem);font-weight:700;letter-spacing:2px;color:#fff;line-height:2;">Je ne cherche pas un poste.<br><span style="color:var(--cyan);text-shadow:0 0 20px rgba(0,240,255,.4);">Je construis ce qui va me permettre de ne plus en chercher.</span></div>
+</div></section>
+<footer class="footer"><h2 style="font-family:'Orbitron',sans-serif;font-size:1.2rem;font-weight:700;letter-spacing:2px;color:#fff;">ON ÉCHANGE ?</h2><p style="color:var(--text-mid);max-width:450px;margin:.75rem auto 2rem;line-height:1.7;font-size:.95rem;">Je cherche une école (Epitech), des missions en automatisation, ou juste à discuter.</p><div class="footer-links"><a href="mailto:herman.vanel@gmail.com">Email</a><a href="#">LinkedIn</a><a href="https://github.com/hermanvanel-ui" target="_blank">GitHub</a></div><p style="color:var(--text-faint);font-size:.65rem;font-family:'JetBrains Mono',monospace;letter-spacing:1px;">© 2025 HERMAN VANEL · NICE</p></footer>
+</div>
+
+<!-- =============== CONTACT =============== -->
+<div class="page" id="p-contact">
+<section class="section" style="padding-top:6rem;"><div class="max-w">
+  <div style="margin-bottom:2rem;"><div class="s-label" style="color:var(--green);">// demo interactive</div><h2 class="s-title">Sculptez avec vos <span class="hl">mains</span></h2>
+  <p style="color:var(--text-mid);font-size:1rem;line-height:1.7;max-width:700px;margin-top:.75rem;">Manipulez un cube déformable en temps réel. Main 1 : poing pour compresser, pinch pour tirer, 2-3 doigts pour les ondes. Main 2 : poing fermé pour attraper et déplacer le cube, main ouverte pour le faire tourner. Des fils d'énergie relient vos doigts au cube.</p></div>
+
+  <!-- Controls -->
+  <div style="margin-bottom:.75rem;padding:.6rem 1rem;border:1px solid rgba(0,240,255,.12);background:rgba(0,240,255,.02);display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:.5rem;font-family:'JetBrains Mono',monospace;font-size:.65rem;">
+    <div style="display:flex;flex-wrap:wrap;gap:.75rem;color:var(--text-dim);letter-spacing:1px;">
+      <span>✊ <span style="color:var(--purple);">Poing</span>=compresser</span>
+      <span>🤏 <span style="color:var(--green);">Pinch</span>=tirer</span>
+      <span>✌️ <span style="color:var(--cyan);">2-3 doigts</span>=onde</span>
+      <span>🤲 <span style="color:var(--cyan);">Écarter/fermer</span>=taille</span>
+      <span style="color:var(--text-dim);">|</span>
+      <span>✊ <span style="color:#ff8800;">2e poing</span>=attraper</span>
+      <span>🖐 <span style="color:var(--purple);">2e ouverte</span>=tourner</span>
+    </div>
+    <button class="demo-stop-btn" id="demoStopBtn" onclick="stopCam()">■ Couper caméra</button>
+  </div>
+
+  <!-- Badges -->
+  <div class="badge-row">
+    <div class="badge" id="bCam" style="border-color:rgba(100,100,100,.3);color:var(--text-faint);"><span class="dot" style="background:var(--text-faint);"></span>Init...</div>
+    <div class="badge" id="bHands" style="border-color:rgba(100,100,100,.3);color:var(--text-faint);"><span class="dot" style="background:var(--text-faint);"></span>0 main</div>
+    <div class="badge" id="bGesture" style="border-color:rgba(180,74,255,.3);color:var(--purple);"><span class="dot" style="background:var(--purple);"></span><span id="bGestureText">—</span></div>
+  </div>
+
+  <!-- DEMO -->
+  <div class="demo-container" id="demoContainer">
+    <video id="vid" playsinline autoplay muted></video>
+    <canvas id="skelC" class="skel-canvas"></canvas>
+    <div id="threeWrap" class="three-wrap"></div>
+    <div class="demo-scanlines"></div>
+    <div class="demo-corners"><div class="dc dc-tl"></div><div class="dc dc-tr"></div><div class="dc dc-bl"></div><div class="dc dc-br"></div></div>
+    <div style="position:absolute;top:.5rem;left:.75rem;z-index:6;font-family:'JetBrains Mono',monospace;font-size:.5rem;color:rgba(0,200,255,.5);letter-spacing:2px;pointer-events:none;">CUBE SCULPT</div>
+    <div class="no-hand-msg" id="noHandMsg">Montrez vos mains pour manipuler le cube</div>
+    <div class="demo-overlay" id="demoOverlay">
+      <div style="font-family:'Orbitron',sans-serif;font-size:1.5rem;font-weight:700;color:#fff;letter-spacing:3px;margin-bottom:.5rem;">CUBE SCULPT 3D</div>
+      <div style="font-family:'Rajdhani',sans-serif;font-size:1rem;color:var(--text-mid);margin-bottom:1.75rem;">Déformez un cube avec votre main</div>
+      <button class="demo-start-btn" id="demoStartBtn" onclick="startCam()">Lancer la caméra</button>
+      <div class="demo-loading" id="demoLoading">Chargement MediaPipe (2 mains)...</div>
+    </div>
+  </div>
+
+  <!-- Tech -->
+  <div class="grid-3" style="margin-top:1.5rem;">
+    <div style="padding:1.25rem;border:1px solid rgba(0,240,255,.08);background:var(--surface);"><h4 style="font-family:'Orbitron',sans-serif;font-size:.7rem;letter-spacing:2px;color:var(--cyan);margin-bottom:.4rem;">2 MAINS · 42 POINTS</h4><p style="color:var(--text-dim);font-size:.75rem;line-height:1.6;">Main 1 sculpte le cube. Main 2 l'attrape et le fait tourner. 42 landmarks détectés en temps réel.</p></div>
+    <div style="padding:1.25rem;border:1px solid rgba(180,74,255,.08);background:var(--surface);"><h4 style="font-family:'Orbitron',sans-serif;font-size:.7rem;letter-spacing:2px;color:var(--purple);margin-bottom:.4rem;">CUBE DÉFORMABLE</h4><p style="color:var(--text-dim);font-size:.75rem;line-height:1.6;">Géométrie cubique avec ~2000 sommets. Poing, pinch, onde, rotation — 6 gestes distincts avec ressort élastique.</p></div>
+    <div style="padding:1.25rem;border:1px solid rgba(0,255,65,.08);background:var(--surface);"><h4 style="font-family:'Orbitron',sans-serif;font-size:.7rem;letter-spacing:2px;color:var(--green);margin-bottom:.4rem;">FILS D'ÉNERGIE</h4><p style="color:var(--text-dim);font-size:.75rem;line-height:1.6;">Des fils animés relient chaque doigt à la surface du cube. Particules lumineuses aux points de pinch.</p></div>
+  </div>
+  <div style="margin-top:1.25rem;text-align:center;"><p style="color:var(--text-faint);font-size:.7rem;font-family:'JetBrains Mono',monospace;letter-spacing:1px;">Code source : <a href="https://github.com/hermanvanel-ui/herman-portfolio" target="_blank" style="color:var(--cyan);text-decoration:underline;">GitHub</a> · MediaPipe Hands · Three.js · Next.js</p></div>
+</div></section>
+<footer class="footer"><h2 style="font-family:'Orbitron',sans-serif;font-size:1.2rem;font-weight:700;letter-spacing:2px;color:#fff;">ON ÉCHANGE ?</h2><p style="color:var(--text-mid);max-width:450px;margin:.75rem auto 2rem;line-height:1.7;font-size:.95rem;">Je cherche une école (Epitech), des missions en automatisation, ou juste à discuter.</p><div class="footer-links"><a href="mailto:herman.vanel@gmail.com">Email</a><a href="#">LinkedIn</a><a href="https://github.com/hermanvanel-ui" target="_blank">GitHub</a></div><p style="color:var(--text-faint);font-size:.65rem;font-family:'JetBrains Mono',monospace;letter-spacing:1px;">© 2025 HERMAN VANEL · NICE</p></footer>
+</div>
+
+<script>
+// ===== NAV =====
+function go(id){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.querySelectorAll('.nav-links a').forEach(a=>a.classList.remove('active'));document.getElementById('p-'+id).classList.add('active');document.getElementById('n-'+id).classList.add('active');window.scrollTo({top:0,behavior:'smooth'});}
+
+// ===== MATRIX =====
+const mc=document.getElementById('matrixCanvas'),mx=mc.getContext('2d');mc.width=innerWidth;mc.height=innerHeight;
+const cols=Math.floor(mc.width/20),drops=Array(cols).fill(1),chars='アイウエオカキクケコ01';
+setInterval(()=>{mx.fillStyle='rgba(5,5,16,.05)';mx.fillRect(0,0,mc.width,mc.height);mx.fillStyle='#00f0ff';mx.font='14px monospace';for(let i=0;i<drops.length;i++){mx.fillText(chars[Math.floor(Math.random()*chars.length)],i*20,drops[i]*20);if(drops[i]*20>mc.height&&Math.random()>.975)drops[i]=0;drops[i]++;}},50);
+addEventListener('resize',()=>{mc.width=innerWidth;mc.height=innerHeight;});
+
+// ===== HAND SCULPT 3D ENGINE =====
+const HC=[[0,1],[1,2],[2,3],[3,4],[0,5],[5,6],[6,7],[7,8],[5,9],[9,10],[10,11],[11,12],[9,13],[13,14],[14,15],[15,16],[13,17],[17,18],[18,19],[19,20],[0,17]];
+const FT=[4,8,12,16,20];
+const SP=.02,DF=.1,CP=.07,PTH=.07,PS=.12,PR=.55,LR=.08,TS=10,MP=60;
+const MAX_SCALE=1.6,MIN_SCALE=.4,MAX_DEFORM=.9;
+let sc,c3,ren,blob,oPos,threads=[],parts=[],mLight;
+let hMain=null,hSecond=null,tScale=1,tm=0,dAmt=0,run=false,camI=null;
+let bCol=null,tCol=null;
+let blobPos=null;
+let prevCenter=null,prevSpread=null;
+let prevSecCenter=null,grabActive=false,grabOffset=null;
+
+function lr(a,b,t){return a+(b-a)*t;}
+function cntF(l,h){let c=0;if(h==="Right"){if(l[4].x<l[3].x)c++;}else{if(l[4].x>l[3].x)c++;}if(l[8].y<l[6].y)c++;if(l[12].y<l[10].y)c++;if(l[16].y<l[14].y)c++;if(l[20].y<l[18].y)c++;return c;}
+function gCtr(l){return{x:(l[0].x+l[9].x)/2,y:(l[0].y+l[9].y)/2};}
+function pD(l){const dx=l[4].x-l[8].x,dy=l[4].y-l[8].y;return Math.sqrt(dx*dx+dy*dy);}
+function pM(l){return{x:(l[4].x+l[8].x)/2,y:(l[4].y+l[8].y)/2};}
+function to3D(lx,ly){const nx=1-lx,ndx=(nx-.5)*2,ndy=-(ly-.5)*2;const v=new THREE.Vector3(ndx,ndy,.5);v.unproject(c3);const d=v.sub(c3.position).normalize();const dist=-c3.position.z/d.z;return c3.position.clone().add(d.multiplyScalar(dist));}
+function handSpread(l){const tips=[4,8,12,16,20];let d=0,n=0;for(let i=0;i<tips.length;i++)for(let j=i+1;j<tips.length;j++){const dx=l[tips[i]].x-l[tips[j]].x,dy=l[tips[i]].y-l[tips[j]].y;d+=Math.sqrt(dx*dx+dy*dy);n++;}return d/n;}
+function wristAngle(l){return Math.atan2(l[12].y-l[0].y,l[12].x-l[0].x);}
+function palmDir(l){const dx=l[9].x-l[0].x,dy=l[9].y-l[0].y;return Math.atan2(dy,dx);}
+
+function initThree(){
+  const w=document.getElementById('threeWrap');const r=document.getElementById('demoContainer').getBoundingClientRect();
+  ren=new THREE.WebGLRenderer({antialias:true,alpha:true});ren.setSize(r.width,r.height);ren.setPixelRatio(Math.min(devicePixelRatio,2));ren.setClearColor(0x000000,0);w.appendChild(ren.domElement);
+  sc=new THREE.Scene();c3=new THREE.PerspectiveCamera(50,r.width/r.height,.1,100);c3.position.z=5;
+  sc.add(new THREE.AmbientLight(0xffffff,.5));
+  mLight=new THREE.PointLight(0x00ccff,1.5,12);mLight.position.set(0,1,3);sc.add(mLight);
+  const rl=new THREE.DirectionalLight(0x4488ff,.6);rl.position.set(-2,1,2);sc.add(rl);
+  const tl=new THREE.PointLight(0xcc44ff,.4,8);tl.position.set(2,-1,2);sc.add(tl);
+  const geo=new THREE.BoxGeometry(2,2,2,10,10,10);oPos=new Float32Array(geo.attributes.position.array);
+  blob=new THREE.Mesh(geo,new THREE.MeshPhongMaterial({color:0x00ccff,emissive:0x004466,emissiveIntensity:.5,specular:0x88eeff,shininess:50,transparent:true,opacity:.85,flatShading:true}));sc.add(blob);
+  const wg=new THREE.BoxGeometry(2.03,2.03,2.03,10,10,10);blob.add(new THREE.Mesh(wg,new THREE.MeshBasicMaterial({color:0x00ccff,wireframe:true,transparent:true,opacity:.12})));
+  const eg=new THREE.EdgesGeometry(new THREE.BoxGeometry(2.05,2.05,2.05));blob.add(new THREE.LineSegments(eg,new THREE.LineBasicMaterial({color:0x00f0ff,transparent:true,opacity:.4})));
+  bCol=new THREE.Color(0x00ccff);tCol=new THREE.Color(0x00ccff);
+  blobPos=new THREE.Vector3(0,0,0);blobRot=new THREE.Euler(0,0,0);
+  anim();
+}
+
+function anim(){
+  requestAnimationFrame(anim);tm+=.016;if(!blob)return;
+  const pos=blob.geometry.attributes.position,pa=pos.array,h=hMain,h2=hSecond;let td=0;
+  // Spring back + breathing
+  for(let i=0;i<pa.length;i+=3){const ox=oPos[i],oy=oPos[i+1],oz=oPos[i+2];pa[i]+=(ox-pa[i])*SP;pa[i+1]+=(oy-pa[i+1])*SP;pa[i+2]+=(oz-pa[i+2])*SP;const br=Math.sin(tm*2)*.005;const dx=pa[i],dy=pa[i+1],dz=pa[i+2],ln=Math.sqrt(dx*dx+dy*dy+dz*dz)||1;pa[i]+=(dx/ln)*br;pa[i+1]+=(dy/ln)*br;pa[i+2]+=(dz/ln)*br;td+=Math.abs(pa[i]-ox)+Math.abs(pa[i+1]-oy)+Math.abs(pa[i+2]-oz);}
+  dAmt=lr(dAmt,td,.1);
+
+  if(h){
+    // === SPREAD: open hand = scale up, closed = scale down ===
+    const sp=h.spread||0;
+    if(prevSpread!==null){const ds=sp-prevSpread;tScale=Math.max(MIN_SCALE,Math.min(MAX_SCALE,tScale+ds*2.5));}
+    prevSpread=sp;
+
+    // === FIST (0 fingers): compress + drag position ===
+    if(h.f===0){
+      if(prevCenter&&blobPos){blobPos.x+=(h.ctr.x-prevCenter.x)*.7;blobPos.y+=(h.ctr.y-prevCenter.y)*.7;}
+      prevCenter={x:h.ctr.x,y:h.ctr.y};
+      for(let i=0;i<pa.length;i+=3){const vx=pa[i],vy=pa[i+1],vz=pa[i+2];const t=new THREE.Vector3(-vx,-vy,-vz).normalize();pa[i]+=t.x*CP;pa[i+1]+=t.y*CP;pa[i+2]+=t.z*CP;}
+    }else{prevCenter=null;}
+
+    // === OPEN HAND (4-5 fingers): rotate via wrist tilt ===
+    if(h.f>=4){
+      const wa=h.wristAngle||0;
+      const pd2=h.palmDir||0;
+      blob.rotation.x=lr(blob.rotation.x,wa*.5,.05);
+      blob.rotation.y=lr(blob.rotation.y,pd2*.5,.05);
+    }
+
+    // === PINCH: pull surface toward pinch point ===
+    if(h.ip){
+      for(let i=0;i<pa.length;i+=3){const dx2=pa[i]-h.pm.x,dy2=pa[i+1]-h.pm.y,dz2=pa[i+2]-h.pm.z;const dist=Math.sqrt(dx2*dx2+dy2*dy2+dz2*dz2);if(dist<PR){const fo=1-dist/PR,str=PS*fo*fo;pa[i]+=(h.pm.x-pa[i])*str;pa[i+1]+=(h.pm.y-pa[i+1])*str;pa[i+2]+=(h.pm.z-pa[i+2])*str;}}
+    }
+
+    // === FINGERTIP PUSH: each finger pushes nearby vertices ===
+    for(const tip of h.tips){
+      for(let i=0;i<pa.length;i+=3){const dvx=pa[i]-tip.x,dvy=pa[i+1]-tip.y,dvz=pa[i+2]-tip.z;const dd=Math.sqrt(dvx*dvx+dvy*dvy+dvz*dvz);
+        if(dd<.45){const push=(1-dd/.45)*.05;const n2=dd||1;pa[i]+=dvx/n2*push;pa[i+1]+=dvy/n2*push;pa[i+2]+=dvz/n2*push;}}
+    }
+
+    // === 2-3 FINGERS: wave/ripple effect ===
+    if(h.f>=2&&h.f<=3){
+      for(let i=0;i<pa.length;i+=3){const dx4=pa[i]-h.ctr.x,dy4=pa[i+1]-h.ctr.y;const d4=Math.sqrt(dx4*dx4+dy4*dy4);if(d4<2){const wave=Math.sin(d4*6-tm*5)*.03*(1-d4/2);const n3=Math.sqrt(pa[i]*pa[i]+pa[i+1]*pa[i+1]+pa[i+2]*pa[i+2])||1;pa[i]+=(pa[i]/n3)*wave;pa[i+1]+=(pa[i+1]/n3)*wave;pa[i+2]+=(pa[i+2]/n3)*wave;}}
+    }
+  }else{prevCenter=null;prevSpread=null;}
+
+  // === 2e MAIN: rotation + attraper ===
+  if(h2){
+    // GRAB: poing ou 0-1 doigt = attraper et déplacer le cube
+    if(h2.f<=1){
+      if(!grabActive){grabActive=true;grabOffset=blobPos?new THREE.Vector3(blobPos.x-h2.ctr.x,blobPos.y-h2.ctr.y,0):new THREE.Vector3(0,0,0);}
+      if(blobPos&&grabOffset){blobPos.x=lr(blobPos.x,h2.ctr.x+grabOffset.x,.12);blobPos.y=lr(blobPos.y,h2.ctr.y+grabOffset.y,.12);}
+    }else{grabActive=false;grabOffset=null;}
+    // ROTATION: main ouverte (3+ doigts) = tourner le cube
+    if(h2.f>=3){
+      if(prevSecCenter){
+        const dxr=h2.ctr.x-prevSecCenter.x,dyr=h2.ctr.y-prevSecCenter.y;
+        blob.rotation.y+=dxr*.8;
+        blob.rotation.x-=dyr*.8;
+      }
+      prevSecCenter={x:h2.ctr.x,y:h2.ctr.y};
+    }else{prevSecCenter=null;}
+  }else{prevSecCenter=null;grabActive=false;grabOffset=null;}
+
+  // Clamp vertex deformation
+  for(let i=0;i<pa.length;i+=3){const ox=oPos[i],oy=oPos[i+1],oz=oPos[i+2];const ddx=pa[i]-ox,ddy=pa[i+1]-oy,ddz=pa[i+2]-oz;const dm=Math.sqrt(ddx*ddx+ddy*ddy+ddz*ddz);if(dm>MAX_DEFORM){const r2=MAX_DEFORM/dm;pa[i]=ox+ddx*r2;pa[i+1]=oy+ddy*r2;pa[i+2]=oz+ddz*r2;}}
+
+  pos.needsUpdate=true;blob.geometry.computeVertexNormals();
+  // Scale (capped)
+  const s=blob.scale.x,ns=lr(s,tScale,LR);blob.scale.set(ns,ns,ns);
+  // Position smoothing
+  if(blobPos){blob.position.x=lr(blob.position.x,blobPos.x,.06);blob.position.y=lr(blob.position.y,blobPos.y,.06);}
+  // Material color
+  const mt=blob.material;mt.emissiveIntensity=.35+Math.sin(tm*1.5)*.12+Math.min(1,dAmt*.015);
+  if(!h&&!h2)tCol.set(0x00ccff);else if(grabActive)tCol.set(0xff8800);else if(h2&&h2.f>=3)tCol.set(0xcc44ff);else if(h&&h.f===0)tCol.set(0x8844ff);else if(h&&h.ip)tCol.set(0x00ff88);else if(h&&h.f>=4)tCol.set(0xff44aa);else tCol.set(0x44aaff);
+  bCol.lerp(tCol,.04);mt.color.copy(bCol);mt.emissive.copy(bCol).multiplyScalar(.4);
+  // Idle rotation + return to center
+  if(!h&&!h2){blob.rotation.y+=.004;blob.rotation.x+=.002;tScale=lr(tScale,1,.008);if(blobPos){blobPos.x*=.97;blobPos.y*=.97;}}
+  // Light follows hands
+  if(mLight){const ah=h||h2;if(ah){mLight.position.x=lr(mLight.position.x,ah.ctr.x,.06);mLight.position.y=lr(mLight.position.y,ah.ctr.y+1,.06);}}
+  // Threads
+  for(const l of threads){sc.remove(l);l.geometry.dispose();}threads=[];
+  const allH=[h,h2].filter(Boolean);
+  for(const ah of allH){const thCol=ah===h?0x00f0ff:0xcc44ff;for(const tip of ah.tips){const bpx=blob.position.x,bpy=blob.position.y;const dir=new THREE.Vector3(bpx,bpy,0).sub(tip).normalize();const sf=new THREE.Vector3(bpx,bpy,0).add(dir.clone().multiplyScalar(1.2*ns));const d2=tip.distanceTo(sf);if(d2>3.5)continue;const pts=[];for(let i=0;i<=TS;i++){const t2=i/TS;const p=tip.clone().lerp(sf,t2);p.x+=Math.sin(tm*5+t2*Math.PI*3)*.035*(1-Math.abs(t2-.5)*2);p.y+=Math.cos(tm*4+t2*5)*.025*(1-Math.abs(t2-.5)*2);pts.push(p);}const tG=new THREE.BufferGeometry().setFromPoints(pts);const tM=new THREE.LineBasicMaterial({color:thCol,transparent:true,opacity:Math.max(.1,Math.min(.6,1-d2/3.5))});const ln=new THREE.Line(tG,tM);sc.add(ln);threads.push(ln);}}
+  // Wire sync
+  if(blob.children[0]){const wp=blob.children[0].geometry.attributes.position.array;for(let i=0;i<wp.length&&i<pa.length;i+=3){wp[i]=pa[i]*1.01;wp[i+1]=pa[i+1]*1.01;wp[i+2]=pa[i+2]*1.01;}blob.children[0].geometry.attributes.position.needsUpdate=true;}
+  // Particles
+  for(const ah of allH){if(ah.ip&&parts.length<MP&&Math.random()>.5){const pg=new THREE.SphereGeometry(.02,4,4);const pc2=ah===h?0x00f0ff:0xcc44ff;const pm2=new THREE.MeshBasicMaterial({color:pc2,transparent:true,opacity:.8});const pmesh=new THREE.Mesh(pg,pm2);pmesh.position.copy(ah.pm);sc.add(pmesh);parts.push({m:pmesh,v:new THREE.Vector3((Math.random()-.5)*.04,(Math.random()-.5)*.04,(Math.random()-.5)*.04),l:0,mx:.4+Math.random()*.3});}}
+  const al=[];for(const p of parts){p.l+=.016;if(p.l>=p.mx){sc.remove(p.m);p.m.geometry.dispose();p.m.material.dispose();continue;}p.m.position.add(p.v);p.m.material.opacity=1-p.l/p.mx;al.push(p);}parts=al;
+  ren.render(sc,c3);
+}
+
+function startCam(){
+  if(typeof Hands==='undefined'||typeof Camera==='undefined'||typeof THREE==='undefined'){
+    alert('Les bibliothèques sont encore en cours de chargement. Réessayez dans quelques secondes.');return;
+  }
+  document.getElementById('demoStartBtn').style.display='none';
+  document.getElementById('demoLoading').classList.add('show');
+  const vid=document.getElementById('vid'),sk=document.getElementById('skelC'),ctx=sk.getContext('2d');
+  const hands=new Hands({locateFile:f=>'https://cdn.jsdelivr.net/npm/@mediapipe/hands@0.4.1675469240/'+f});
+  hands.setOptions({maxNumHands:2,modelComplexity:1,minDetectionConfidence:.7,minTrackingConfidence:.5});
+  hands.onResults(res=>{
+    sk.width=sk.clientWidth;sk.height=sk.clientHeight;ctx.clearRect(0,0,sk.width,sk.height);
+    let nm=null,ns=null;
+    if(res.multiHandLandmarks&&res.multiHandLandmarks.length>0){
+      for(let hi=0;hi<res.multiHandLandmarks.length;hi++){
+        const lm=res.multiHandLandmarks[hi],hn=res.multiHandedness?.[hi]?.label||"Right";
+        const side=hn==="Left"?"right":"left";
+        const col=hi===0?'rgba(0,220,255,.5)':'rgba(200,70,255,.5)';
+        const dotCol=hi===0?'#00f0ff':'#cc44ff';
+        ctx.save();ctx.translate(sk.width,0);ctx.scale(-1,1);
+        ctx.strokeStyle=col;ctx.lineWidth=2;ctx.shadowColor=dotCol;ctx.shadowBlur=8;
+        for(const[s2,e]of HC){ctx.beginPath();ctx.moveTo(lm[s2].x*sk.width,lm[s2].y*sk.height);ctx.lineTo(lm[e].x*sk.width,lm[e].y*sk.height);ctx.stroke();}
+        ctx.shadowBlur=12;for(const p of lm){ctx.beginPath();ctx.arc(p.x*sk.width,p.y*sk.height,3,0,Math.PI*2);ctx.fillStyle=dotCol;ctx.fill();}
+        ctx.shadowBlur=18;[4,8].forEach(i=>{ctx.beginPath();ctx.arc(lm[i].x*sk.width,lm[i].y*sk.height,5,0,Math.PI*2);ctx.fillStyle=dotCol;ctx.fill();});
+        ctx.restore();
+        if(!c3)continue;
+        const ctr=gCtr(lm),ctr3=to3D(ctr.x,ctr.y),f=cntF(lm,hn),pd2=pD(lm),ip=pd2<PTH,pm2=pM(lm),pm3=to3D(pm2.x,pm2.y);
+        const tips=FT.map(idx=>to3D(lm[idx].x,lm[idx].y));
+        const wa=wristAngle(lm),pdir=palmDir(lm),sp=handSpread(lm);
+        const hd={ctr:ctr3,ctrNorm:ctr,f,ip,pm:pm3,tips,wristAngle:wa,palmDir:pdir,spread:sp,side};
+        if(hi===0)nm=hd;else ns=hd;
+      }
+    }
+    hMain=nm;hSecond=ns;
+    // UI
+    const bh=document.getElementById('bHands');
+    const total=(nm?1:0)+(ns?1:0);
+    if(total===0){bh.style.borderColor='rgba(100,100,100,.3)';bh.style.color='var(--text-faint)';bh.innerHTML='<span class="dot" style="background:var(--text-faint);width:5px;height:5px;border-radius:50%;"></span>Aucune main';}
+    else if(total===1){bh.style.borderColor='rgba(0,240,255,.3)';bh.style.color='var(--cyan)';bh.innerHTML='<span class="dot" style="background:var(--cyan);width:5px;height:5px;border-radius:50%;box-shadow:0 0 5px var(--cyan);"></span>1 main';}
+    else{bh.style.borderColor='rgba(0,255,65,.3)';bh.style.color='var(--green)';bh.innerHTML='<span class="dot" style="background:var(--green);width:5px;height:5px;border-radius:50%;box-shadow:0 0 5px var(--green);"></span>2 mains';}
+    document.getElementById('noHandMsg').style.opacity=total>0?'0':'1';
+    const gs=[];
+    if(nm){if(nm.f===0)gs.push('Poing:compresser');else if(nm.ip)gs.push('Pinch:tirer');else if(nm.f>=4)gs.push('Ouverte:onde');else gs.push(nm.f+' doigt(s)');}
+    if(ns){if(ns.f<=1)gs.push('2e:attraper');else if(ns.f>=4)gs.push('2e:tourner');else gs.push('2e:'+ns.f);}
+    document.getElementById('bGestureText').textContent=gs.length>0?gs.join(' · '):'—';
+  });
+  camI=new Camera(vid,{onFrame:async()=>{if(run)await hands.send({image:vid});},width:1280,height:720});
+  run=true;
+  camI.start().then(()=>{
+    document.getElementById('demoOverlay').classList.add('hidden');
+    const bc=document.getElementById('bCam');bc.style.borderColor='rgba(0,255,65,.3)';bc.style.color='var(--green)';bc.innerHTML='<span class="dot" style="background:var(--green);width:5px;height:5px;border-radius:50%;box-shadow:0 0 5px var(--green);"></span>Cam OK';
+    document.getElementById('demoStopBtn').classList.add('show');
+    initThree();
+  }).catch(err=>{document.getElementById('demoLoading').textContent='Erreur: '+err.message;document.getElementById('demoLoading').style.color='#ff5050';});
+}
+
+function stopCam(){
+  run=false;if(camI){camI.stop();camI=null;}
+  const v=document.getElementById('vid');if(v.srcObject){v.srcObject.getTracks().forEach(t=>t.stop());v.srcObject=null;}
+  const sk=document.getElementById('skelC'),ctx=sk.getContext('2d');ctx.clearRect(0,0,sk.width,sk.height);
+  hMain=null;hSecond=null;prevCenter=null;prevSpread=null;prevSecCenter=null;grabActive=false;grabOffset=null;
+  const bc=document.getElementById('bCam');bc.style.borderColor='rgba(255,80,80,.3)';bc.style.color='#ff5050';bc.innerHTML='<span class="dot" style="background:#ff5050;width:5px;height:5px;border-radius:50%;"></span>Cam OFF';
+  const bh=document.getElementById('bHands');bh.style.borderColor='rgba(100,100,100,.3)';bh.style.color='var(--text-faint)';bh.innerHTML='<span class="dot" style="background:var(--text-faint);width:5px;height:5px;border-radius:50%;"></span>—';
+  document.getElementById('noHandMsg').style.opacity='0';
+  document.getElementById('demoStopBtn').classList.remove('show');
+  const ov=document.getElementById('demoOverlay');ov.classList.remove('hidden');
+  const btn=document.getElementById('demoStartBtn');btn.style.display='';btn.textContent='RELANCER';
+  document.getElementById('demoLoading').classList.remove('show');
+}
+
+addEventListener('resize',()=>{if(ren){const r=document.getElementById('demoContainer').getBoundingClientRect();ren.setSize(r.width,r.height);c3.aspect=r.width/r.height;c3.updateProjectionMatrix();}});
+</script>
+</body>
+</html>
