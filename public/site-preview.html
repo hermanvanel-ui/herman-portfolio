@@ -9,22 +9,22 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" defer></script>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#050510;--surface:rgba(255,255,255,.02);--cyan:#00f0ff;--cyan-bright:#40f8ff;--purple:#b44aff;--purple-bright:#c77dff;--green:#00ff41;--pink:#ec4899;--text:#e2e8f0;--text-mid:#94a3b8;--text-dim:#64748b;--text-faint:#475569;}
+:root{--bg:#0a0e17;--surface:rgba(255,255,255,.025);--cyan:#60a5fa;--cyan-bright:#93c5fd;--purple:#818cf8;--purple-bright:#a5b4fc;--green:#6ee7b7;--pink:#f0abfc;--text:#e2e8f0;--text-mid:#94a3b8;--text-dim:#64748b;--text-faint:#475569;}
 *{margin:0;padding:0;box-sizing:border-box;}
 html{scroll-behavior:smooth;}
 body{background:var(--bg);color:var(--text);font-family:'Rajdhani',sans-serif;min-height:100vh;overflow-x:hidden;line-height:1.6;}
 a{color:inherit;text-decoration:none;}
 
 /* ===== NAV ===== */
-.nav{position:fixed;top:0;left:0;right:0;z-index:1000;height:60px;display:flex;align-items:center;padding:0 2rem;background:rgba(5,5,16,.92);backdrop-filter:blur(20px);border-bottom:1px solid rgba(0,240,255,.1);}
+.nav{position:fixed;top:0;left:0;right:0;z-index:1000;height:60px;display:flex;align-items:center;padding:0 2rem;background:rgba(10,14,23,.95);backdrop-filter:blur(20px);border-bottom:1px solid rgba(96,165,250,.08);}
 .nav-inner{max-width:1200px;margin:0 auto;width:100%;display:flex;align-items:center;justify-content:space-between;}
 .nav-logo{font-family:'Orbitron',sans-serif;font-weight:800;font-size:.95rem;letter-spacing:3px;cursor:pointer;}
-.nav-logo .c{color:var(--cyan);text-shadow:0 0 20px rgba(0,240,255,.5);}
+.nav-logo .c{color:var(--cyan);text-shadow:0 0 12px rgba(96,165,250,.25);}
 .nav-logo .g{color:var(--green);}
 .nav-links{list-style:none;display:flex;gap:2rem;}
 .nav-links li a{font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:2px;text-transform:uppercase;color:var(--text-dim);transition:color .3s;cursor:pointer;position:relative;padding-bottom:4px;}
 .nav-links li a:hover,.nav-links li a.active{color:var(--cyan);}
-.nav-links li a.active::after{content:'';position:absolute;bottom:0;left:0;width:100%;height:1px;background:var(--cyan);box-shadow:0 0 8px var(--cyan);}
+.nav-links li a.active::after{content:'';position:absolute;bottom:0;left:0;width:100%;height:1px;background:var(--cyan);box-shadow:0 0 4px rgba(96,165,250,.3);}
 
 /* ===== GENERAL ===== */
 .page{display:none;padding-top:60px;}
@@ -33,15 +33,15 @@ a{color:inherit;text-decoration:none;}
 .max-w{max-width:1100px;margin:0 auto;}
 .s-label{font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:3px;text-transform:uppercase;color:var(--green);margin-bottom:.75rem;}
 .s-title{font-family:'Orbitron',sans-serif;font-size:clamp(1.4rem,3.5vw,2.2rem);font-weight:800;letter-spacing:2px;color:#fff;text-transform:uppercase;}
-.s-title .hl{color:var(--cyan);text-shadow:0 0 20px rgba(0,240,255,.3);}
-.holo-card{position:relative;padding:1.75rem;border:1px solid rgba(0,240,255,.12);background:var(--surface);transition:all .4s;}
-.holo-card:hover{border-color:rgba(0,240,255,.3);box-shadow:0 0 30px rgba(0,240,255,.04);}
+.s-title .hl{color:var(--cyan);text-shadow:0 0 10px rgba(96,165,250,.15);}
+.holo-card{position:relative;padding:1.75rem;border:1px solid rgba(96,165,250,.12);background:var(--surface);transition:all .4s;}
+.holo-card:hover{border-color:rgba(96,165,250,.3);box-shadow:0 0 30px rgba(96,165,250,.04);}
 .corner{position:absolute;width:10px;height:10px;}
 .c-tl{top:-1px;left:-1px;border-top:1px solid var(--cyan);border-left:1px solid var(--cyan);}
 .c-tr{top:-1px;right:-1px;border-top:1px solid var(--cyan);border-right:1px solid var(--cyan);}
 .c-bl{bottom:-1px;left:-1px;border-bottom:1px solid var(--cyan);border-left:1px solid var(--cyan);}
 .c-br{bottom:-1px;right:-1px;border-bottom:1px solid var(--cyan);border-right:1px solid var(--cyan);}
-.tag{display:inline-block;padding:2px 8px;font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:1px;text-transform:uppercase;border:1px solid rgba(0,240,255,.2);color:var(--cyan);background:rgba(0,240,255,.05);}
+.tag{display:inline-block;padding:2px 8px;font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:1px;text-transform:uppercase;border:1px solid rgba(96,165,250,.2);color:var(--cyan);background:rgba(96,165,250,.05);}
 .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;}
 .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;}
 @media(max-width:768px){.grid-2,.grid-3{grid-template-columns:1fr;}}
@@ -49,18 +49,18 @@ a{color:inherit;text-decoration:none;}
 h3.card-title{font-family:'Orbitron',sans-serif;font-size:.95rem;font-weight:600;letter-spacing:1px;color:#fff;margin-bottom:.75rem;}
 p.card-text{color:var(--text-mid);font-size:.95rem;line-height:1.75;font-weight:400;}
 p.card-sub{color:var(--text-mid);font-size:.9rem;line-height:1.75;font-weight:400;margin-top:.75rem;}
-.footer{padding:4rem 1.5rem;text-align:center;border-top:1px solid rgba(0,240,255,.08);}
+.footer{padding:4rem 1.5rem;text-align:center;border-top:1px solid rgba(96,165,250,.08);}
 .footer-links{display:flex;justify-content:center;gap:2rem;margin:2rem 0;}
 .footer-links a{color:var(--text-mid);font-family:'JetBrains Mono',monospace;font-size:.75rem;letter-spacing:1px;transition:color .3s;}
 .footer-links a:hover{color:var(--cyan);}
 
 /* ===== HERO ===== */
 .hero{min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;position:relative;overflow:hidden;}
-.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 50%,rgba(0,240,255,.05) 0%,transparent 60%),radial-gradient(ellipse at 20% 80%,rgba(180,74,255,.03) 0%,transparent 40%);}
-.hero-content{position:relative;z-index:10;padding:3rem;background:radial-gradient(ellipse at center,rgba(5,5,16,.7),rgba(5,5,16,.3) 50%,transparent 70%);border-radius:20px;}
+.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 50%,rgba(96,165,250,.04) 0%,transparent 60%),radial-gradient(ellipse at 20% 80%,rgba(129,140,248,.02) 0%,transparent 40%);}
+.hero-content{position:relative;z-index:10;padding:3rem;background:radial-gradient(ellipse at center,rgba(10,14,23,.7),rgba(10,14,23,.3) 50%,transparent 70%);border-radius:20px;}
 .hero h1{font-family:'Orbitron',sans-serif;font-weight:900;font-size:clamp(2rem,6vw,4rem);letter-spacing:4px;color:#fff;}
 .hero .name-sub{font-size:.45em;letter-spacing:8px;color:var(--text-mid);font-weight:400;display:block;margin-bottom:.5rem;}
-.hero .gradient-text{background:linear-gradient(135deg,var(--cyan),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 0 25px rgba(0,240,255,.3));}
+.hero .gradient-text{background:linear-gradient(135deg,var(--cyan),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 0 15px rgba(96,165,250,.15));}
 .typing{font-family:'JetBrains Mono',monospace;font-size:clamp(.8rem,1.4vw,1rem);color:var(--green);letter-spacing:2px;margin-top:1.25rem;border-right:2px solid var(--green);white-space:nowrap;overflow:hidden;display:inline-block;animation:typing 3s steps(40) forwards,blink .8s step-end infinite;width:0;}
 @keyframes typing{to{width:100%;}}
 @keyframes blink{50%{border-color:transparent;}}
@@ -68,42 +68,42 @@ p.card-sub{color:var(--text-mid);font-size:.9rem;line-height:1.75;font-weight:40
 
 /* ===== PROJECTS ===== */
 .proj-card{position:relative;padding:1.75rem;border:1px solid rgba(255,255,255,.05);background:var(--surface);overflow:hidden;transition:all .4s;}
-.proj-card:hover{border-color:rgba(0,240,255,.2);transform:translateY(-2px);}
+.proj-card:hover{border-color:rgba(96,165,250,.2);transform:translateY(-2px);}
 .proj-num{position:absolute;top:.75rem;right:1.25rem;font-family:'Orbitron',sans-serif;font-size:2.5rem;font-weight:900;opacity:.12;line-height:1;}
 
 /* ===== TIMELINE ===== */
 .tl{position:relative;max-width:900px;margin:0 auto;}
-.tl-line{position:absolute;left:50%;width:2px;height:100%;transform:translateX(-50%);background:linear-gradient(to bottom,var(--cyan),var(--purple),var(--pink));box-shadow:0 0 10px rgba(0,240,255,.2);}
+.tl-line{position:absolute;left:50%;width:2px;height:100%;transform:translateX(-50%);background:linear-gradient(to bottom,var(--cyan),var(--purple),var(--pink));box-shadow:0 0 6px rgba(96,165,250,.1);}
 .tl-item{display:flex;align-items:flex-start;margin-bottom:2.5rem;position:relative;}
 .tl-item.left{flex-direction:row-reverse;}
 .tl-dot{position:absolute;left:50%;transform:translateX(-50%);top:1.25rem;z-index:2;width:12px;height:12px;border-radius:50%;border:2px solid var(--cyan);background:var(--bg);}
-.tl-dot.hl{width:16px;height:16px;background:var(--cyan);border-color:transparent;box-shadow:0 0 15px var(--cyan);}
+.tl-dot.hl{width:16px;height:16px;background:var(--cyan);border-color:transparent;box-shadow:0 0 8px rgba(96,165,250,.3);}
 .tl-dot.future{border-color:var(--purple);}
-.tl-card{width:calc(50% - 35px);padding:1.25rem;background:var(--surface);border:1px solid rgba(0,240,255,.1);transition:all .4s;}
-.tl-card:hover{border-color:rgba(0,240,255,.3);}
-.tl-card.hl{background:linear-gradient(135deg,rgba(0,240,255,.07),rgba(59,130,246,.07));border-color:rgba(0,240,255,.25);}
-.tl-card.future{background:linear-gradient(135deg,rgba(180,74,255,.04),rgba(236,72,153,.04));border-color:rgba(180,74,255,.2);}
+.tl-card{width:calc(50% - 35px);padding:1.25rem;background:var(--surface);border:1px solid rgba(96,165,250,.1);transition:all .4s;}
+.tl-card:hover{border-color:rgba(96,165,250,.3);}
+.tl-card.hl{background:linear-gradient(135deg,rgba(96,165,250,.07),rgba(59,130,246,.07));border-color:rgba(96,165,250,.25);}
+.tl-card.future{background:linear-gradient(135deg,rgba(129,140,248,.04),rgba(240,171,252,.04));border-color:rgba(129,140,248,.2);}
 @media(max-width:768px){.tl-line{display:none;}.tl-dot{display:none;}.tl-item,.tl-item.left{flex-direction:column;}.tl-card{width:100%;}}
 
 /* ===== MATRIX ===== */
-#matrixCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1;opacity:.035;pointer-events:none;}
+#matrixCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1;opacity:.02;pointer-events:none;}
 
 /* ===== DEMO AREA ===== */
-.demo-container{position:relative;overflow:hidden;border:1px solid rgba(0,240,255,.15);background:#000;height:70vh;min-height:450px;max-height:720px;}
+.demo-container{position:relative;overflow:hidden;border:1px solid rgba(96,165,250,.15);background:#000;height:70vh;min-height:450px;max-height:720px;}
 .demo-container video{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;transform:scaleX(-1);}
 .demo-container .skel-canvas{position:absolute;top:0;left:0;width:100%;height:100%;z-index:2;pointer-events:none;}
 .demo-container .three-wrap{position:absolute;inset:0;z-index:3;pointer-events:none;}
 .demo-scanlines{position:absolute;inset:0;z-index:4;pointer-events:none;opacity:.02;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(255,100,0,.08) 2px,rgba(255,100,0,.08) 4px);}
 .demo-corners{position:absolute;inset:.75rem;z-index:5;pointer-events:none;}
 .dc{position:absolute;width:14px;height:14px;}
-.dc-tl{top:0;left:0;border-top:2px solid rgba(0,200,255,.5);border-left:2px solid rgba(0,200,255,.5);}
-.dc-tr{top:0;right:0;border-top:2px solid rgba(200,70,255,.5);border-right:2px solid rgba(200,70,255,.5);}
-.dc-bl{bottom:0;left:0;border-bottom:2px solid rgba(0,200,255,.5);border-left:2px solid rgba(0,200,255,.5);}
-.dc-br{bottom:0;right:0;border-bottom:2px solid rgba(200,70,255,.5);border-right:2px solid rgba(200,70,255,.5);}
-.demo-overlay{position:absolute;inset:0;z-index:20;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(5,5,16,.93);transition:opacity .5s;}
+.dc-tl{top:0;left:0;border-top:2px solid rgba(96,165,250,.5);border-left:2px solid rgba(96,165,250,.5);}
+.dc-tr{top:0;right:0;border-top:2px solid rgba(129,140,248,.5);border-right:2px solid rgba(129,140,248,.5);}
+.dc-bl{bottom:0;left:0;border-bottom:2px solid rgba(96,165,250,.5);border-left:2px solid rgba(96,165,250,.5);}
+.dc-br{bottom:0;right:0;border-bottom:2px solid rgba(129,140,248,.5);border-right:2px solid rgba(129,140,248,.5);}
+.demo-overlay{position:absolute;inset:0;z-index:20;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(10,14,23,.93);transition:opacity .5s;}
 .demo-overlay.hidden{opacity:0;pointer-events:none;}
-.demo-start-btn{padding:.7rem 2.5rem;border:1px solid var(--cyan);background:rgba(0,240,255,.08);color:var(--cyan);font-family:'Orbitron',sans-serif;font-size:.85rem;font-weight:600;letter-spacing:2px;cursor:pointer;transition:all .3s;}
-.demo-start-btn:hover{background:rgba(0,240,255,.2);box-shadow:0 0 30px rgba(0,240,255,.15);}
+.demo-start-btn{padding:.7rem 2.5rem;border:1px solid var(--cyan);background:rgba(96,165,250,.08);color:var(--cyan);font-family:'Orbitron',sans-serif;font-size:.85rem;font-weight:600;letter-spacing:2px;cursor:pointer;transition:all .3s;}
+.demo-start-btn:hover{background:rgba(96,165,250,.2);box-shadow:0 0 30px rgba(96,165,250,.15);}
 .demo-loading{font-family:'JetBrains Mono',monospace;font-size:.75rem;color:var(--cyan);margin-top:1.25rem;display:none;}
 .demo-loading.show{display:block;animation:pulse 1s ease-in-out infinite;}
 @keyframes pulse{0%,100%{opacity:.4;}50%{opacity:1;}}
@@ -113,9 +113,9 @@ p.card-sub{color:var(--text-mid);font-size:.9rem;line-height:1.75;font-weight:40
 /* ===== SKILL CARDS ===== */
 .sk-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
 @media(max-width:768px){.sk-grid{grid-template-columns:1fr;}}
-.sk-card{position:relative;border:1px solid rgba(0,240,255,.1);background:var(--surface);overflow:hidden;cursor:pointer;transition:all .35s;}
-.sk-card:hover{border-color:rgba(0,240,255,.25);transform:translateY(-1px);}
-.sk-card.open{border-color:rgba(0,240,255,.3);}
+.sk-card{position:relative;border:1px solid rgba(96,165,250,.1);background:var(--surface);overflow:hidden;cursor:pointer;transition:all .35s;}
+.sk-card:hover{border-color:rgba(96,165,250,.25);transform:translateY(-1px);}
+.sk-card.open{border-color:rgba(96,165,250,.3);}
 .sk-head{padding:1.25rem 1.25rem .75rem;display:flex;align-items:flex-start;justify-content:space-between;gap:.75rem;}
 .sk-icon{width:36px;height:36px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;}
 .sk-info{flex:1;}
@@ -132,32 +132,32 @@ p.card-sub{color:var(--text-mid);font-size:.9rem;line-height:1.75;font-weight:40
 .sk-case-text{color:var(--text-mid);font-size:.85rem;line-height:1.7;}
 .sk-tags{display:flex;flex-wrap:wrap;gap:.3rem;margin-top:.6rem;}
 .sk-filter{display:flex;gap:.5rem;margin-bottom:1.5rem;flex-wrap:wrap;}
-.sk-filter-btn{padding:.3rem .8rem;font-family:'JetBrains Mono',monospace;font-size:.65rem;letter-spacing:1px;border:1px solid rgba(0,240,255,.15);background:transparent;color:var(--text-dim);cursor:pointer;transition:all .3s;text-transform:uppercase;}
-.sk-filter-btn:hover,.sk-filter-btn.active{color:var(--cyan);border-color:var(--cyan);background:rgba(0,240,255,.06);}
-.sk-filter-btn[data-f="soft"].active{color:var(--purple);border-color:var(--purple);background:rgba(180,74,255,.06);}
-.sk-filter-btn[data-f="lang"].active{color:var(--green);border-color:var(--green);background:rgba(0,255,65,.06);}
+.sk-filter-btn{padding:.3rem .8rem;font-family:'JetBrains Mono',monospace;font-size:.65rem;letter-spacing:1px;border:1px solid rgba(96,165,250,.15);background:transparent;color:var(--text-dim);cursor:pointer;transition:all .3s;text-transform:uppercase;}
+.sk-filter-btn:hover,.sk-filter-btn.active{color:var(--cyan);border-color:var(--cyan);background:rgba(96,165,250,.06);}
+.sk-filter-btn[data-f="soft"].active{color:var(--purple);border-color:var(--purple);background:rgba(129,140,248,.06);}
+.sk-filter-btn[data-f="lang"].active{color:var(--green);border-color:var(--green);background:rgba(110,231,183,.06);}
 .sk-card.hidden-sk{display:none;}
 
 /* ===== ABOUT PAGE EXTRAS ===== */
 .stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin:2rem 0;}
 @media(max-width:768px){.stat-grid{grid-template-columns:repeat(2,1fr);}}
-.stat-card{padding:1.5rem 1rem;text-align:center;border:1px solid rgba(0,240,255,.1);background:var(--surface);position:relative;overflow:hidden;transition:all .4s;}
-.stat-card:hover{border-color:rgba(0,240,255,.3);transform:translateY(-2px);}
+.stat-card{padding:1.5rem 1rem;text-align:center;border:1px solid rgba(96,165,250,.1);background:var(--surface);position:relative;overflow:hidden;transition:all .4s;}
+.stat-card:hover{border-color:rgba(96,165,250,.3);transform:translateY(-2px);}
 .stat-card::before{content:'';position:absolute;top:0;left:50%;width:0;height:2px;transition:all .6s;transform:translateX(-50%);}
 .stat-card:hover::before{width:100%;left:0;transform:none;}
 .stat-num{font-family:'Orbitron',sans-serif;font-size:clamp(1.5rem,3vw,2.2rem);font-weight:900;letter-spacing:2px;display:block;}
 .stat-label{font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:2px;text-transform:uppercase;color:var(--text-dim);margin-top:.4rem;display:block;}
-.about-quote{position:relative;padding:2rem 2.5rem;margin:2.5rem 0;border-left:3px solid var(--cyan);background:linear-gradient(90deg,rgba(0,240,255,.04),transparent);}
+.about-quote{position:relative;padding:2rem 2.5rem;margin:2.5rem 0;border-left:3px solid var(--cyan);background:linear-gradient(90deg,rgba(96,165,250,.04),transparent);}
 .about-quote p{font-size:1.1rem;line-height:1.85;color:var(--text);font-style:italic;}
-.about-quote .q-mark{position:absolute;top:-.5rem;left:.5rem;font-size:3rem;color:rgba(0,240,255,.15);font-family:Georgia,serif;line-height:1;}
+.about-quote .q-mark{position:absolute;top:-.5rem;left:.5rem;font-size:3rem;color:rgba(96,165,250,.15);font-family:Georgia,serif;line-height:1;}
 .val-card{padding:1.5rem;border:1px solid rgba(255,255,255,.05);background:var(--surface);transition:all .4s;position:relative;overflow:hidden;}
-.val-card:hover{border-color:rgba(0,240,255,.2);transform:translateY(-2px);}
+.val-card:hover{border-color:rgba(96,165,250,.2);transform:translateY(-2px);}
 .val-card .val-num{position:absolute;top:.5rem;right:.75rem;font-family:'Orbitron',sans-serif;font-size:2rem;font-weight:900;opacity:.06;}
 .val-card h4{font-family:'Orbitron',sans-serif;font-size:.8rem;font-weight:600;color:#fff;letter-spacing:1px;margin-bottom:.5rem;}
 .val-card p{color:var(--text-mid);font-size:.85rem;line-height:1.7;}
 .orbit-wrap{position:relative;width:280px;height:280px;margin:2rem auto;}
-.orbit-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:80px;height:80px;border-radius:50%;background:radial-gradient(circle,rgba(0,240,255,.15),transparent);display:flex;align-items:center;justify-content:center;font-family:'Orbitron',sans-serif;font-size:.65rem;font-weight:700;color:var(--cyan);letter-spacing:2px;text-align:center;z-index:2;}
-.orbit-ring{position:absolute;top:50%;left:50%;border-radius:50%;border:1px solid rgba(0,240,255,.08);animation:orbitSpin 20s linear infinite;}
+.orbit-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:80px;height:80px;border-radius:50%;background:radial-gradient(circle,rgba(96,165,250,.15),transparent);display:flex;align-items:center;justify-content:center;font-family:'Orbitron',sans-serif;font-size:.65rem;font-weight:700;color:var(--cyan);letter-spacing:2px;text-align:center;z-index:2;}
+.orbit-ring{position:absolute;top:50%;left:50%;border-radius:50%;border:1px solid rgba(96,165,250,.08);animation:orbitSpin 20s linear infinite;}
 .orbit-ring:nth-child(2){animation-duration:25s;animation-direction:reverse;}
 .orbit-item{position:absolute;padding:.3rem .6rem;font-family:'JetBrains Mono',monospace;font-size:.55rem;letter-spacing:1px;border:1px solid;border-radius:3px;white-space:nowrap;transform:translate(-50%,-50%);}
 @keyframes orbitSpin{from{transform:translate(-50%,-50%) rotate(0deg);}to{transform:translate(-50%,-50%) rotate(360deg);}}
@@ -166,21 +166,21 @@ p.card-sub{color:var(--text-mid);font-size:.9rem;line-height:1.75;font-weight:40
 .badge-row{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:.75rem;}
 .badge{display:inline-flex;align-items:center;gap:.3rem;padding:.15rem .5rem;font-family:'JetBrains Mono',monospace;font-size:.55rem;letter-spacing:1px;border:1px solid;}
 .badge .dot{width:5px;height:5px;border-radius:50%;}
-.no-hand-msg{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:10;font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--text-faint);background:rgba(5,5,16,.6);padding:.5rem 1.5rem;border:1px solid rgba(255,100,0,.15);backdrop-filter:blur(10px);transition:opacity .4s;pointer-events:none;}
+.no-hand-msg{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:10;font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--text-faint);background:rgba(10,14,23,.6);padding:.5rem 1.5rem;border:1px solid rgba(255,100,0,.15);backdrop-filter:blur(10px);transition:opacity .4s;pointer-events:none;}
 
 /* ===== PHOTOS ===== */
-.photo-hero{width:160px;height:160px;border-radius:50%;object-fit:cover;border:2px solid rgba(0,240,255,.3);box-shadow:0 0 30px rgba(0,240,255,.15),0 0 60px rgba(0,240,255,.05);margin-bottom:1.5rem;filter:grayscale(20%);transition:all .5s;}
-.photo-hero:hover{border-color:rgba(0,240,255,.6);box-shadow:0 0 40px rgba(0,240,255,.25);filter:grayscale(0%);}
-.photo-card{width:100%;height:200px;object-fit:cover;border-radius:0;margin-bottom:1rem;border:1px solid rgba(0,240,255,.1);filter:brightness(.9);transition:all .4s;}
-.photo-card:hover{filter:brightness(1);border-color:rgba(0,240,255,.3);}
-.photo-about{width:100%;max-width:380px;height:auto;aspect-ratio:3/4;object-fit:cover;border:1px solid rgba(0,240,255,.2);box-shadow:0 0 40px rgba(0,240,255,.08);transition:all .5s;filter:brightness(.9) contrast(1.05);}
-.photo-about:hover{border-color:rgba(0,240,255,.4);box-shadow:0 0 50px rgba(0,240,255,.15);filter:brightness(1) contrast(1.05);}
-.photo-tl{width:100%;height:160px;object-fit:cover;margin-top:.75rem;border:1px solid rgba(0,240,255,.1);filter:brightness(.85);transition:all .4s;}
-.photo-tl:hover{filter:brightness(1);border-color:rgba(0,240,255,.25);}
-.photo-avatar{width:90px;height:90px;border-radius:50%;object-fit:cover;border:2px solid rgba(0,240,255,.25);box-shadow:0 0 20px rgba(0,240,255,.1);margin:0 auto 1.5rem;}
+.photo-hero{width:160px;height:160px;border-radius:50%;object-fit:cover;border:2px solid rgba(96,165,250,.2);box-shadow:0 0 20px rgba(96,165,250,.08);margin-bottom:1.5rem;filter:grayscale(10%);transition:all .5s;}
+.photo-hero:hover{border-color:rgba(96,165,250,.4);box-shadow:0 0 25px rgba(96,165,250,.12);filter:grayscale(0%);}
+.photo-card{width:100%;height:200px;object-fit:cover;border-radius:0;margin-bottom:1rem;border:1px solid rgba(96,165,250,.1);filter:brightness(.9);transition:all .4s;}
+.photo-card:hover{filter:brightness(1);border-color:rgba(96,165,250,.3);}
+.photo-about{width:100%;max-width:380px;height:auto;aspect-ratio:3/4;object-fit:cover;border:1px solid rgba(96,165,250,.2);box-shadow:0 0 40px rgba(96,165,250,.08);transition:all .5s;filter:brightness(.9) contrast(1.05);}
+.photo-about:hover{border-color:rgba(96,165,250,.4);box-shadow:0 0 50px rgba(96,165,250,.15);filter:brightness(1) contrast(1.05);}
+.photo-tl{width:100%;height:160px;object-fit:cover;margin-top:.75rem;border:1px solid rgba(96,165,250,.1);filter:brightness(.85);transition:all .4s;}
+.photo-tl:hover{filter:brightness(1);border-color:rgba(96,165,250,.25);}
+.photo-avatar{width:90px;height:90px;border-radius:50%;object-fit:cover;border:2px solid rgba(96,165,250,.25);box-shadow:0 0 20px rgba(96,165,250,.1);margin:0 auto 1.5rem;}
 .photo-gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem;margin-top:1.5rem;}
-.photo-gallery img{width:100%;height:180px;object-fit:cover;border:1px solid rgba(0,240,255,.08);filter:brightness(.85);transition:all .4s;cursor:pointer;}
-.photo-gallery img:hover{filter:brightness(1);border-color:rgba(0,240,255,.25);transform:scale(1.02);}
+.photo-gallery img{width:100%;height:180px;object-fit:cover;border:1px solid rgba(96,165,250,.08);filter:brightness(.85);transition:all .4s;cursor:pointer;}
+.photo-gallery img:hover{filter:brightness(1);border-color:rgba(96,165,250,.25);transform:scale(1.02);}
 @media(max-width:768px){.photo-hero{width:120px;height:120px;}.photo-about{max-width:100%;}.photo-gallery{grid-template-columns:1fr 1fr;}.photo-tl{height:130px;}}
 </style>
 </head>
@@ -225,7 +225,7 @@ p.card-sub{color:var(--text-mid);font-size:.9rem;line-height:1.75;font-weight:40
       <p class="card-sub">Personne ne m'a demandé d'apprendre Python, JavaScript ou MQL5. Chaque langage est venu en réponse à un besoin concret.</p>
     </div>
   </div>
-  <div style="padding:2rem;border:1px solid rgba(0,240,255,.15);background:linear-gradient(135deg,rgba(0,240,255,.04),rgba(180,74,255,.04));position:relative;">
+  <div style="padding:2rem;border:1px solid rgba(96,165,250,.15);background:linear-gradient(135deg,rgba(96,165,250,.04),rgba(129,140,248,.04));position:relative;">
     <div class="accent-line" style="position:absolute;top:-1px;left:20%;right:20%;"></div>
     <h3 style="font-family:'Orbitron',sans-serif;font-size:.9rem;letter-spacing:2px;color:#fff;text-align:center;margin-bottom:1.5rem;">POURQUOI CE SITE ET PAS UN CV</h3>
     <p style="color:var(--text-mid);font-size:.95rem;line-height:1.85;text-align:center;max-width:750px;margin:0 auto;">Un CV tient sur une page et mentionne "motivation et autonomie". Ce site adopte une approche différente : le code source est sur GitHub, la démo interactive fonctionne, et vous pouvez évaluer mes compétences par vous-même. Je préfère démontrer que décrire.</p>
@@ -264,9 +264,9 @@ p.card-sub{color:var(--text-mid);font-size:.9rem;line-height:1.75;font-weight:40
   <div style="margin-bottom:3rem;"><div class="s-label">// projets</div><h2 class="s-title">Ce que je <span class="hl">construis</span></h2>
   <p style="color:var(--text-mid);font-size:1rem;line-height:1.7;max-width:650px;margin-top:.75rem;">Ce ne sont pas des projets scolaires. Ce sont des initiatives personnelles, développées le soir, le week-end, en dehors des cours. Certains sont opérationnels, d'autres encore en développement.</p></div>
   <div class="grid-3">
-    <div class="proj-card"><div class="proj-num" style="color:#ff6b35;">01</div><h3 class="card-title">Expert Advisor MT5</h3><div style="font-family:'JetBrains Mono',monospace;font-size:.65rem;color:#ff6b35;letter-spacing:1px;text-transform:uppercase;margin-bottom:.75rem;">Trading automatisé Forex & Gold</div><p style="color:var(--text-mid);font-size:.85rem;line-height:1.7;margin-bottom:.75rem;">Je développe un bot de trading en MQL5 qui exécute des ordres sur le Forex et le XAUUSD via MetaTrader 5. Analyse de données de marché, conception de stratégies, backtesting, itérations. Le projet est encore en phase de développement — un travail de long terme.</p><p style="color:var(--text-dim);font-size:.8rem;line-height:1.7;font-style:italic;margin-bottom:1rem;">Le trading m'a enseigné la rigueur. Quand le capital est en jeu, chaque ligne de code compte.</p><div style="display:flex;flex-wrap:wrap;gap:.4rem;"><span class="tag" style="border-color:rgba(255,107,53,.3);color:#ff6b35;background:rgba(255,107,53,.06);">MQL5</span><span class="tag" style="border-color:rgba(255,107,53,.3);color:#ff6b35;background:rgba(255,107,53,.06);">Python</span><span class="tag" style="border-color:rgba(255,107,53,.3);color:#ff6b35;background:rgba(255,107,53,.06);">MT5</span><span class="tag" style="border-color:rgba(255,107,53,.3);color:#ff6b35;background:rgba(255,107,53,.06);">Forex</span></div></div>
+    <div class="proj-card"><div class="proj-num" style="color:#fb923c;">01</div><h3 class="card-title">Expert Advisor MT5</h3><div style="font-family:'JetBrains Mono',monospace;font-size:.65rem;color:#fb923c;letter-spacing:1px;text-transform:uppercase;margin-bottom:.75rem;">Trading automatisé Forex & Gold</div><p style="color:var(--text-mid);font-size:.85rem;line-height:1.7;margin-bottom:.75rem;">Je développe un bot de trading en MQL5 qui exécute des ordres sur le Forex et le XAUUSD via MetaTrader 5. Analyse de données de marché, conception de stratégies, backtesting, itérations. Le projet est encore en phase de développement — un travail de long terme.</p><p style="color:var(--text-dim);font-size:.8rem;line-height:1.7;font-style:italic;margin-bottom:1rem;">Le trading m'a enseigné la rigueur. Quand le capital est en jeu, chaque ligne de code compte.</p><div style="display:flex;flex-wrap:wrap;gap:.4rem;"><span class="tag" style="border-color:rgba(251,146,60,.3);color:#fb923c;background:rgba(251,146,60,.06);">MQL5</span><span class="tag" style="border-color:rgba(251,146,60,.3);color:#fb923c;background:rgba(251,146,60,.06);">Python</span><span class="tag" style="border-color:rgba(251,146,60,.3);color:#fb923c;background:rgba(251,146,60,.06);">MT5</span><span class="tag" style="border-color:rgba(251,146,60,.3);color:#fb923c;background:rgba(251,146,60,.06);">Forex</span></div></div>
     <div class="proj-card"><div class="proj-num" style="color:var(--cyan);">02</div><h3 class="card-title">Workflows n8n</h3><div style="font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--cyan);letter-spacing:1px;text-transform:uppercase;margin-bottom:.75rem;">Automatisations qui tournent 24/7</div><p style="color:var(--text-mid);font-size:.85rem;line-height:1.7;margin-bottom:.75rem;">J'utilise n8n pour connecter des services entre eux : un workflow qui capte des ordres de trading sur Telegram et les relaye vers MT5, un générateur de planning pour Metricool, des intégrations multi-plateformes avec webhooks.</p><p style="color:var(--text-dim);font-size:.8rem;line-height:1.7;font-style:italic;margin-bottom:1rem;">Toute tâche répétitive est une opportunité d'automatisation.</p><div style="display:flex;flex-wrap:wrap;gap:.4rem;"><span class="tag">n8n</span><span class="tag">Webhooks</span><span class="tag">APIs</span><span class="tag">Telegram</span></div></div>
-    <div class="proj-card"><div class="proj-num" style="color:var(--purple);">03</div><h3 class="card-title">Async Agency</h3><div style="font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--purple);letter-spacing:1px;text-transform:uppercase;margin-bottom:.75rem;">Agence d'automatisation & agents IA</div><p style="color:var(--text-mid);font-size:.85rem;line-height:1.7;margin-bottom:.75rem;">Avec mon associé, on monte Async Agency. L'idée : proposer des automatisations pour les tâches répétitives et des agents IA autonomes capables d'exécuter plusieurs actions à partir d'une seule demande.</p><p style="color:var(--text-dim);font-size:.8rem;line-height:1.7;font-style:italic;margin-bottom:1rem;">Nous développons en code ou en no-code avec n8n, selon les besoins du client.</p><div style="display:flex;flex-wrap:wrap;gap:.4rem;"><span class="tag" style="border-color:rgba(180,74,255,.3);color:var(--purple);background:rgba(180,74,255,.06);">Agents IA</span><span class="tag" style="border-color:rgba(180,74,255,.3);color:var(--purple);background:rgba(180,74,255,.06);">Python</span><span class="tag" style="border-color:rgba(180,74,255,.3);color:var(--purple);background:rgba(180,74,255,.06);">n8n</span></div></div>
+    <div class="proj-card"><div class="proj-num" style="color:var(--purple);">03</div><h3 class="card-title">Async Agency</h3><div style="font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--purple);letter-spacing:1px;text-transform:uppercase;margin-bottom:.75rem;">Agence d'automatisation & agents IA</div><p style="color:var(--text-mid);font-size:.85rem;line-height:1.7;margin-bottom:.75rem;">Avec mon associé, on monte Async Agency. L'idée : proposer des automatisations pour les tâches répétitives et des agents IA autonomes capables d'exécuter plusieurs actions à partir d'une seule demande.</p><p style="color:var(--text-dim);font-size:.8rem;line-height:1.7;font-style:italic;margin-bottom:1rem;">Nous développons en code ou en no-code avec n8n, selon les besoins du client.</p><div style="display:flex;flex-wrap:wrap;gap:.4rem;"><span class="tag" style="border-color:rgba(129,140,248,.3);color:var(--purple);background:rgba(129,140,248,.06);">Agents IA</span><span class="tag" style="border-color:rgba(129,140,248,.3);color:var(--purple);background:rgba(129,140,248,.06);">Python</span><span class="tag" style="border-color:rgba(129,140,248,.3);color:var(--purple);background:rgba(129,140,248,.06);">n8n</span></div></div>
   </div>
 </div></section>
 
@@ -287,7 +287,7 @@ p.card-sub{color:var(--text-mid);font-size:.9rem;line-height:1.75;font-weight:40
     <!-- HARD SKILLS -->
     <div class="sk-card" data-cat="hard" onclick="toggleSk(this)">
       <div class="sk-head">
-        <div class="sk-icon" style="background:rgba(0,240,255,.1);color:var(--cyan);">Py</div>
+        <div class="sk-icon" style="background:rgba(96,165,250,.1);color:var(--cyan);">Py</div>
         <div class="sk-info"><div class="sk-name">Python</div><div class="sk-sub">Intermédiaire</div></div>
         <div class="sk-arrow">▼</div>
       </div>
@@ -301,11 +301,11 @@ p.card-sub{color:var(--text-mid);font-size:.9rem;line-height:1.75;font-weight:40
 
     <div class="sk-card" data-cat="hard" onclick="toggleSk(this)">
       <div class="sk-head">
-        <div class="sk-icon" style="background:rgba(255,200,0,.1);color:#ffc800;">JS</div>
+        <div class="sk-icon" style="background:rgba(251,191,36,.1);color:#fbbf24;">JS</div>
         <div class="sk-info"><div class="sk-name">JavaScript</div><div class="sk-sub">Intermédiaire</div></div>
         <div class="sk-arrow">▼</div>
       </div>
-      <div class="sk-bar-wrap"><div class="sk-bar"><div class="sk-bar-fill" style="width:60%;background:#ffc800;"></div></div></div>
+      <div class="sk-bar-wrap"><div class="sk-bar"><div class="sk-bar-fill" style="width:60%;background:#fbbf24;"></div></div></div>
       <div class="sk-body">
         <div class="sk-case">Cas pratique</div>
         <p class="sk-case-text">Ce portfolio est codé en JavaScript. La démo 3D sur la page Demo utilise Three.js et MediaPipe, entièrement en JS vanilla. J'ai aussi construit des bots Telegram en Node.js pour relayer des signaux de trading.</p>
@@ -315,11 +315,11 @@ p.card-sub{color:var(--text-mid);font-size:.9rem;line-height:1.75;font-weight:40
 
     <div class="sk-card" data-cat="hard" onclick="toggleSk(this)">
       <div class="sk-head">
-        <div class="sk-icon" style="background:rgba(255,107,53,.1);color:#ff6b35;">M5</div>
+        <div class="sk-icon" style="background:rgba(251,146,60,.1);color:#fb923c;">M5</div>
         <div class="sk-info"><div class="sk-name">MQL5</div><div class="sk-sub">En apprentissage</div></div>
         <div class="sk-arrow">▼</div>
       </div>
-      <div class="sk-bar-wrap"><div class="sk-bar"><div class="sk-bar-fill" style="width:40%;background:#ff6b35;"></div></div></div>
+      <div class="sk-bar-wrap"><div class="sk-bar"><div class="sk-bar-fill" style="width:40%;background:#fb923c;"></div></div></div>
       <div class="sk-body">
         <div class="sk-case">Cas pratique</div>
         <p class="sk-case-text">Je développe un Expert Advisor qui trade automatiquement le Forex et le XAUUSD sur MetaTrader 5. Le bot analyse les données de marché, applique mes stratégies, place des ordres et gère le risque. Je backteste, j'ajuste, je recommence.</p>
@@ -329,7 +329,7 @@ p.card-sub{color:var(--text-mid);font-size:.9rem;line-height:1.75;font-weight:40
 
     <div class="sk-card" data-cat="hard" onclick="toggleSk(this)">
       <div class="sk-head">
-        <div class="sk-icon" style="background:rgba(0,240,255,.1);color:var(--cyan);">n8n</div>
+        <div class="sk-icon" style="background:rgba(96,165,250,.1);color:var(--cyan);">n8n</div>
         <div class="sk-info"><div class="sk-name">n8n / Automatisation</div><div class="sk-sub">Avancé</div></div>
         <div class="sk-arrow">▼</div>
       </div>
@@ -343,7 +343,7 @@ p.card-sub{color:var(--text-mid);font-size:.9rem;line-height:1.75;font-weight:40
 
     <div class="sk-card" data-cat="hard" onclick="toggleSk(this)">
       <div class="sk-head">
-        <div class="sk-icon" style="background:rgba(180,74,255,.1);color:var(--purple);">API</div>
+        <div class="sk-icon" style="background:rgba(129,140,248,.1);color:var(--purple);">API</div>
         <div class="sk-info"><div class="sk-name">APIs REST</div><div class="sk-sub">Intermédiaire</div></div>
         <div class="sk-arrow">▼</div>
       </div>
@@ -357,7 +357,7 @@ p.card-sub{color:var(--text-mid);font-size:.9rem;line-height:1.75;font-weight:40
 
     <div class="sk-card" data-cat="hard" onclick="toggleSk(this)">
       <div class="sk-head">
-        <div class="sk-icon" style="background:rgba(0,255,65,.1);color:var(--green);">3D</div>
+        <div class="sk-icon" style="background:rgba(110,231,183,.1);color:var(--green);">3D</div>
         <div class="sk-info"><div class="sk-name">Three.js / WebGL</div><div class="sk-sub">En apprentissage</div></div>
         <div class="sk-arrow">▼</div>
       </div>
@@ -371,7 +371,7 @@ p.card-sub{color:var(--text-mid);font-size:.9rem;line-height:1.75;font-weight:40
 
     <div class="sk-card" data-cat="hard" onclick="toggleSk(this)">
       <div class="sk-head">
-        <div class="sk-icon" style="background:rgba(236,72,153,.1);color:var(--pink);">Mk</div>
+        <div class="sk-icon" style="background:rgba(240,171,252,.1);color:var(--pink);">Mk</div>
         <div class="sk-info"><div class="sk-name">Marketing digital</div><div class="sk-sub">Pratique terrain</div></div>
         <div class="sk-arrow">▼</div>
       </div>
@@ -384,9 +384,9 @@ p.card-sub{color:var(--text-mid);font-size:.9rem;line-height:1.75;font-weight:40
     </div>
 
     <!-- SOFT SKILLS -->
-    <div class="sk-card" data-cat="soft" onclick="toggleSk(this)" style="border-color:rgba(180,74,255,.1);">
+    <div class="sk-card" data-cat="soft" onclick="toggleSk(this)" style="border-color:rgba(129,140,248,.1);">
       <div class="sk-head">
-        <div class="sk-icon" style="background:rgba(180,74,255,.1);color:var(--purple);">💪</div>
+        <div class="sk-icon" style="background:rgba(129,140,248,.1);color:var(--purple);">💪</div>
         <div class="sk-info"><div class="sk-name">Persévérance</div><div class="sk-sub">Depuis toujours</div></div>
         <div class="sk-arrow">▼</div>
       </div>
@@ -394,13 +394,13 @@ p.card-sub{color:var(--text-mid);font-size:.9rem;line-height:1.75;font-weight:40
       <div class="sk-body">
         <div class="sk-case" style="color:var(--purple);">Cas pratique</div>
         <p class="sk-case-text">15 ans de breakdance m'ont forgé cette qualité. La maîtrise d'un mouvement demande des mois de travail. Quand mon bot de trading a échoué 50 fois, je l'ai corrigé 50 fois. Quand un workflow rencontre un problème, je le résous avant de passer à autre chose.</p>
-        <div class="sk-tags"><span class="tag" style="border-color:rgba(180,74,255,.2);color:var(--purple);">Breakdance</span><span class="tag" style="border-color:rgba(180,74,255,.2);color:var(--purple);">Trading</span><span class="tag" style="border-color:rgba(180,74,255,.2);color:var(--purple);">Debug</span></div>
+        <div class="sk-tags"><span class="tag" style="border-color:rgba(129,140,248,.2);color:var(--purple);">Breakdance</span><span class="tag" style="border-color:rgba(129,140,248,.2);color:var(--purple);">Trading</span><span class="tag" style="border-color:rgba(129,140,248,.2);color:var(--purple);">Debug</span></div>
       </div>
     </div>
 
-    <div class="sk-card" data-cat="soft" onclick="toggleSk(this)" style="border-color:rgba(180,74,255,.1);">
+    <div class="sk-card" data-cat="soft" onclick="toggleSk(this)" style="border-color:rgba(129,140,248,.1);">
       <div class="sk-head">
-        <div class="sk-icon" style="background:rgba(180,74,255,.1);color:var(--purple);">🧭</div>
+        <div class="sk-icon" style="background:rgba(129,140,248,.1);color:var(--purple);">🧭</div>
         <div class="sk-info"><div class="sk-name">Autonomie</div><div class="sk-sub">Autodidacte</div></div>
         <div class="sk-arrow">▼</div>
       </div>
@@ -408,13 +408,13 @@ p.card-sub{color:var(--text-mid);font-size:.9rem;line-height:1.75;font-weight:40
       <div class="sk-body">
         <div class="sk-case" style="color:var(--purple);">Cas pratique</div>
         <p class="sk-case-text">Personne ne m'a demandé d'apprendre Python, JavaScript ou MQL5. Le besoin de coder un bot de trading m'a poussé vers ces langages. Les tâches à automatiser m'ont conduit vers n8n. Avec mon associé, nous avons lancé Async Agency sans attendre de formation.</p>
-        <div class="sk-tags"><span class="tag" style="border-color:rgba(180,74,255,.2);color:var(--purple);">Autodidacte</span><span class="tag" style="border-color:rgba(180,74,255,.2);color:var(--purple);">Async Agency</span></div>
+        <div class="sk-tags"><span class="tag" style="border-color:rgba(129,140,248,.2);color:var(--purple);">Autodidacte</span><span class="tag" style="border-color:rgba(129,140,248,.2);color:var(--purple);">Async Agency</span></div>
       </div>
     </div>
 
-    <div class="sk-card" data-cat="soft" onclick="toggleSk(this)" style="border-color:rgba(180,74,255,.1);">
+    <div class="sk-card" data-cat="soft" onclick="toggleSk(this)" style="border-color:rgba(129,140,248,.1);">
       <div class="sk-head">
-        <div class="sk-icon" style="background:rgba(180,74,255,.1);color:var(--purple);">👥</div>
+        <div class="sk-icon" style="background:rgba(129,140,248,.1);color:var(--purple);">👥</div>
         <div class="sk-info"><div class="sk-name">Leadership</div><div class="sk-sub">Délégué 10 ans + prof de break</div></div>
         <div class="sk-arrow">▼</div>
       </div>
@@ -422,13 +422,13 @@ p.card-sub{color:var(--text-mid);font-size:.9rem;line-height:1.75;font-weight:40
       <div class="sk-body">
         <div class="sk-case" style="color:var(--purple);">Cas pratique</div>
         <p class="sk-case-text">Délégué de classe depuis le collège, pendant une dizaine d'années. Depuis 5 ans, j'enseigne le breakdance à des groupes d'enfants et ados à l'association La Semeuse à Nice. J'ai aussi encadré des enfants de 6 ans comme animateur au collège Nazareth.</p>
-        <div class="sk-tags"><span class="tag" style="border-color:rgba(180,74,255,.2);color:var(--purple);">La Semeuse</span><span class="tag" style="border-color:rgba(180,74,255,.2);color:var(--purple);">Nazareth</span><span class="tag" style="border-color:rgba(180,74,255,.2);color:var(--purple);">BAFA</span></div>
+        <div class="sk-tags"><span class="tag" style="border-color:rgba(129,140,248,.2);color:var(--purple);">La Semeuse</span><span class="tag" style="border-color:rgba(129,140,248,.2);color:var(--purple);">Nazareth</span><span class="tag" style="border-color:rgba(129,140,248,.2);color:var(--purple);">BAFA</span></div>
       </div>
     </div>
 
-    <div class="sk-card" data-cat="soft" onclick="toggleSk(this)" style="border-color:rgba(180,74,255,.1);">
+    <div class="sk-card" data-cat="soft" onclick="toggleSk(this)" style="border-color:rgba(129,140,248,.1);">
       <div class="sk-head">
-        <div class="sk-icon" style="background:rgba(180,74,255,.1);color:var(--purple);">🔄</div>
+        <div class="sk-icon" style="background:rgba(129,140,248,.1);color:var(--purple);">🔄</div>
         <div class="sk-info"><div class="sk-name">Adaptabilité</div><div class="sk-sub">Tous les terrains</div></div>
         <div class="sk-arrow">▼</div>
       </div>
@@ -436,13 +436,13 @@ p.card-sub{color:var(--text-mid);font-size:.9rem;line-height:1.75;font-weight:40
       <div class="sk-body">
         <div class="sk-case" style="color:var(--purple);">Cas pratique</div>
         <p class="sk-case-text">Animation d'enfants de 6 ans le mercredi, prospection téléphonique B2B chez PAAL la semaine, bénévolat en épicerie solidaire chez Solid'Act, stage en industrie chez MEI Industries, et développement le soir. Je m'adapte au contexte et aux interlocuteurs.</p>
-        <div class="sk-tags"><span class="tag" style="border-color:rgba(180,74,255,.2);color:var(--purple);">PAAL</span><span class="tag" style="border-color:rgba(180,74,255,.2);color:var(--purple);">Solid'Act</span><span class="tag" style="border-color:rgba(180,74,255,.2);color:var(--purple);">MEI Industries</span></div>
+        <div class="sk-tags"><span class="tag" style="border-color:rgba(129,140,248,.2);color:var(--purple);">PAAL</span><span class="tag" style="border-color:rgba(129,140,248,.2);color:var(--purple);">Solid'Act</span><span class="tag" style="border-color:rgba(129,140,248,.2);color:var(--purple);">MEI Industries</span></div>
       </div>
     </div>
 
-    <div class="sk-card" data-cat="soft" onclick="toggleSk(this)" style="border-color:rgba(180,74,255,.1);">
+    <div class="sk-card" data-cat="soft" onclick="toggleSk(this)" style="border-color:rgba(129,140,248,.1);">
       <div class="sk-head">
-        <div class="sk-icon" style="background:rgba(180,74,255,.1);color:var(--purple);">🤝</div>
+        <div class="sk-icon" style="background:rgba(129,140,248,.1);color:var(--purple);">🤝</div>
         <div class="sk-info"><div class="sk-name">Travail en équipe</div><div class="sk-sub">Associé, danse, alternance</div></div>
         <div class="sk-arrow">▼</div>
       </div>
@@ -450,13 +450,13 @@ p.card-sub{color:var(--text-mid);font-size:.9rem;line-height:1.75;font-weight:40
       <div class="sk-body">
         <div class="sk-case" style="color:var(--purple);">Cas pratique</div>
         <p class="sk-case-text">Async Agency est un projet collaboratif : répartition des tâches, développement conjoint, décisions partagées. En breakdance, je conçois des chorégraphies de groupe pour les spectacles. Chez PAAL, je collabore quotidiennement avec l'équipe marketing et commerciale.</p>
-        <div class="sk-tags"><span class="tag" style="border-color:rgba(180,74,255,.2);color:var(--purple);">Async Agency</span><span class="tag" style="border-color:rgba(180,74,255,.2);color:var(--purple);">Spectacles</span><span class="tag" style="border-color:rgba(180,74,255,.2);color:var(--purple);">PAAL</span></div>
+        <div class="sk-tags"><span class="tag" style="border-color:rgba(129,140,248,.2);color:var(--purple);">Async Agency</span><span class="tag" style="border-color:rgba(129,140,248,.2);color:var(--purple);">Spectacles</span><span class="tag" style="border-color:rgba(129,140,248,.2);color:var(--purple);">PAAL</span></div>
       </div>
     </div>
 
-    <div class="sk-card" data-cat="soft" onclick="toggleSk(this)" style="border-color:rgba(180,74,255,.1);">
+    <div class="sk-card" data-cat="soft" onclick="toggleSk(this)" style="border-color:rgba(129,140,248,.1);">
       <div class="sk-head">
-        <div class="sk-icon" style="background:rgba(180,74,255,.1);color:var(--purple);">💡</div>
+        <div class="sk-icon" style="background:rgba(129,140,248,.1);color:var(--purple);">💡</div>
         <div class="sk-info"><div class="sk-name">Créativité</div><div class="sk-sub">Danse + code</div></div>
         <div class="sk-arrow">▼</div>
       </div>
@@ -464,14 +464,14 @@ p.card-sub{color:var(--text-mid);font-size:.9rem;line-height:1.75;font-weight:40
       <div class="sk-body">
         <div class="sk-case" style="color:var(--purple);">Cas pratique</div>
         <p class="sk-case-text">Le breakdance repose sur l'improvisation et la création permanente. Ce portfolio n'est pas un template : la démo 3D interactive, le design, l'approche de démonstration plutôt que de description. Les workflows n8n demandent aussi de la créativité pour connecter des services qui n'étaient pas conçus pour fonctionner ensemble.</p>
-        <div class="sk-tags"><span class="tag" style="border-color:rgba(180,74,255,.2);color:var(--purple);">Portfolio</span><span class="tag" style="border-color:rgba(180,74,255,.2);color:var(--purple);">Breakdance</span><span class="tag" style="border-color:rgba(180,74,255,.2);color:var(--purple);">Workflows</span></div>
+        <div class="sk-tags"><span class="tag" style="border-color:rgba(129,140,248,.2);color:var(--purple);">Portfolio</span><span class="tag" style="border-color:rgba(129,140,248,.2);color:var(--purple);">Breakdance</span><span class="tag" style="border-color:rgba(129,140,248,.2);color:var(--purple);">Workflows</span></div>
       </div>
     </div>
 
     <!-- LANGUES -->
-    <div class="sk-card" data-cat="lang" onclick="toggleSk(this)" style="border-color:rgba(0,255,65,.1);">
+    <div class="sk-card" data-cat="lang" onclick="toggleSk(this)" style="border-color:rgba(110,231,183,.1);">
       <div class="sk-head">
-        <div class="sk-icon" style="background:rgba(0,255,65,.1);color:var(--green);">EN</div>
+        <div class="sk-icon" style="background:rgba(110,231,183,.1);color:var(--green);">EN</div>
         <div class="sk-info"><div class="sk-name">Anglais</div><div class="sk-sub">Bon niveau (B2)</div></div>
         <div class="sk-arrow">▼</div>
       </div>
@@ -479,13 +479,13 @@ p.card-sub{color:var(--text-mid);font-size:.9rem;line-height:1.75;font-weight:40
       <div class="sk-body">
         <div class="sk-case" style="color:var(--green);">Cas pratique</div>
         <p class="sk-case-text">Toute la documentation technique que je lis est en anglais : docs de Three.js, MediaPipe, n8n, APIs, Stack Overflow. Je code en anglais (noms de variables, commentaires). Les forums de trading sont aussi majoritairement en anglais.</p>
-        <div class="sk-tags"><span class="tag" style="border-color:rgba(0,255,65,.2);color:var(--green);">Documentation</span><span class="tag" style="border-color:rgba(0,255,65,.2);color:var(--green);">Code</span><span class="tag" style="border-color:rgba(0,255,65,.2);color:var(--green);">Forums</span></div>
+        <div class="sk-tags"><span class="tag" style="border-color:rgba(110,231,183,.2);color:var(--green);">Documentation</span><span class="tag" style="border-color:rgba(110,231,183,.2);color:var(--green);">Code</span><span class="tag" style="border-color:rgba(110,231,183,.2);color:var(--green);">Forums</span></div>
       </div>
     </div>
 
-    <div class="sk-card" data-cat="lang" onclick="toggleSk(this)" style="border-color:rgba(0,255,65,.1);">
+    <div class="sk-card" data-cat="lang" onclick="toggleSk(this)" style="border-color:rgba(110,231,183,.1);">
       <div class="sk-head">
-        <div class="sk-icon" style="background:rgba(0,255,65,.1);color:var(--green);">IT</div>
+        <div class="sk-icon" style="background:rgba(110,231,183,.1);color:var(--green);">IT</div>
         <div class="sk-info"><div class="sk-name">Italien</div><div class="sk-sub">Notions (A2)</div></div>
         <div class="sk-arrow">▼</div>
       </div>
@@ -493,7 +493,7 @@ p.card-sub{color:var(--text-mid);font-size:.9rem;line-height:1.75;font-weight:40
       <div class="sk-body">
         <div class="sk-case" style="color:var(--green);">Cas pratique</div>
         <p class="sk-case-text">Appris au lycée et en BUT. Nice étant proche de l'Italie, ça sert au quotidien et c'est un plus pour les relations commerciales transfrontalières, notamment chez PAAL qui travaille dans la région.</p>
-        <div class="sk-tags"><span class="tag" style="border-color:rgba(0,255,65,.2);color:var(--green);">PAAL</span><span class="tag" style="border-color:rgba(0,255,65,.2);color:var(--green);">Nice / Italie</span></div>
+        <div class="sk-tags"><span class="tag" style="border-color:rgba(110,231,183,.2);color:var(--green);">PAAL</span><span class="tag" style="border-color:rgba(110,231,183,.2);color:var(--green);">Nice / Italie</span></div>
       </div>
     </div>
 
@@ -521,17 +521,17 @@ p.card-sub{color:var(--text-mid);font-size:.9rem;line-height:1.75;font-weight:40
       <div class="orbit-wrap" style="margin:0;">
         <div class="orbit-center">HERMAN<br>.DEV</div>
         <div class="orbit-ring" style="width:180px;height:180px;transform:translate(-50%,-50%);">
-          <div class="orbit-item" style="top:0;left:50%;color:var(--cyan);border-color:rgba(0,240,255,.3);background:rgba(0,240,255,.06);">Python</div>
-          <div class="orbit-item" style="top:50%;right:-10px;left:auto;color:#ffc800;border-color:rgba(255,200,0,.3);background:rgba(255,200,0,.06);">JavaScript</div>
-          <div class="orbit-item" style="bottom:0;left:50%;top:auto;color:#ff6b35;border-color:rgba(255,107,53,.3);background:rgba(255,107,53,.06);">MQL5</div>
-          <div class="orbit-item" style="top:50%;left:-10px;color:var(--green);border-color:rgba(0,255,65,.3);background:rgba(0,255,65,.06);">n8n</div>
+          <div class="orbit-item" style="top:0;left:50%;color:var(--cyan);border-color:rgba(96,165,250,.3);background:rgba(96,165,250,.06);">Python</div>
+          <div class="orbit-item" style="top:50%;right:-10px;left:auto;color:#fbbf24;border-color:rgba(251,191,36,.3);background:rgba(251,191,36,.06);">JavaScript</div>
+          <div class="orbit-item" style="bottom:0;left:50%;top:auto;color:#fb923c;border-color:rgba(251,146,60,.3);background:rgba(251,146,60,.06);">MQL5</div>
+          <div class="orbit-item" style="top:50%;left:-10px;color:var(--green);border-color:rgba(110,231,183,.3);background:rgba(110,231,183,.06);">n8n</div>
         </div>
         <div class="orbit-ring" style="width:260px;height:260px;transform:translate(-50%,-50%);">
-          <div class="orbit-item" style="top:0;left:50%;color:var(--purple);border-color:rgba(180,74,255,.3);background:rgba(180,74,255,.06);">IA</div>
-          <div class="orbit-item" style="top:35%;right:-15px;left:auto;color:var(--pink);border-color:rgba(236,72,153,.3);background:rgba(236,72,153,.06);">Marketing</div>
-          <div class="orbit-item" style="bottom:10%;right:5%;left:auto;top:auto;color:var(--cyan);border-color:rgba(0,240,255,.3);background:rgba(0,240,255,.06);">Three.js</div>
-          <div class="orbit-item" style="bottom:10%;left:5%;top:auto;color:#ff6b35;border-color:rgba(255,107,53,.3);background:rgba(255,107,53,.06);">Trading</div>
-          <div class="orbit-item" style="top:35%;left:-15px;color:var(--green);border-color:rgba(0,255,65,.3);background:rgba(0,255,65,.06);">APIs</div>
+          <div class="orbit-item" style="top:0;left:50%;color:var(--purple);border-color:rgba(129,140,248,.3);background:rgba(129,140,248,.06);">IA</div>
+          <div class="orbit-item" style="top:35%;right:-15px;left:auto;color:var(--pink);border-color:rgba(240,171,252,.3);background:rgba(240,171,252,.06);">Marketing</div>
+          <div class="orbit-item" style="bottom:10%;right:5%;left:auto;top:auto;color:var(--cyan);border-color:rgba(96,165,250,.3);background:rgba(96,165,250,.06);">Three.js</div>
+          <div class="orbit-item" style="bottom:10%;left:5%;top:auto;color:#fb923c;border-color:rgba(251,146,60,.3);background:rgba(251,146,60,.06);">Trading</div>
+          <div class="orbit-item" style="top:35%;left:-15px;color:var(--green);border-color:rgba(110,231,183,.3);background:rgba(110,231,183,.06);">APIs</div>
         </div>
       </div>
     </div>
@@ -542,7 +542,7 @@ p.card-sub{color:var(--text-mid);font-size:.9rem;line-height:1.75;font-weight:40
     <div class="stat-card" style="--sc:var(--cyan);"><div class="stat-card-inner"><span class="stat-num" style="color:var(--cyan);" data-target="15">0</span><span class="stat-label">Ans de breakdance</span></div><div style="position:absolute;top:0;left:0;right:0;height:2px;background:var(--cyan);opacity:.3;"></div></div>
     <div class="stat-card" style="--sc:var(--purple);"><span class="stat-num" style="color:var(--purple);" data-target="5">0</span><span class="stat-label">Langages de code</span><div style="position:absolute;top:0;left:0;right:0;height:2px;background:var(--purple);opacity:.3;"></div></div>
     <div class="stat-card" style="--sc:var(--green);"><span class="stat-num" style="color:var(--green);" data-target="3">0</span><span class="stat-label">Projets actifs</span><div style="position:absolute;top:0;left:0;right:0;height:2px;background:var(--green);opacity:.3;"></div></div>
-    <div class="stat-card" style="--sc:#ff6b35;"><span class="stat-num" style="color:#ff6b35;" data-target="10">0</span><span class="stat-label">Ans délégué de classe</span><div style="position:absolute;top:0;left:0;right:0;height:2px;background:#ff6b35;opacity:.3;"></div></div>
+    <div class="stat-card" style="--sc:#fb923c;"><span class="stat-num" style="color:#fb923c;" data-target="10">0</span><span class="stat-label">Ans délégué de classe</span><div style="position:absolute;top:0;left:0;right:0;height:2px;background:#fb923c;opacity:.3;"></div></div>
   </div>
 
   <div class="about-quote"><div class="q-mark">"</div><p>Mon parcours n'est pas linéaire. Animation, breakdance, commerce, trading, développement. Cela peut sembler disparate, mais chaque étape m'a transmis des compétences que la suivante a mobilisées.</p></div>
@@ -564,7 +564,7 @@ p.card-sub{color:var(--text-mid);font-size:.9rem;line-height:1.75;font-weight:40
 
     <div class="tl-item left"><div class="tl-dot hl"></div><div class="tl-card hl" style="margin-right:auto;"><span style="font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--cyan);letter-spacing:2px;">EN PARALLÈLE · 2024-2025</span><h3 style="font-family:'Orbitron',sans-serif;font-size:.85rem;font-weight:600;color:#fff;margin:.4rem 0;">Async Agency + agents IA</h3><p style="color:var(--text-mid);font-size:.8rem;line-height:1.7;">Avec mon associé, nous lançons Async Agency : une agence d'automatisation et d'agents IA pour entreprises. Nous développons en Python ou en no-code avec n8n selon les besoins. En parallèle, je poursuis le trading algorithmique, les workflows, et j'ai conçu ce portfolio avec une démo 3D interactive en Three.js + MediaPipe.</p><div style="display:flex;gap:.3rem;margin-top:.6rem;"><span class="tag">Async Agency</span><span class="tag">n8n</span><span class="tag">Three.js</span><span class="tag">JS</span></div></div></div>
 
-    <div class="tl-item"><div class="tl-dot future"></div><div class="tl-card future" style="margin-left:auto;"><span style="font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--purple);letter-spacing:2px;">OBJECTIF · 2025-2027</span><h3 style="font-family:'Orbitron',sans-serif;font-size:.85rem;font-weight:600;color:#fff;margin:.4rem 0;">Epitech, spécialisation IA</h3><p style="color:var(--text-mid);font-size:.8rem;line-height:1.7;">Mon objectif est d'intégrer Epitech pour approfondir le développement et l'intelligence artificielle. J'ai le profil d'un autodidacte déterminé, mais il me manque la structure et les compétences avancées qu'une école comme Epitech peut apporter. Ce portfolio fait partie intégrante de ma candidature.</p><div style="display:flex;gap:.3rem;margin-top:.6rem;"><span class="tag" style="border-color:rgba(180,74,255,.2);color:var(--purple);background:rgba(180,74,255,.05);">IA</span><span class="tag" style="border-color:rgba(180,74,255,.2);color:var(--purple);background:rgba(180,74,255,.05);">Epitech</span><span class="tag" style="border-color:rgba(180,74,255,.2);color:var(--purple);background:rgba(180,74,255,.05);">Développement</span></div></div></div>
+    <div class="tl-item"><div class="tl-dot future"></div><div class="tl-card future" style="margin-left:auto;"><span style="font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--purple);letter-spacing:2px;">OBJECTIF · 2025-2027</span><h3 style="font-family:'Orbitron',sans-serif;font-size:.85rem;font-weight:600;color:#fff;margin:.4rem 0;">Epitech, spécialisation IA</h3><p style="color:var(--text-mid);font-size:.8rem;line-height:1.7;">Mon objectif est d'intégrer Epitech pour approfondir le développement et l'intelligence artificielle. J'ai le profil d'un autodidacte déterminé, mais il me manque la structure et les compétences avancées qu'une école comme Epitech peut apporter. Ce portfolio fait partie intégrante de ma candidature.</p><div style="display:flex;gap:.3rem;margin-top:.6rem;"><span class="tag" style="border-color:rgba(129,140,248,.2);color:var(--purple);background:rgba(129,140,248,.05);">IA</span><span class="tag" style="border-color:rgba(129,140,248,.2);color:var(--purple);background:rgba(129,140,248,.05);">Epitech</span><span class="tag" style="border-color:rgba(129,140,248,.2);color:var(--purple);background:rgba(129,140,248,.05);">Développement</span></div></div></div>
   </div>
 </div></section>
 
@@ -576,8 +576,8 @@ p.card-sub{color:var(--text-mid);font-size:.9rem;line-height:1.75;font-weight:40
     <div class="val-card"><div class="val-num" style="color:var(--purple);">02</div><h4 style="color:var(--purple);">Montrer plutôt que raconter</h4><p>Un CV mentionne "motivation et autonomie". Ce site adopte une autre approche : le code est accessible sur GitHub, la démo 3D est fonctionnelle, et vous pouvez évaluer mes compétences directement. Je préfère démontrer que promettre.</p></div>
     <div class="val-card"><div class="val-num" style="color:var(--green);">03</div><h4 style="color:var(--green);">Ne rien lâcher</h4><p>15 ans de breakdance forgent le caractère. Quand mon Expert Advisor a échoué 50 fois, je l'ai corrigé 50 fois. Quand un workflow rencontre un problème, je le résous avant de passer à la suite. La persévérance n'est pas un mot sur un CV — c'est une pratique quotidienne.</p></div>
     <div class="val-card"><div class="val-num" style="color:var(--pink);">04</div><h4 style="color:var(--pink);">Transmettre</h4><p>Enseigner le breakdance à des enfants depuis 5 ans m'a appris à vulgariser des concepts, à faire preuve de patience et à m'adapter au niveau de chacun. C'est cette même approche qui m'a conduit à intégrer une section explicative dans la page Demo.</p><img src="images/animation-micro.jpg" alt="Herman animateur avec micro" class="photo-tl" style="height:140px;margin-top:.75rem;"></div>
-    <div class="val-card"><div class="val-num" style="color:#ffc800;">05</div><h4 style="color:#ffc800;">Construire pour être libre</h4><p>Mon objectif n'est pas d'occuper un poste confortable. C'est de concevoir des systèmes qui fonctionnent de manière autonome. Le trading automatisé, les workflows 24/7, les agents IA — chaque projet contribue au même objectif : l'indépendance.</p></div>
-    <div class="val-card"><div class="val-num" style="color:#ff6b35;">06</div><h4 style="color:#ff6b35;">Rester curieux</h4><p>Three.js pour la 3D, MediaPipe pour le hand tracking, MQL5 pour le trading — j'explore des domaines en apparence distincts et je trouve toujours un moyen de les connecter. La curiosité est mon principal moteur.</p></div>
+    <div class="val-card"><div class="val-num" style="color:#fbbf24;">05</div><h4 style="color:#fbbf24;">Construire pour être libre</h4><p>Mon objectif n'est pas d'occuper un poste confortable. C'est de concevoir des systèmes qui fonctionnent de manière autonome. Le trading automatisé, les workflows 24/7, les agents IA — chaque projet contribue au même objectif : l'indépendance.</p></div>
+    <div class="val-card"><div class="val-num" style="color:#fb923c;">06</div><h4 style="color:#fb923c;">Rester curieux</h4><p>Three.js pour la 3D, MediaPipe pour le hand tracking, MQL5 pour le trading — j'explore des domaines en apparence distincts et je trouve toujours un moyen de les connecter. La curiosité est mon principal moteur.</p></div>
   </div>
 </div></section>
 
@@ -602,7 +602,7 @@ p.card-sub{color:var(--text-mid);font-size:.9rem;line-height:1.75;font-weight:40
     <p style="color:var(--text-mid);font-size:1.1rem;line-height:1.85;margin-top:1.25rem;">En parallèle, je continue de développer <span style="color:var(--cyan);font-weight:500;">Async Agency</span> avec mon associé. L'objectif à 5 ans : en faire notre activité principale. Nos propres clients, nos propres produits, notre propre indépendance.</p>
     <p style="color:var(--text-mid);font-size:1.1rem;line-height:1.85;margin-top:1.25rem;">Ce qui me motive, ce n'est pas un titre sur une carte de visite. C'est la liberté de choisir sur quoi je travaille, avec qui, et dans quel but.</p>
   </div>
-  <div style="max-width:700px;margin:2.5rem auto 0;padding:2rem;border:1px solid rgba(0,240,255,.15);background:linear-gradient(135deg,rgba(0,240,255,.03),rgba(180,74,255,.03));position:relative;">
+  <div style="max-width:700px;margin:2.5rem auto 0;padding:2rem;border:1px solid rgba(96,165,250,.15);background:linear-gradient(135deg,rgba(96,165,250,.03),rgba(129,140,248,.03));position:relative;">
     <div class="accent-line" style="position:absolute;top:-1px;left:20%;right:20%;"></div>
     <h4 style="font-family:'Orbitron',sans-serif;font-size:.9rem;color:var(--cyan);letter-spacing:2px;margin-bottom:1.25rem;">ROADMAP</h4>
     <div style="display:flex;flex-direction:column;gap:.75rem;">
@@ -612,7 +612,7 @@ p.card-sub{color:var(--text-mid);font-size:.9rem;line-height:1.75;font-weight:40
       <div style="display:flex;gap:.75rem;color:var(--text);font-size:.95rem;line-height:1.7;"><span style="color:var(--pink);font-family:'JetBrains Mono',monospace;font-weight:600;">2030</span><span>Vivre de mes propres systèmes d'automatisation IA</span></div>
     </div>
   </div>
-  <div style="text-align:center;margin-top:3rem;font-family:'Orbitron',sans-serif;font-size:clamp(1rem,2.2vw,1.35rem);font-weight:700;letter-spacing:2px;color:#fff;line-height:2;">Je ne cherche pas un poste.<br><span style="color:var(--cyan);text-shadow:0 0 20px rgba(0,240,255,.4);">Je construis les systèmes qui me rendront libre d'en choisir un.</span></div>
+  <div style="text-align:center;margin-top:3rem;font-family:'Orbitron',sans-serif;font-size:clamp(1rem,2.2vw,1.35rem);font-weight:700;letter-spacing:2px;color:#fff;line-height:2;">Je ne cherche pas un poste.<br><span style="color:var(--cyan);text-shadow:0 0 12px rgba(96,165,250,.2);">Je construis les systèmes qui me rendront libre d'en choisir un.</span></div>
 </div></section>
 <footer class="footer"><h2 style="font-family:'Orbitron',sans-serif;font-size:1.2rem;font-weight:700;letter-spacing:2px;color:#fff;">ÉCHANGEONS</h2><p style="color:var(--text-mid);max-width:450px;margin:.75rem auto 2rem;line-height:1.7;font-size:.95rem;">Je recherche une école (Epitech), des missions en automatisation, ou l'occasion d'échanger.</p><div class="footer-links"><a href="mailto:herman.vanel@gmail.com">Email</a><a href="#">LinkedIn</a><a href="https://github.com/hermanvanel-ui" target="_blank">GitHub</a></div><p style="color:var(--text-faint);font-size:.65rem;font-family:'JetBrains Mono',monospace;letter-spacing:1px;">© 2025 HERMAN VANEL · NICE</p></footer>
 </div>
@@ -624,7 +624,7 @@ p.card-sub{color:var(--text-mid);font-size:.9rem;line-height:1.75;font-weight:40
   <p style="color:var(--text-mid);font-size:1rem;line-height:1.7;max-width:700px;margin-top:.75rem;">Manipulez un cube déformable en temps réel. Main 1 : poing pour compresser, pinch pour tirer, 2-3 doigts pour les ondes. Main 2 : poing fermé pour attraper et déplacer le cube, main ouverte pour le faire tourner. Des fils d'énergie relient vos doigts au cube.</p></div>
 
   <!-- Controls -->
-  <div style="margin-bottom:.75rem;padding:.6rem 1rem;border:1px solid rgba(0,240,255,.12);background:rgba(0,240,255,.02);display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:.5rem;font-family:'JetBrains Mono',monospace;font-size:.65rem;">
+  <div style="margin-bottom:.75rem;padding:.6rem 1rem;border:1px solid rgba(96,165,250,.12);background:rgba(96,165,250,.02);display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:.5rem;font-family:'JetBrains Mono',monospace;font-size:.65rem;">
     <div style="display:flex;flex-wrap:wrap;gap:.75rem;color:var(--text-dim);letter-spacing:1px;">
       <span>✊ <span style="color:var(--purple);">Poing</span>=compresser</span>
       <span>🤏 <span style="color:var(--green);">Pinch</span>=tirer</span>
@@ -641,7 +641,7 @@ p.card-sub{color:var(--text-mid);font-size:.9rem;line-height:1.75;font-weight:40
   <div class="badge-row">
     <div class="badge" id="bCam" style="border-color:rgba(100,100,100,.3);color:var(--text-faint);"><span class="dot" style="background:var(--text-faint);"></span>Init...</div>
     <div class="badge" id="bHands" style="border-color:rgba(100,100,100,.3);color:var(--text-faint);"><span class="dot" style="background:var(--text-faint);"></span>0 main</div>
-    <div class="badge" id="bGesture" style="border-color:rgba(180,74,255,.3);color:var(--purple);"><span class="dot" style="background:var(--purple);"></span><span id="bGestureText">—</span></div>
+    <div class="badge" id="bGesture" style="border-color:rgba(129,140,248,.3);color:var(--purple);"><span class="dot" style="background:var(--purple);"></span><span id="bGestureText">—</span></div>
   </div>
 
   <!-- DEMO -->
@@ -651,7 +651,7 @@ p.card-sub{color:var(--text-mid);font-size:.9rem;line-height:1.75;font-weight:40
     <div id="threeWrap" class="three-wrap"></div>
     <div class="demo-scanlines"></div>
     <div class="demo-corners"><div class="dc dc-tl"></div><div class="dc dc-tr"></div><div class="dc dc-bl"></div><div class="dc dc-br"></div></div>
-    <div style="position:absolute;top:.5rem;left:.75rem;z-index:6;font-family:'JetBrains Mono',monospace;font-size:.5rem;color:rgba(0,200,255,.5);letter-spacing:2px;pointer-events:none;">CUBE SCULPT</div>
+    <div style="position:absolute;top:.5rem;left:.75rem;z-index:6;font-family:'JetBrains Mono',monospace;font-size:.5rem;color:rgba(96,165,250,.5);letter-spacing:2px;pointer-events:none;">CUBE SCULPT</div>
     <div class="no-hand-msg" id="noHandMsg">Montrez vos mains pour manipuler le cube</div>
     <div class="demo-overlay" id="demoOverlay">
       <div style="font-family:'Orbitron',sans-serif;font-size:1.5rem;font-weight:700;color:#fff;letter-spacing:3px;margin-bottom:.5rem;">CUBE SCULPT 3D</div>
@@ -666,22 +666,22 @@ p.card-sub{color:var(--text-mid);font-size:.9rem;line-height:1.75;font-weight:40
     <div class="accent-line" style="margin-bottom:2rem;"></div>
     <div style="margin-bottom:2rem;"><div class="s-label">// comment ça marche</div><h2 class="s-title">Sous le <span class="hl">capot</span></h2></div>
 
-    <div style="padding:1.75rem;border:1px solid rgba(0,240,255,.12);background:var(--surface);margin-bottom:1.5rem;">
+    <div style="padding:1.75rem;border:1px solid rgba(96,165,250,.12);background:var(--surface);margin-bottom:1.5rem;">
       <h3 class="card-title" style="color:var(--cyan);">La caméra voit vos mains</h3>
       <p class="card-text">Quand vous lancez la démo, votre navigateur active la webcam et envoie les images à <span style="color:var(--cyan);font-weight:600;">MediaPipe Hands</span>, une bibliothèque open-source créée par Google. Elle détecte vos mains en temps réel et repère 21 points par main (bouts des doigts, articulations, poignet). Tout ça tourne directement dans votre navigateur, rien n'est envoyé sur un serveur.</p>
     </div>
 
-    <div style="padding:1.75rem;border:1px solid rgba(180,74,255,.12);background:var(--surface);margin-bottom:1.5rem;">
+    <div style="padding:1.75rem;border:1px solid rgba(129,140,248,.12);background:var(--surface);margin-bottom:1.5rem;">
       <h3 class="card-title" style="color:var(--purple);">Les gestes sont traduits en actions</h3>
       <p class="card-text">Mon code analyse la position des 21 points pour comprendre ce que fait votre main : poing fermé, doigts écartés, pinch (pouce + index qui se touchent), etc. Chaque geste est associé à une action sur le cube. Par exemple, quand le pouce et l'index sont proches, le code calcule le point entre les deux et tire les sommets du cube vers ce point. Quand la 2e main est ouverte et bouge, le code mesure le déplacement et l'applique comme rotation.</p>
     </div>
 
-    <div style="padding:1.75rem;border:1px solid rgba(0,255,65,.12);background:var(--surface);margin-bottom:1.5rem;">
+    <div style="padding:1.75rem;border:1px solid rgba(110,231,183,.12);background:var(--surface);margin-bottom:1.5rem;">
       <h3 class="card-title" style="color:var(--green);">Le cube est un objet 3D déformable</h3>
       <p class="card-text">Le cube est créé avec <span style="color:var(--green);font-weight:600;">Three.js</span>, une bibliothèque JavaScript pour la 3D dans le navigateur. C'est un cube découpé en environ 2000 petits triangles. Chaque sommet peut être déplacé individuellement par vos gestes, ce qui déforme la forme. Un système de ressort ramène les sommets à leur position d'origine quand vous retirez vos mains. Les fils lumineux entre vos doigts et le cube sont des lignes 3D animées avec du bruit sinusoïdal pour l'effet "énergie".</p>
     </div>
 
-    <div style="padding:1.75rem;border:1px solid rgba(0,240,255,.08);background:linear-gradient(135deg,rgba(0,240,255,.03),rgba(180,74,255,.03));margin-bottom:1.5rem;">
+    <div style="padding:1.75rem;border:1px solid rgba(96,165,250,.08);background:linear-gradient(135deg,rgba(96,165,250,.03),rgba(129,140,248,.03));margin-bottom:1.5rem;">
       <h3 class="card-title">Les technos utilisées</h3>
       <div style="display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.75rem;">
         <span class="tag">MediaPipe Hands</span><span class="tag">Three.js r128</span><span class="tag">JavaScript</span><span class="tag">WebGL</span><span class="tag">HTML5 Canvas</span><span class="tag">API getUserMedia</span>
@@ -721,7 +721,7 @@ p.card-sub{color:var(--text-mid);font-size:.9rem;line-height:1.75;font-weight:40
     </div>
   </div>
 
-  <div style="margin-top:2.5rem;padding:2rem;border:1px solid rgba(0,240,255,.15);background:linear-gradient(135deg,rgba(0,240,255,.04),rgba(180,74,255,.04));text-align:center;">
+  <div style="margin-top:2.5rem;padding:2rem;border:1px solid rgba(96,165,250,.15);background:linear-gradient(135deg,rgba(96,165,250,.04),rgba(129,140,248,.04));text-align:center;">
     <div class="accent-line" style="position:relative;top:-2rem;left:20%;right:20%;width:60%;margin:0 auto;"></div>
     <p style="font-family:'Orbitron',sans-serif;font-size:.85rem;letter-spacing:2px;color:#fff;margin-bottom:.75rem;">CE QUE JE CHERCHE</p>
     <p style="color:var(--text-mid);font-size:.95rem;line-height:1.85;max-width:600px;margin:0 auto;">Une école qui forme de véritables développeurs (Epitech est l'objectif). Des clients ou missions en automatisation IA via Async Agency. Et des personnes animées par l'envie de créer et d'innover ensemble.</p>
@@ -771,7 +771,7 @@ function filterSk(cat){document.querySelectorAll('.sk-filter-btn').forEach(b=>b.
 // ===== MATRIX =====
 const mc=document.getElementById('matrixCanvas'),mx=mc.getContext('2d');mc.width=innerWidth;mc.height=innerHeight;
 const cols=Math.floor(mc.width/20),drops=Array(cols).fill(1),chars='アイウエオカキクケコ01';
-setInterval(()=>{mx.fillStyle='rgba(5,5,16,.05)';mx.fillRect(0,0,mc.width,mc.height);mx.fillStyle='#00f0ff';mx.font='14px monospace';for(let i=0;i<drops.length;i++){mx.fillText(chars[Math.floor(Math.random()*chars.length)],i*20,drops[i]*20);if(drops[i]*20>mc.height&&Math.random()>.975)drops[i]=0;drops[i]++;}},50);
+setInterval(()=>{mx.fillStyle='rgba(10,14,23,.05)';mx.fillRect(0,0,mc.width,mc.height);mx.fillStyle='#60a5fa';mx.font='14px monospace';for(let i=0;i<drops.length;i++){mx.fillText(chars[Math.floor(Math.random()*chars.length)],i*20,drops[i]*20);if(drops[i]*20>mc.height&&Math.random()>.975)drops[i]=0;drops[i]++;}},50);
 addEventListener('resize',()=>{mc.width=innerWidth;mc.height=innerHeight;});
 
 // ===== HAND SCULPT 3D ENGINE =====
@@ -801,14 +801,14 @@ function initThree(){
   ren=new THREE.WebGLRenderer({antialias:true,alpha:true});ren.setSize(r.width,r.height);ren.setPixelRatio(Math.min(devicePixelRatio,2));ren.setClearColor(0x000000,0);w.appendChild(ren.domElement);
   sc=new THREE.Scene();c3=new THREE.PerspectiveCamera(50,r.width/r.height,.1,100);c3.position.z=5;
   sc.add(new THREE.AmbientLight(0xffffff,.5));
-  mLight=new THREE.PointLight(0x00ccff,1.5,12);mLight.position.set(0,1,3);sc.add(mLight);
-  const rl=new THREE.DirectionalLight(0x4488ff,.6);rl.position.set(-2,1,2);sc.add(rl);
-  const tl=new THREE.PointLight(0xcc44ff,.4,8);tl.position.set(2,-1,2);sc.add(tl);
+  mLight=new THREE.PointLight(0x60a5fa,1.5,12);mLight.position.set(0,1,3);sc.add(mLight);
+  const rl=new THREE.DirectionalLight(0x6366f1,.6);rl.position.set(-2,1,2);sc.add(rl);
+  const tl=new THREE.PointLight(0x818cf8,.4,8);tl.position.set(2,-1,2);sc.add(tl);
   const geo=new THREE.BoxGeometry(2,2,2,10,10,10);oPos=new Float32Array(geo.attributes.position.array);
-  blob=new THREE.Mesh(geo,new THREE.MeshPhongMaterial({color:0x00ccff,emissive:0x004466,emissiveIntensity:.5,specular:0x88eeff,shininess:50,transparent:true,opacity:.85,flatShading:true}));sc.add(blob);
-  const wg=new THREE.BoxGeometry(2.03,2.03,2.03,10,10,10);blob.add(new THREE.Mesh(wg,new THREE.MeshBasicMaterial({color:0x00ccff,wireframe:true,transparent:true,opacity:.12})));
-  const eg=new THREE.EdgesGeometry(new THREE.BoxGeometry(2.05,2.05,2.05));blob.add(new THREE.LineSegments(eg,new THREE.LineBasicMaterial({color:0x00f0ff,transparent:true,opacity:.4})));
-  bCol=new THREE.Color(0x00ccff);tCol=new THREE.Color(0x00ccff);
+  blob=new THREE.Mesh(geo,new THREE.MeshPhongMaterial({color:0x60a5fa,emissive:0x1e3a5f,emissiveIntensity:.5,specular:0x93c5fd,shininess:50,transparent:true,opacity:.85,flatShading:true}));sc.add(blob);
+  const wg=new THREE.BoxGeometry(2.03,2.03,2.03,10,10,10);blob.add(new THREE.Mesh(wg,new THREE.MeshBasicMaterial({color:0x60a5fa,wireframe:true,transparent:true,opacity:.12})));
+  const eg=new THREE.EdgesGeometry(new THREE.BoxGeometry(2.05,2.05,2.05));blob.add(new THREE.LineSegments(eg,new THREE.LineBasicMaterial({color:0x60a5fa,transparent:true,opacity:.4})));
+  bCol=new THREE.Color(0x60a5fa);tCol=new THREE.Color(0x60a5fa);
   blobPos=new THREE.Vector3(0,0,0);blobRot=new THREE.Euler(0,0,0);
   anim();
 }
@@ -886,7 +886,7 @@ function anim(){
   if(blobPos){blob.position.x=lr(blob.position.x,blobPos.x,.06);blob.position.y=lr(blob.position.y,blobPos.y,.06);}
   // Material color
   const mt=blob.material;mt.emissiveIntensity=.35+Math.sin(tm*1.5)*.12+Math.min(1,dAmt*.015);
-  if(!h&&!h2)tCol.set(0x00ccff);else if(grabActive)tCol.set(0xff8800);else if(h2&&h2.f>=3)tCol.set(0xcc44ff);else if(h&&h.f===0)tCol.set(0x8844ff);else if(h&&h.ip)tCol.set(0x00ff88);else if(h&&h.f>=4)tCol.set(0xff44aa);else tCol.set(0x44aaff);
+  if(!h&&!h2)tCol.set(0x60a5fa);else if(grabActive)tCol.set(0xff8800);else if(h2&&h2.f>=3)tCol.set(0x818cf8);else if(h&&h.f===0)tCol.set(0x7c3aed);else if(h&&h.ip)tCol.set(0x6ee7b7);else if(h&&h.f>=4)tCol.set(0xf0abfc);else tCol.set(0x93c5fd);
   bCol.lerp(tCol,.04);mt.color.copy(bCol);mt.emissive.copy(bCol).multiplyScalar(.4);
   // Idle rotation + return to center
   if(!h&&!h2){blob.rotation.y+=.004;blob.rotation.x+=.002;tScale=lr(tScale,1,.008);if(blobPos){blobPos.x*=.97;blobPos.y*=.97;}}
@@ -895,11 +895,11 @@ function anim(){
   // Threads
   for(const l of threads){sc.remove(l);l.geometry.dispose();}threads=[];
   const allH=[h,h2].filter(Boolean);
-  for(const ah of allH){const thCol=ah===h?0x00f0ff:0xcc44ff;for(const tip of ah.tips){const bpx=blob.position.x,bpy=blob.position.y;const dir=new THREE.Vector3(bpx,bpy,0).sub(tip).normalize();const sf=new THREE.Vector3(bpx,bpy,0).add(dir.clone().multiplyScalar(1.2*ns));const d2=tip.distanceTo(sf);if(d2>3.5)continue;const pts=[];for(let i=0;i<=TS;i++){const t2=i/TS;const p=tip.clone().lerp(sf,t2);p.x+=Math.sin(tm*5+t2*Math.PI*3)*.035*(1-Math.abs(t2-.5)*2);p.y+=Math.cos(tm*4+t2*5)*.025*(1-Math.abs(t2-.5)*2);pts.push(p);}const tG=new THREE.BufferGeometry().setFromPoints(pts);const tM=new THREE.LineBasicMaterial({color:thCol,transparent:true,opacity:Math.max(.1,Math.min(.6,1-d2/3.5))});const ln=new THREE.Line(tG,tM);sc.add(ln);threads.push(ln);}}
+  for(const ah of allH){const thCol=ah===h?0x60a5fa:0x818cf8;for(const tip of ah.tips){const bpx=blob.position.x,bpy=blob.position.y;const dir=new THREE.Vector3(bpx,bpy,0).sub(tip).normalize();const sf=new THREE.Vector3(bpx,bpy,0).add(dir.clone().multiplyScalar(1.2*ns));const d2=tip.distanceTo(sf);if(d2>3.5)continue;const pts=[];for(let i=0;i<=TS;i++){const t2=i/TS;const p=tip.clone().lerp(sf,t2);p.x+=Math.sin(tm*5+t2*Math.PI*3)*.035*(1-Math.abs(t2-.5)*2);p.y+=Math.cos(tm*4+t2*5)*.025*(1-Math.abs(t2-.5)*2);pts.push(p);}const tG=new THREE.BufferGeometry().setFromPoints(pts);const tM=new THREE.LineBasicMaterial({color:thCol,transparent:true,opacity:Math.max(.1,Math.min(.6,1-d2/3.5))});const ln=new THREE.Line(tG,tM);sc.add(ln);threads.push(ln);}}
   // Wire sync
   if(blob.children[0]){const wp=blob.children[0].geometry.attributes.position.array;for(let i=0;i<wp.length&&i<pa.length;i+=3){wp[i]=pa[i]*1.01;wp[i+1]=pa[i+1]*1.01;wp[i+2]=pa[i+2]*1.01;}blob.children[0].geometry.attributes.position.needsUpdate=true;}
   // Particles
-  for(const ah of allH){if(ah.ip&&parts.length<MP&&Math.random()>.5){const pg=new THREE.SphereGeometry(.02,4,4);const pc2=ah===h?0x00f0ff:0xcc44ff;const pm2=new THREE.MeshBasicMaterial({color:pc2,transparent:true,opacity:.8});const pmesh=new THREE.Mesh(pg,pm2);pmesh.position.copy(ah.pm);sc.add(pmesh);parts.push({m:pmesh,v:new THREE.Vector3((Math.random()-.5)*.04,(Math.random()-.5)*.04,(Math.random()-.5)*.04),l:0,mx:.4+Math.random()*.3});}}
+  for(const ah of allH){if(ah.ip&&parts.length<MP&&Math.random()>.5){const pg=new THREE.SphereGeometry(.02,4,4);const pc2=ah===h?0x60a5fa:0x818cf8;const pm2=new THREE.MeshBasicMaterial({color:pc2,transparent:true,opacity:.8});const pmesh=new THREE.Mesh(pg,pm2);pmesh.position.copy(ah.pm);sc.add(pmesh);parts.push({m:pmesh,v:new THREE.Vector3((Math.random()-.5)*.04,(Math.random()-.5)*.04,(Math.random()-.5)*.04),l:0,mx:.4+Math.random()*.3});}}
   const al=[];for(const p of parts){p.l+=.016;if(p.l>=p.mx){sc.remove(p.m);p.m.geometry.dispose();p.m.material.dispose();continue;}p.m.position.add(p.v);p.m.material.opacity=1-p.l/p.mx;al.push(p);}parts=al;
   ren.render(sc,c3);
 }
@@ -920,8 +920,8 @@ function startCam(){
       for(let hi=0;hi<res.multiHandLandmarks.length;hi++){
         const lm=res.multiHandLandmarks[hi],hn=res.multiHandedness?.[hi]?.label||"Right";
         const side=hn==="Left"?"right":"left";
-        const col=hi===0?'rgba(0,220,255,.5)':'rgba(200,70,255,.5)';
-        const dotCol=hi===0?'#00f0ff':'#cc44ff';
+        const col=hi===0?'rgba(0,220,255,.5)':'rgba(129,140,248,.5)';
+        const dotCol=hi===0?'#60a5fa':'#818cf8';
         ctx.save();ctx.translate(sk.width,0);ctx.scale(-1,1);
         ctx.strokeStyle=col;ctx.lineWidth=2;ctx.shadowColor=dotCol;ctx.shadowBlur=8;
         for(const[s2,e]of HC){ctx.beginPath();ctx.moveTo(lm[s2].x*sk.width,lm[s2].y*sk.height);ctx.lineTo(lm[e].x*sk.width,lm[e].y*sk.height);ctx.stroke();}
@@ -941,8 +941,8 @@ function startCam(){
     const bh=document.getElementById('bHands');
     const total=(nm?1:0)+(ns?1:0);
     if(total===0){bh.style.borderColor='rgba(100,100,100,.3)';bh.style.color='var(--text-faint)';bh.innerHTML='<span class="dot" style="background:var(--text-faint);width:5px;height:5px;border-radius:50%;"></span>Aucune main';}
-    else if(total===1){bh.style.borderColor='rgba(0,240,255,.3)';bh.style.color='var(--cyan)';bh.innerHTML='<span class="dot" style="background:var(--cyan);width:5px;height:5px;border-radius:50%;box-shadow:0 0 5px var(--cyan);"></span>1 main';}
-    else{bh.style.borderColor='rgba(0,255,65,.3)';bh.style.color='var(--green)';bh.innerHTML='<span class="dot" style="background:var(--green);width:5px;height:5px;border-radius:50%;box-shadow:0 0 5px var(--green);"></span>2 mains';}
+    else if(total===1){bh.style.borderColor='rgba(96,165,250,.3)';bh.style.color='var(--cyan)';bh.innerHTML='<span class="dot" style="background:var(--cyan);width:5px;height:5px;border-radius:50%;box-shadow:0 0 5px var(--cyan);"></span>1 main';}
+    else{bh.style.borderColor='rgba(110,231,183,.3)';bh.style.color='var(--green)';bh.innerHTML='<span class="dot" style="background:var(--green);width:5px;height:5px;border-radius:50%;box-shadow:0 0 5px var(--green);"></span>2 mains';}
     document.getElementById('noHandMsg').style.opacity=total>0?'0':'1';
     const gs=[];
     if(nm){if(nm.f===0)gs.push('Poing:compresser');else if(nm.ip)gs.push('Pinch:tirer');else if(nm.f>=4)gs.push('Ouverte:onde');else gs.push(nm.f+' doigt(s)');}
@@ -953,7 +953,7 @@ function startCam(){
   run=true;
   camI.start().then(()=>{
     document.getElementById('demoOverlay').classList.add('hidden');
-    const bc=document.getElementById('bCam');bc.style.borderColor='rgba(0,255,65,.3)';bc.style.color='var(--green)';bc.innerHTML='<span class="dot" style="background:var(--green);width:5px;height:5px;border-radius:50%;box-shadow:0 0 5px var(--green);"></span>Cam OK';
+    const bc=document.getElementById('bCam');bc.style.borderColor='rgba(110,231,183,.3)';bc.style.color='var(--green)';bc.innerHTML='<span class="dot" style="background:var(--green);width:5px;height:5px;border-radius:50%;box-shadow:0 0 5px var(--green);"></span>Cam OK';
     document.getElementById('demoStopBtn').classList.add('show');
     initThree();
   }).catch(err=>{document.getElementById('demoLoading').textContent='Erreur: '+err.message;document.getElementById('demoLoading').style.color='#ff5050';});
