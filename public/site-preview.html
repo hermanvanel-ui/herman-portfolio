@@ -138,6 +138,31 @@ p.card-sub{color:var(--text-mid);font-size:.9rem;line-height:1.75;font-weight:40
 .sk-filter-btn[data-f="lang"].active{color:var(--green);border-color:var(--green);background:rgba(0,255,65,.06);}
 .sk-card.hidden-sk{display:none;}
 
+/* ===== ABOUT PAGE EXTRAS ===== */
+.stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin:2rem 0;}
+@media(max-width:768px){.stat-grid{grid-template-columns:repeat(2,1fr);}}
+.stat-card{padding:1.5rem 1rem;text-align:center;border:1px solid rgba(0,240,255,.1);background:var(--surface);position:relative;overflow:hidden;transition:all .4s;}
+.stat-card:hover{border-color:rgba(0,240,255,.3);transform:translateY(-2px);}
+.stat-card::before{content:'';position:absolute;top:0;left:50%;width:0;height:2px;transition:all .6s;transform:translateX(-50%);}
+.stat-card:hover::before{width:100%;left:0;transform:none;}
+.stat-num{font-family:'Orbitron',sans-serif;font-size:clamp(1.5rem,3vw,2.2rem);font-weight:900;letter-spacing:2px;display:block;}
+.stat-label{font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:2px;text-transform:uppercase;color:var(--text-dim);margin-top:.4rem;display:block;}
+.about-quote{position:relative;padding:2rem 2.5rem;margin:2.5rem 0;border-left:3px solid var(--cyan);background:linear-gradient(90deg,rgba(0,240,255,.04),transparent);}
+.about-quote p{font-size:1.1rem;line-height:1.85;color:var(--text);font-style:italic;}
+.about-quote .q-mark{position:absolute;top:-.5rem;left:.5rem;font-size:3rem;color:rgba(0,240,255,.15);font-family:Georgia,serif;line-height:1;}
+.val-card{padding:1.5rem;border:1px solid rgba(255,255,255,.05);background:var(--surface);transition:all .4s;position:relative;overflow:hidden;}
+.val-card:hover{border-color:rgba(0,240,255,.2);transform:translateY(-2px);}
+.val-card .val-num{position:absolute;top:.5rem;right:.75rem;font-family:'Orbitron',sans-serif;font-size:2rem;font-weight:900;opacity:.06;}
+.val-card h4{font-family:'Orbitron',sans-serif;font-size:.8rem;font-weight:600;color:#fff;letter-spacing:1px;margin-bottom:.5rem;}
+.val-card p{color:var(--text-mid);font-size:.85rem;line-height:1.7;}
+.orbit-wrap{position:relative;width:280px;height:280px;margin:2rem auto;}
+.orbit-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:80px;height:80px;border-radius:50%;background:radial-gradient(circle,rgba(0,240,255,.15),transparent);display:flex;align-items:center;justify-content:center;font-family:'Orbitron',sans-serif;font-size:.65rem;font-weight:700;color:var(--cyan);letter-spacing:2px;text-align:center;z-index:2;}
+.orbit-ring{position:absolute;top:50%;left:50%;border-radius:50%;border:1px solid rgba(0,240,255,.08);animation:orbitSpin 20s linear infinite;}
+.orbit-ring:nth-child(2){animation-duration:25s;animation-direction:reverse;}
+.orbit-item{position:absolute;padding:.3rem .6rem;font-family:'JetBrains Mono',monospace;font-size:.55rem;letter-spacing:1px;border:1px solid;border-radius:3px;white-space:nowrap;transform:translate(-50%,-50%);}
+@keyframes orbitSpin{from{transform:translate(-50%,-50%) rotate(0deg);}to{transform:translate(-50%,-50%) rotate(360deg);}}
+@keyframes countUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+
 .badge-row{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:.75rem;}
 .badge{display:inline-flex;align-items:center;gap:.3rem;padding:.15rem .5rem;font-family:'JetBrains Mono',monospace;font-size:.55rem;letter-spacing:1px;border:1px solid;}
 .badge .dot{width:5px;height:5px;border-radius:50%;}
@@ -165,7 +190,7 @@ p.card-sub{color:var(--text-mid);font-size:.9rem;line-height:1.75;font-weight:40
 <div class="hero-content">
   <h1><span class="name-sub">Herman Vanel</span><span class="gradient-text">J'automatise tout.</span></h1>
   <div style="display:flex;justify-content:center;margin-top:1.25rem;overflow:hidden;"><div class="typing">$ 21 ans · Nice · trading · n8n · agents IA</div></div>
-  <p class="hero-desc">Étudiant en BUT TC en alternance le jour, je code des bots de trading et des agents IA la nuit. Ce site n'est pas un CV. C'est ce que je sais faire, en vrai, avec du code qui tourne.</p>
+  <p class="hero-desc">Étudiant en BUT TC en alternance le jour, je développe des bots de trading et des agents IA le soir. Ce site n'est pas un CV classique — c'est une démonstration concrète de ce que je sais faire, avec du code fonctionnel.</p>
 </div></section>
 
 <section class="section"><div class="max-w">
@@ -173,19 +198,19 @@ p.card-sub{color:var(--text-mid);font-size:.9rem;line-height:1.75;font-weight:40
   <div class="grid-2" style="margin-bottom:2.5rem;">
     <div class="holo-card"><div class="corner c-tl"></div><div class="corner c-tr"></div><div class="corner c-bl"></div><div class="corner c-br"></div>
       <h3 class="card-title">Le jour : commerce & terrain</h3>
-      <p class="card-text">Je suis en 3e année de BUT Techniques de Commercialisation à l'IUT de Nice. Mon alternance, c'est chez <span style="color:var(--cyan-bright);font-weight:600;">PAAL</span>, une entreprise de menuiserie aluminium à Contes. Assistant marketing et commercial : prospection téléphonique, développement marketing, gestion des réseaux sociaux.</p>
-      <p class="card-sub">Ça m'a appris à parler à des gens, à vendre, à comprendre comment une boîte fonctionne de l'intérieur. C'est pas du code, mais c'est la base pour monter un business.</p>
+      <p class="card-text">Je suis en 3e année de BUT Techniques de Commercialisation à l'IUT de Nice. Mon alternance se déroule chez <span style="color:var(--cyan-bright);font-weight:600;">PAAL</span>, une entreprise de menuiserie aluminium à Contes, en tant qu'assistant marketing et commercial : prospection téléphonique, développement marketing, gestion des réseaux sociaux.</p>
+      <p class="card-sub">Cette expérience m'a appris à communiquer, à convaincre et à comprendre le fonctionnement d'une entreprise de l'intérieur. Ce n'est pas du code, mais c'est un socle essentiel pour entreprendre.</p>
     </div>
     <div class="holo-card"><div class="corner c-tl"></div><div class="corner c-tr"></div><div class="corner c-bl"></div><div class="corner c-br"></div>
       <h3 class="card-title">Le soir : code & automatisation</h3>
       <p class="card-text">En parallèle, je développe un <span style="color:var(--purple-bright);font-weight:600;">Expert Advisor en MQL5</span> pour trader le Forex et le Gold sur MT5. Je monte des workflows n8n pour automatiser tout ce qui peut l'être. Et avec un associé, on construit <span style="color:var(--purple-bright);font-weight:600;">Async Agency</span>, une agence d'automatisation et d'agents IA pour entreprises.</p>
-      <p class="card-sub">Personne ne m'a demandé d'apprendre Python, JavaScript ou MQL5. Je l'ai fait parce que j'avais des problèmes à résoudre.</p>
+      <p class="card-sub">Personne ne m'a demandé d'apprendre Python, JavaScript ou MQL5. Chaque langage est venu en réponse à un besoin concret.</p>
     </div>
   </div>
   <div style="padding:2rem;border:1px solid rgba(0,240,255,.15);background:linear-gradient(135deg,rgba(0,240,255,.04),rgba(180,74,255,.04));position:relative;">
     <div class="accent-line" style="position:absolute;top:-1px;left:20%;right:20%;"></div>
     <h3 style="font-family:'Orbitron',sans-serif;font-size:.9rem;letter-spacing:2px;color:#fff;text-align:center;margin-bottom:1.5rem;">POURQUOI CE SITE ET PAS UN CV</h3>
-    <p style="color:var(--text-mid);font-size:.95rem;line-height:1.85;text-align:center;max-width:750px;margin:0 auto;">Un CV tient sur une page et dit que je suis "motivé et autonome". Tout le monde écrit ça. Ce site, c'est différent : le code source est sur GitHub, la démo d'automatisation fonctionne, et vous pouvez juger par vous-même si je sais coder ou pas. Je préfère montrer que raconter.</p>
+    <p style="color:var(--text-mid);font-size:.95rem;line-height:1.85;text-align:center;max-width:750px;margin:0 auto;">Un CV tient sur une page et mentionne "motivation et autonomie". Ce site adopte une approche différente : le code source est sur GitHub, la démo interactive fonctionne, et vous pouvez évaluer mes compétences par vous-même. Je préfère démontrer que décrire.</p>
   </div>
 </div></section>
 
@@ -195,13 +220,13 @@ p.card-sub{color:var(--text-mid);font-size:.9rem;line-height:1.75;font-weight:40
     <div class="holo-card" style="cursor:pointer;" onclick="go('projets')"><div class="corner c-tl"></div><div class="corner c-tr"></div><div class="corner c-bl"></div><div class="corner c-br"></div>
       <div class="proj-num" style="color:var(--cyan);">01</div>
       <h3 class="card-title">Mes projets</h3>
-      <p style="color:var(--text-mid);font-size:.85rem;line-height:1.7;">Un Expert Advisor MT5 en MQL5, des workflows n8n qui tournent tout seuls, et une agence d'automatisation IA en construction.</p>
+      <p style="color:var(--text-mid);font-size:.85rem;line-height:1.7;">Un Expert Advisor MT5 en MQL5, des workflows n8n autonomes, et une agence d'automatisation IA en cours de développement.</p>
       <div style="margin-top:1rem;font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--cyan);letter-spacing:2px;">VOIR →</div>
     </div>
     <div class="holo-card" style="cursor:pointer;" onclick="go('about')"><div class="corner c-tl"></div><div class="corner c-tr"></div><div class="corner c-bl"></div><div class="corner c-br"></div>
       <div class="proj-num" style="color:var(--purple);">02</div>
       <h3 class="card-title">Mon parcours</h3>
-      <p style="color:var(--text-mid);font-size:.85rem;line-height:1.7;">Né en Éthiopie, 15 ans de break dance, BAFA, BUT TC à Nice, alternance chez PAAL, et du code le soir.</p>
+      <p style="color:var(--text-mid);font-size:.85rem;line-height:1.7;">Né en Éthiopie, 15 ans de breakdance, BAFA, BUT TC à Nice, alternance chez PAAL et développement autodidacte.</p>
       <div style="margin-top:1rem;font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--purple);letter-spacing:2px;">VOIR →</div>
     </div>
     <div class="holo-card" style="cursor:pointer;" onclick="go('demo')"><div class="corner c-tl"></div><div class="corner c-tr"></div><div class="corner c-bl"></div><div class="corner c-br"></div>
@@ -212,24 +237,24 @@ p.card-sub{color:var(--text-mid);font-size:.9rem;line-height:1.75;font-weight:40
     </div>
   </div>
 </div></section>
-<footer class="footer"><h2 style="font-family:'Orbitron',sans-serif;font-size:1.2rem;font-weight:700;letter-spacing:2px;color:#fff;">ON ÉCHANGE ?</h2><p style="color:var(--text-mid);max-width:450px;margin:.75rem auto 2rem;line-height:1.7;font-size:.95rem;">Je cherche une école (Epitech), des missions en automatisation, ou juste à discuter avec des gens qui construisent des trucs.</p><div class="footer-links"><a href="mailto:herman.vanel@gmail.com">Email</a><a href="#">LinkedIn</a><a href="https://github.com/hermanvanel-ui" target="_blank">GitHub</a></div><p style="color:var(--text-faint);font-size:.65rem;font-family:'JetBrains Mono',monospace;letter-spacing:1px;">© 2025 HERMAN VANEL · NICE</p></footer>
+<footer class="footer"><h2 style="font-family:'Orbitron',sans-serif;font-size:1.2rem;font-weight:700;letter-spacing:2px;color:#fff;">ÉCHANGEONS</h2><p style="color:var(--text-mid);max-width:450px;margin:.75rem auto 2rem;line-height:1.7;font-size:.95rem;">Je recherche une école (Epitech), des missions en automatisation, ou simplement l'occasion d'échanger avec des professionnels qui partagent cette vision.</p><div class="footer-links"><a href="mailto:herman.vanel@gmail.com">Email</a><a href="#">LinkedIn</a><a href="https://github.com/hermanvanel-ui" target="_blank">GitHub</a></div><p style="color:var(--text-faint);font-size:.65rem;font-family:'JetBrains Mono',monospace;letter-spacing:1px;">© 2025 HERMAN VANEL · NICE</p></footer>
 </div>
 
 <!-- =============== PROJETS =============== -->
 <div class="page" id="p-projets">
 <section class="section" style="padding-top:6rem;"><div class="max-w">
   <div style="margin-bottom:3rem;"><div class="s-label">// projets</div><h2 class="s-title">Ce que je <span class="hl">construis</span></h2>
-  <p style="color:var(--text-mid);font-size:1rem;line-height:1.7;max-width:650px;margin-top:.75rem;">Pas de projets scolaires ici. Ce sont des trucs que je fais parce que j'en ai envie, le soir, le week-end, entre deux cours. Certains marchent, d'autres pas encore.</p></div>
+  <p style="color:var(--text-mid);font-size:1rem;line-height:1.7;max-width:650px;margin-top:.75rem;">Ce ne sont pas des projets scolaires. Ce sont des initiatives personnelles, développées le soir, le week-end, en dehors des cours. Certains sont opérationnels, d'autres encore en développement.</p></div>
   <div class="grid-3">
-    <div class="proj-card"><div class="proj-num" style="color:#ff6b35;">01</div><h3 class="card-title">Expert Advisor MT5</h3><div style="font-family:'JetBrains Mono',monospace;font-size:.65rem;color:#ff6b35;letter-spacing:1px;text-transform:uppercase;margin-bottom:.75rem;">Trading automatisé Forex & Gold</div><p style="color:var(--text-mid);font-size:.85rem;line-height:1.7;margin-bottom:.75rem;">Je développe un bot de trading en MQL5 qui passe des ordres sur le Forex et le XAUUSD via MetaTrader 5. J'analyse les données de marché, je code des stratégies, je backteste, je corrige, je recommence. C'est encore en phase de développement, pas de résultats miraculeux à annoncer.</p><p style="color:var(--text-dim);font-size:.8rem;line-height:1.7;font-style:italic;margin-bottom:1rem;">Le trading m'a appris la discipline. Quand ton argent est en jeu, tu ne codes pas n'importe comment.</p><div style="display:flex;flex-wrap:wrap;gap:.4rem;"><span class="tag" style="border-color:rgba(255,107,53,.3);color:#ff6b35;background:rgba(255,107,53,.06);">MQL5</span><span class="tag" style="border-color:rgba(255,107,53,.3);color:#ff6b35;background:rgba(255,107,53,.06);">Python</span><span class="tag" style="border-color:rgba(255,107,53,.3);color:#ff6b35;background:rgba(255,107,53,.06);">MT5</span><span class="tag" style="border-color:rgba(255,107,53,.3);color:#ff6b35;background:rgba(255,107,53,.06);">Forex</span></div></div>
-    <div class="proj-card"><div class="proj-num" style="color:var(--cyan);">02</div><h3 class="card-title">Workflows n8n</h3><div style="font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--cyan);letter-spacing:1px;text-transform:uppercase;margin-bottom:.75rem;">Automatisations qui tournent 24/7</div><p style="color:var(--text-mid);font-size:.85rem;line-height:1.7;margin-bottom:.75rem;">J'utilise n8n pour connecter des services entre eux : un workflow qui capte des ordres de trading sur Telegram et les relaye vers MT5, un générateur de planning pour Metricool, des intégrations multi-plateformes avec webhooks.</p><p style="color:var(--text-dim);font-size:.8rem;line-height:1.7;font-style:italic;margin-bottom:1rem;">Si je fais la même chose plus de deux fois, je l'automatise.</p><div style="display:flex;flex-wrap:wrap;gap:.4rem;"><span class="tag">n8n</span><span class="tag">Webhooks</span><span class="tag">APIs</span><span class="tag">Telegram</span></div></div>
-    <div class="proj-card"><div class="proj-num" style="color:var(--purple);">03</div><h3 class="card-title">Async Agency</h3><div style="font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--purple);letter-spacing:1px;text-transform:uppercase;margin-bottom:.75rem;">Agence d'automatisation & agents IA</div><p style="color:var(--text-mid);font-size:.85rem;line-height:1.7;margin-bottom:.75rem;">Avec mon associé, on monte Async Agency. L'idée : proposer des automatisations pour les tâches répétitives et des agents IA autonomes capables d'exécuter plusieurs actions à partir d'une seule demande.</p><p style="color:var(--text-dim);font-size:.8rem;line-height:1.7;font-style:italic;margin-bottom:1rem;">On développe en code pur ou en no-code avec n8n selon le besoin du client.</p><div style="display:flex;flex-wrap:wrap;gap:.4rem;"><span class="tag" style="border-color:rgba(180,74,255,.3);color:var(--purple);background:rgba(180,74,255,.06);">Agents IA</span><span class="tag" style="border-color:rgba(180,74,255,.3);color:var(--purple);background:rgba(180,74,255,.06);">Python</span><span class="tag" style="border-color:rgba(180,74,255,.3);color:var(--purple);background:rgba(180,74,255,.06);">n8n</span></div></div>
+    <div class="proj-card"><div class="proj-num" style="color:#ff6b35;">01</div><h3 class="card-title">Expert Advisor MT5</h3><div style="font-family:'JetBrains Mono',monospace;font-size:.65rem;color:#ff6b35;letter-spacing:1px;text-transform:uppercase;margin-bottom:.75rem;">Trading automatisé Forex & Gold</div><p style="color:var(--text-mid);font-size:.85rem;line-height:1.7;margin-bottom:.75rem;">Je développe un bot de trading en MQL5 qui exécute des ordres sur le Forex et le XAUUSD via MetaTrader 5. Analyse de données de marché, conception de stratégies, backtesting, itérations. Le projet est encore en phase de développement — un travail de long terme.</p><p style="color:var(--text-dim);font-size:.8rem;line-height:1.7;font-style:italic;margin-bottom:1rem;">Le trading m'a enseigné la rigueur. Quand le capital est en jeu, chaque ligne de code compte.</p><div style="display:flex;flex-wrap:wrap;gap:.4rem;"><span class="tag" style="border-color:rgba(255,107,53,.3);color:#ff6b35;background:rgba(255,107,53,.06);">MQL5</span><span class="tag" style="border-color:rgba(255,107,53,.3);color:#ff6b35;background:rgba(255,107,53,.06);">Python</span><span class="tag" style="border-color:rgba(255,107,53,.3);color:#ff6b35;background:rgba(255,107,53,.06);">MT5</span><span class="tag" style="border-color:rgba(255,107,53,.3);color:#ff6b35;background:rgba(255,107,53,.06);">Forex</span></div></div>
+    <div class="proj-card"><div class="proj-num" style="color:var(--cyan);">02</div><h3 class="card-title">Workflows n8n</h3><div style="font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--cyan);letter-spacing:1px;text-transform:uppercase;margin-bottom:.75rem;">Automatisations qui tournent 24/7</div><p style="color:var(--text-mid);font-size:.85rem;line-height:1.7;margin-bottom:.75rem;">J'utilise n8n pour connecter des services entre eux : un workflow qui capte des ordres de trading sur Telegram et les relaye vers MT5, un générateur de planning pour Metricool, des intégrations multi-plateformes avec webhooks.</p><p style="color:var(--text-dim);font-size:.8rem;line-height:1.7;font-style:italic;margin-bottom:1rem;">Toute tâche répétitive est une opportunité d'automatisation.</p><div style="display:flex;flex-wrap:wrap;gap:.4rem;"><span class="tag">n8n</span><span class="tag">Webhooks</span><span class="tag">APIs</span><span class="tag">Telegram</span></div></div>
+    <div class="proj-card"><div class="proj-num" style="color:var(--purple);">03</div><h3 class="card-title">Async Agency</h3><div style="font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--purple);letter-spacing:1px;text-transform:uppercase;margin-bottom:.75rem;">Agence d'automatisation & agents IA</div><p style="color:var(--text-mid);font-size:.85rem;line-height:1.7;margin-bottom:.75rem;">Avec mon associé, on monte Async Agency. L'idée : proposer des automatisations pour les tâches répétitives et des agents IA autonomes capables d'exécuter plusieurs actions à partir d'une seule demande.</p><p style="color:var(--text-dim);font-size:.8rem;line-height:1.7;font-style:italic;margin-bottom:1rem;">Nous développons en code ou en no-code avec n8n, selon les besoins du client.</p><div style="display:flex;flex-wrap:wrap;gap:.4rem;"><span class="tag" style="border-color:rgba(180,74,255,.3);color:var(--purple);background:rgba(180,74,255,.06);">Agents IA</span><span class="tag" style="border-color:rgba(180,74,255,.3);color:var(--purple);background:rgba(180,74,255,.06);">Python</span><span class="tag" style="border-color:rgba(180,74,255,.3);color:var(--purple);background:rgba(180,74,255,.06);">n8n</span></div></div>
   </div>
 </div></section>
 
 <section class="section"><div class="max-w">
   <div style="margin-bottom:2rem;"><div class="s-label">// compétences</div><h2 class="s-title">Ce que je sais <span class="hl">faire</span></h2>
-  <p style="color:var(--text-mid);font-size:1rem;line-height:1.7;max-width:700px;margin-top:.75rem;">Cliquez sur une compétence pour voir un cas concret où je l'ai utilisée. Pas de blabla, que du vécu.</p></div>
+  <p style="color:var(--text-mid);font-size:1rem;line-height:1.7;max-width:700px;margin-top:.75rem;">Cliquez sur une compétence pour découvrir un cas concret d'application. Chaque exemple est tiré de mon expérience réelle.</p></div>
 
   <!-- Filtres -->
   <div class="sk-filter">
@@ -350,7 +375,7 @@ p.card-sub{color:var(--text-mid);font-size:.9rem;line-height:1.75;font-weight:40
       <div class="sk-bar-wrap"><div class="sk-bar"><div class="sk-bar-fill" style="width:95%;background:var(--purple);"></div></div></div>
       <div class="sk-body">
         <div class="sk-case" style="color:var(--purple);">Cas pratique</div>
-        <p class="sk-case-text">15 ans de breakdance. On n'apprend pas un headspin en une semaine. Quand mon bot de trading a crashé 50 fois de suite, j'ai debuggé 50 fois. Quand un workflow n8n plante à 3h du matin, je le répare avant de dormir.</p>
+        <p class="sk-case-text">15 ans de breakdance m'ont forgé cette qualité. La maîtrise d'un mouvement demande des mois de travail. Quand mon bot de trading a échoué 50 fois, je l'ai corrigé 50 fois. Quand un workflow rencontre un problème, je le résous avant de passer à autre chose.</p>
         <div class="sk-tags"><span class="tag" style="border-color:rgba(180,74,255,.2);color:var(--purple);">Breakdance</span><span class="tag" style="border-color:rgba(180,74,255,.2);color:var(--purple);">Trading</span><span class="tag" style="border-color:rgba(180,74,255,.2);color:var(--purple);">Debug</span></div>
       </div>
     </div>
@@ -364,7 +389,7 @@ p.card-sub{color:var(--text-mid);font-size:.9rem;line-height:1.75;font-weight:40
       <div class="sk-bar-wrap"><div class="sk-bar"><div class="sk-bar-fill" style="width:90%;background:var(--purple);"></div></div></div>
       <div class="sk-body">
         <div class="sk-case" style="color:var(--purple);">Cas pratique</div>
-        <p class="sk-case-text">Personne ne m'a demandé d'apprendre Python, JavaScript ou MQL5. J'avais un bot de trading à coder, j'ai appris. J'avais des tâches à automatiser, j'ai découvert n8n. Avec mon associé, on a monté Async Agency sans attendre une formation.</p>
+        <p class="sk-case-text">Personne ne m'a demandé d'apprendre Python, JavaScript ou MQL5. Le besoin de coder un bot de trading m'a poussé vers ces langages. Les tâches à automatiser m'ont conduit vers n8n. Avec mon associé, nous avons lancé Async Agency sans attendre de formation.</p>
         <div class="sk-tags"><span class="tag" style="border-color:rgba(180,74,255,.2);color:var(--purple);">Autodidacte</span><span class="tag" style="border-color:rgba(180,74,255,.2);color:var(--purple);">Async Agency</span></div>
       </div>
     </div>
@@ -392,7 +417,7 @@ p.card-sub{color:var(--text-mid);font-size:.9rem;line-height:1.75;font-weight:40
       <div class="sk-bar-wrap"><div class="sk-bar"><div class="sk-bar-fill" style="width:88%;background:var(--purple);"></div></div></div>
       <div class="sk-body">
         <div class="sk-case" style="color:var(--purple);">Cas pratique</div>
-        <p class="sk-case-text">Animation d'enfants de 6 ans le mercredi, prospection téléphonique B2B chez PAAL la semaine, bénévolat en épicerie solidaire chez Solid'Act, stage en industrie chez MEI Industries, et du code le soir. Je m'adapte au contexte et aux gens en face de moi.</p>
+        <p class="sk-case-text">Animation d'enfants de 6 ans le mercredi, prospection téléphonique B2B chez PAAL la semaine, bénévolat en épicerie solidaire chez Solid'Act, stage en industrie chez MEI Industries, et développement le soir. Je m'adapte au contexte et aux interlocuteurs.</p>
         <div class="sk-tags"><span class="tag" style="border-color:rgba(180,74,255,.2);color:var(--purple);">PAAL</span><span class="tag" style="border-color:rgba(180,74,255,.2);color:var(--purple);">Solid'Act</span><span class="tag" style="border-color:rgba(180,74,255,.2);color:var(--purple);">MEI Industries</span></div>
       </div>
     </div>
@@ -406,7 +431,7 @@ p.card-sub{color:var(--text-mid);font-size:.9rem;line-height:1.75;font-weight:40
       <div class="sk-bar-wrap"><div class="sk-bar"><div class="sk-bar-fill" style="width:82%;background:var(--purple);"></div></div></div>
       <div class="sk-body">
         <div class="sk-case" style="color:var(--purple);">Cas pratique</div>
-        <p class="sk-case-text">Async Agency, c'est un projet à deux : on se répartit les tâches, on code ensemble, on décide ensemble. En breakdance, je crée des chorégraphies de groupe pour les spectacles. Chez PAAL, je travaille avec l'équipe marketing et commerciale au quotidien.</p>
+        <p class="sk-case-text">Async Agency est un projet collaboratif : répartition des tâches, développement conjoint, décisions partagées. En breakdance, je conçois des chorégraphies de groupe pour les spectacles. Chez PAAL, je collabore quotidiennement avec l'équipe marketing et commerciale.</p>
         <div class="sk-tags"><span class="tag" style="border-color:rgba(180,74,255,.2);color:var(--purple);">Async Agency</span><span class="tag" style="border-color:rgba(180,74,255,.2);color:var(--purple);">Spectacles</span><span class="tag" style="border-color:rgba(180,74,255,.2);color:var(--purple);">PAAL</span></div>
       </div>
     </div>
@@ -420,7 +445,7 @@ p.card-sub{color:var(--text-mid);font-size:.9rem;line-height:1.75;font-weight:40
       <div class="sk-bar-wrap"><div class="sk-bar"><div class="sk-bar-fill" style="width:85%;background:var(--purple);"></div></div></div>
       <div class="sk-body">
         <div class="sk-case" style="color:var(--purple);">Cas pratique</div>
-        <p class="sk-case-text">Le breakdance, c'est de l'improvisation et de la création permanente. Ce portfolio n'est pas un template : la démo 3D interactive, le design futuriste, l'idée de montrer plutôt que raconter. Même les workflows n8n demandent de la créativité pour connecter des services qui n'étaient pas faits pour marcher ensemble.</p>
+        <p class="sk-case-text">Le breakdance repose sur l'improvisation et la création permanente. Ce portfolio n'est pas un template : la démo 3D interactive, le design, l'approche de démonstration plutôt que de description. Les workflows n8n demandent aussi de la créativité pour connecter des services qui n'étaient pas conçus pour fonctionner ensemble.</p>
         <div class="sk-tags"><span class="tag" style="border-color:rgba(180,74,255,.2);color:var(--purple);">Portfolio</span><span class="tag" style="border-color:rgba(180,74,255,.2);color:var(--purple);">Breakdance</span><span class="tag" style="border-color:rgba(180,74,255,.2);color:var(--purple);">Workflows</span></div>
       </div>
     </div>
@@ -456,43 +481,108 @@ p.card-sub{color:var(--text-mid);font-size:.9rem;line-height:1.75;font-weight:40
 
   </div>
 </div></section>
-<footer class="footer"><h2 style="font-family:'Orbitron',sans-serif;font-size:1.2rem;font-weight:700;letter-spacing:2px;color:#fff;">ON ÉCHANGE ?</h2><p style="color:var(--text-mid);max-width:450px;margin:.75rem auto 2rem;line-height:1.7;font-size:.95rem;">Je cherche une école (Epitech), des missions en automatisation, ou juste à discuter.</p><div class="footer-links"><a href="mailto:herman.vanel@gmail.com">Email</a><a href="#">LinkedIn</a><a href="https://github.com/hermanvanel-ui" target="_blank">GitHub</a></div><p style="color:var(--text-faint);font-size:.65rem;font-family:'JetBrains Mono',monospace;letter-spacing:1px;">© 2025 HERMAN VANEL · NICE</p></footer>
+<footer class="footer"><h2 style="font-family:'Orbitron',sans-serif;font-size:1.2rem;font-weight:700;letter-spacing:2px;color:#fff;">ÉCHANGEONS</h2><p style="color:var(--text-mid);max-width:450px;margin:.75rem auto 2rem;line-height:1.7;font-size:.95rem;">Je recherche une école (Epitech), des missions en automatisation, ou l'occasion d'échanger.</p><div class="footer-links"><a href="mailto:herman.vanel@gmail.com">Email</a><a href="#">LinkedIn</a><a href="https://github.com/hermanvanel-ui" target="_blank">GitHub</a></div><p style="color:var(--text-faint);font-size:.65rem;font-family:'JetBrains Mono',monospace;letter-spacing:1px;">© 2025 HERMAN VANEL · NICE</p></footer>
 </div>
 
 <!-- =============== À PROPOS =============== -->
 <div class="page" id="p-about">
+
+<!-- SECTION 1: Qui je suis -->
 <section class="section" style="padding-top:6rem;"><div class="max-w">
-  <div style="margin-bottom:3rem;"><div class="s-label">// parcours</div><h2 class="s-title">D'où je <span class="hl">viens</span></h2>
-  <p style="color:var(--text-mid);font-size:1rem;line-height:1.7;max-width:650px;margin-top:.75rem;">Mon parcours n'est pas linéaire. Animation, break dance, commerce, trading, code. Ça a l'air décousu, mais chaque étape m'a apporté quelque chose que la suivante a utilisé.</p></div>
+  <div style="margin-bottom:2rem;"><div class="s-label">// qui je suis</div><h2 class="s-title">Herman <span class="hl">Vanel</span></h2></div>
+
+  <div class="grid-2" style="gap:2rem;align-items:start;">
+    <div>
+      <p style="color:var(--text-mid);font-size:1.05rem;line-height:1.85;margin-bottom:1.25rem;">J'ai 21 ans. Je suis né en Éthiopie, adopté à 2 ans, et j'ai grandi dans le sud de la France. Aujourd'hui je vis à Nice.</p>
+      <p style="color:var(--text-mid);font-size:1.05rem;line-height:1.85;margin-bottom:1.25rem;">Le jour, je finis mon BUT Techniques de Commercialisation à l'IUT de Nice en alternance chez <span style="color:var(--cyan);font-weight:600;">PAAL</span>, une entreprise de menuiserie aluminium à Contes. Prospection, marketing digital, réseaux sociaux.</p>
+      <p style="color:var(--text-mid);font-size:1.05rem;line-height:1.85;">Le soir, je développe. Des bots de trading, des workflows d'automatisation, des agents IA. Avec mon associé, nous avons lancé <span style="color:var(--purple);font-weight:600;">Async Agency</span>. Personne ne m'a demandé de faire tout cela. Je le fais parce que je veux construire des systèmes autonomes.</p>
+    </div>
+    <div>
+      <!-- Orbite de compétences -->
+      <div class="orbit-wrap">
+        <div class="orbit-center">HERMAN<br>.DEV</div>
+        <div class="orbit-ring" style="width:180px;height:180px;transform:translate(-50%,-50%);">
+          <div class="orbit-item" style="top:0;left:50%;color:var(--cyan);border-color:rgba(0,240,255,.3);background:rgba(0,240,255,.06);">Python</div>
+          <div class="orbit-item" style="top:50%;right:-10px;left:auto;color:#ffc800;border-color:rgba(255,200,0,.3);background:rgba(255,200,0,.06);">JavaScript</div>
+          <div class="orbit-item" style="bottom:0;left:50%;top:auto;color:#ff6b35;border-color:rgba(255,107,53,.3);background:rgba(255,107,53,.06);">MQL5</div>
+          <div class="orbit-item" style="top:50%;left:-10px;color:var(--green);border-color:rgba(0,255,65,.3);background:rgba(0,255,65,.06);">n8n</div>
+        </div>
+        <div class="orbit-ring" style="width:260px;height:260px;transform:translate(-50%,-50%);">
+          <div class="orbit-item" style="top:0;left:50%;color:var(--purple);border-color:rgba(180,74,255,.3);background:rgba(180,74,255,.06);">IA</div>
+          <div class="orbit-item" style="top:35%;right:-15px;left:auto;color:var(--pink);border-color:rgba(236,72,153,.3);background:rgba(236,72,153,.06);">Marketing</div>
+          <div class="orbit-item" style="bottom:10%;right:5%;left:auto;top:auto;color:var(--cyan);border-color:rgba(0,240,255,.3);background:rgba(0,240,255,.06);">Three.js</div>
+          <div class="orbit-item" style="bottom:10%;left:5%;top:auto;color:#ff6b35;border-color:rgba(255,107,53,.3);background:rgba(255,107,53,.06);">Trading</div>
+          <div class="orbit-item" style="top:35%;left:-15px;color:var(--green);border-color:rgba(0,255,65,.3);background:rgba(0,255,65,.06);">APIs</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Chiffres animés -->
+  <div class="stat-grid" id="statGrid">
+    <div class="stat-card" style="--sc:var(--cyan);"><div class="stat-card-inner"><span class="stat-num" style="color:var(--cyan);" data-target="15">0</span><span class="stat-label">Ans de breakdance</span></div><div style="position:absolute;top:0;left:0;right:0;height:2px;background:var(--cyan);opacity:.3;"></div></div>
+    <div class="stat-card" style="--sc:var(--purple);"><span class="stat-num" style="color:var(--purple);" data-target="5">0</span><span class="stat-label">Langages de code</span><div style="position:absolute;top:0;left:0;right:0;height:2px;background:var(--purple);opacity:.3;"></div></div>
+    <div class="stat-card" style="--sc:var(--green);"><span class="stat-num" style="color:var(--green);" data-target="3">0</span><span class="stat-label">Projets actifs</span><div style="position:absolute;top:0;left:0;right:0;height:2px;background:var(--green);opacity:.3;"></div></div>
+    <div class="stat-card" style="--sc:#ff6b35;"><span class="stat-num" style="color:#ff6b35;" data-target="10">0</span><span class="stat-label">Ans délégué de classe</span><div style="position:absolute;top:0;left:0;right:0;height:2px;background:#ff6b35;opacity:.3;"></div></div>
+  </div>
+
+  <div class="about-quote"><div class="q-mark">"</div><p>Mon parcours n'est pas linéaire. Animation, breakdance, commerce, trading, développement. Cela peut sembler disparate, mais chaque étape m'a transmis des compétences que la suivante a mobilisées.</p></div>
+</div></section>
+
+<!-- SECTION 2: Parcours timeline -->
+<section class="section"><div class="max-w">
+  <div style="margin-bottom:3rem;"><div class="s-label">// parcours</div><h2 class="s-title">D'où je <span class="hl">viens</span></h2></div>
   <div class="tl"><div class="tl-line"></div>
-    <div class="tl-item"><div class="tl-dot"></div><div class="tl-card" style="margin-left:auto;"><span style="font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--cyan);letter-spacing:2px;">LES RACINES · 2005</span><h3 style="font-family:'Orbitron',sans-serif;font-size:.85rem;font-weight:600;color:#fff;margin:.4rem 0;">Né en Éthiopie, adopté à 2 ans</h3><p style="color:var(--text-mid);font-size:.8rem;line-height:1.7;">Je suis né en Éthiopie. J'ai été adopté à l'âge de 2 ans et j'ai grandi en France, dans le sud.</p></div></div>
-    <div class="tl-item left"><div class="tl-dot"></div><div class="tl-card" style="margin-right:auto;"><span style="font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--cyan);letter-spacing:2px;">LA DANSE · ~2011 → AUJOURD'HUI</span><h3 style="font-family:'Orbitron',sans-serif;font-size:.85rem;font-weight:600;color:#fff;margin:.4rem 0;">15 ans de breakdance</h3><p style="color:var(--text-mid);font-size:.8rem;line-height:1.7;">J'ai commencé le break vers 6 ans. Depuis 5-6 ans, j'enseigne. J'ai donné des cours à Menton pendant un an, et aujourd'hui j'enseigne à Nice avec mon professeur.</p><div style="display:flex;gap:.3rem;margin-top:.6rem;"><span class="tag">Discipline</span><span class="tag">Transmission</span><span class="tag">Créativité</span></div></div></div>
-    <div class="tl-item"><div class="tl-dot"></div><div class="tl-card" style="margin-left:auto;"><span style="font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--cyan);letter-spacing:2px;">PREMIÈRES EXPÉRIENCES · 2020-2022</span><h3 style="font-family:'Orbitron',sans-serif;font-size:.85rem;font-weight:600;color:#fff;margin:.4rem 0;">Animation, bénévolat, industrie</h3><p style="color:var(--text-mid);font-size:.8rem;line-height:1.7;">Animateur au collège Nazareth. Bénévole en épicerie solidaire. Stage chez MEI Industries. BAFA avec qualification surveillant de baignade.</p><div style="display:flex;gap:.3rem;margin-top:.6rem;"><span class="tag">BAFA</span><span class="tag">Terrain</span><span class="tag">Adaptabilité</span></div></div></div>
-    <div class="tl-item left"><div class="tl-dot hl"></div><div class="tl-card hl" style="margin-right:auto;"><span style="font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--cyan);letter-spacing:2px;">FORMATION · 2022-2025</span><h3 style="font-family:'Orbitron',sans-serif;font-size:.85rem;font-weight:600;color:#fff;margin:.4rem 0;">BUT TC à l'IUT de Nice + PAAL</h3><p style="color:var(--text-mid);font-size:.8rem;line-height:1.7;">Trois ans de formation en Techniques de Commercialisation. Alternance chez PAAL : prospection, marketing, réseaux sociaux. C'est aussi pendant cette période que j'ai commencé le trading et la programmation, seul.</p><div style="display:flex;gap:.3rem;margin-top:.6rem;"><span class="tag">Marketing</span><span class="tag">Prospection</span></div></div></div>
-    <div class="tl-item"><div class="tl-dot hl"></div><div class="tl-card hl" style="margin-left:auto;"><span style="font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--cyan);letter-spacing:2px;">EN PARALLÈLE · 2022-2025</span><h3 style="font-family:'Orbitron',sans-serif;font-size:.85rem;font-weight:600;color:#fff;margin:.4rem 0;">Trading algo, n8n, Async Agency</h3><p style="color:var(--text-mid);font-size:.8rem;line-height:1.7;">Trading sur Forex et Gold, Expert Advisor en MQL5, workflows n8n, agents IA. Lancement d'Async Agency avec un associé. Tout ça en parallèle de la formation.</p><div style="display:flex;gap:.3rem;margin-top:.6rem;"><span class="tag">MQL5</span><span class="tag">Python</span><span class="tag">n8n</span><span class="tag">JS</span></div></div></div>
-    <div class="tl-item left"><div class="tl-dot future"></div><div class="tl-card future" style="margin-right:auto;"><span style="font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--purple);letter-spacing:2px;">OBJECTIF · 2025-2027</span><h3 style="font-family:'Orbitron',sans-serif;font-size:.85rem;font-weight:600;color:#fff;margin:.4rem 0;">Epitech, spécialisation IA</h3><p style="color:var(--text-mid);font-size:.8rem;line-height:1.7;">Je vise Epitech pour approfondir l'IA et le développement. Ce portfolio fait partie de ma candidature.</p><div style="display:flex;gap:.3rem;margin-top:.6rem;"><span class="tag" style="border-color:rgba(180,74,255,.2);color:var(--purple);background:rgba(180,74,255,.05);">IA</span><span class="tag" style="border-color:rgba(180,74,255,.2);color:var(--purple);background:rgba(180,74,255,.05);">Epitech</span></div></div></div>
+    <div class="tl-item"><div class="tl-dot"></div><div class="tl-card" style="margin-left:auto;"><span style="font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--cyan);letter-spacing:2px;">LES RACINES · 2005</span><h3 style="font-family:'Orbitron',sans-serif;font-size:.85rem;font-weight:600;color:#fff;margin:.4rem 0;">Né en Éthiopie, adopté à 2 ans</h3><p style="color:var(--text-mid);font-size:.8rem;line-height:1.7;">Né en Éthiopie, adopté à l'âge de 2 ans, j'ai grandi dans le sud de la France. Cette double culture m'a apporté une ouverture d'esprit et une capacité d'adaptation que je mobilise au quotidien.</p></div></div>
+
+    <div class="tl-item left"><div class="tl-dot"></div><div class="tl-card" style="margin-right:auto;"><span style="font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--cyan);letter-spacing:2px;">LA DANSE · ~2011 → AUJOURD'HUI</span><h3 style="font-family:'Orbitron',sans-serif;font-size:.85rem;font-weight:600;color:#fff;margin:.4rem 0;">15 ans de breakdance</h3><p style="color:var(--text-mid);font-size:.8rem;line-height:1.7;">J'ai commencé le breakdance vers 6 ans. C'est l'engagement le plus long de ma vie. Les battles m'ont appris à gérer la pression. L'entraînement quotidien m'a inculqué la discipline. Depuis 5-6 ans, j'enseigne à des enfants et adolescents à l'association La Semeuse à Nice. J'ai également donné des cours à Menton pendant un an.</p><div style="display:flex;gap:.3rem;margin-top:.6rem;"><span class="tag">Discipline</span><span class="tag">Transmission</span><span class="tag">Créativité</span><span class="tag">Gestion du stress</span></div></div></div>
+
+    <div class="tl-item"><div class="tl-dot"></div><div class="tl-card" style="margin-left:auto;"><span style="font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--cyan);letter-spacing:2px;">PREMIÈRES EXPÉRIENCES · 2020-2022</span><h3 style="font-family:'Orbitron',sans-serif;font-size:.85rem;font-weight:600;color:#fff;margin:.4rem 0;">Animation, bénévolat, industrie</h3><p style="color:var(--text-mid);font-size:.8rem;line-height:1.7;">Animateur d'enfants de 6 ans au collège Nazareth tous les mercredis et pendant les vacances. Bénévole à l'épicerie solidaire Solid'Act à Nice : accueil, vente, stocks, caisse. Stage d'observation chez MEI Industries, tôlerie fine à Carros. Et le BAFA en 10 mois, avec la qualification surveillant de baignade.</p><div style="display:flex;gap:.3rem;margin-top:.6rem;"><span class="tag">BAFA</span><span class="tag">Nazareth</span><span class="tag">Solid'Act</span><span class="tag">MEI Industries</span></div></div></div>
+
+    <div class="tl-item left"><div class="tl-dot hl"></div><div class="tl-card hl" style="margin-right:auto;"><span style="font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--cyan);letter-spacing:2px;">FORMATION · 2022-2025</span><h3 style="font-family:'Orbitron',sans-serif;font-size:.85rem;font-weight:600;color:#fff;margin:.4rem 0;">BUT TC à l'IUT de Nice + PAAL</h3><p style="color:var(--text-mid);font-size:.8rem;line-height:1.7;">Trois ans de Techniques de Commercialisation. En alternance chez PAAL à Contes : prospection téléphonique, développement marketing et gestion des réseaux sociaux. C'est au cours de cette période que j'ai découvert la programmation, en autodidacte, en dehors de mes cours. Le commerce m'a appris à convaincre. Le code m'a appris à construire.</p><div style="display:flex;gap:.3rem;margin-top:.6rem;"><span class="tag">Marketing</span><span class="tag">Prospection B2B</span><span class="tag">Réseaux sociaux</span></div></div></div>
+
+    <div class="tl-item"><div class="tl-dot hl"></div><div class="tl-card hl" style="margin-left:auto;"><span style="font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--cyan);letter-spacing:2px;">LE DÉCLIC · 2023</span><h3 style="font-family:'Orbitron',sans-serif;font-size:.85rem;font-weight:600;color:#fff;margin:.4rem 0;">Le trading ouvre la porte du code</h3><p style="color:var(--text-mid);font-size:.8rem;line-height:1.7;">Tout a commencé par le trading. L'envie d'automatiser mes stratégies m'a conduit vers MQL5 pour développer un Expert Advisor sur MetaTrader 5. Puis Python s'est imposé pour l'analyse de données. Puis n8n pour connecter mes outils. Puis JavaScript pour créer des interfaces. Chaque problème résolu a ouvert la porte d'un nouveau langage.</p><div style="display:flex;gap:.3rem;margin-top:.6rem;"><span class="tag">MQL5</span><span class="tag">Python</span><span class="tag">Autodidacte</span></div></div></div>
+
+    <div class="tl-item left"><div class="tl-dot hl"></div><div class="tl-card hl" style="margin-right:auto;"><span style="font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--cyan);letter-spacing:2px;">EN PARALLÈLE · 2024-2025</span><h3 style="font-family:'Orbitron',sans-serif;font-size:.85rem;font-weight:600;color:#fff;margin:.4rem 0;">Async Agency + agents IA</h3><p style="color:var(--text-mid);font-size:.8rem;line-height:1.7;">Avec mon associé, nous lançons Async Agency : une agence d'automatisation et d'agents IA pour entreprises. Nous développons en Python ou en no-code avec n8n selon les besoins. En parallèle, je poursuis le trading algorithmique, les workflows, et j'ai conçu ce portfolio avec une démo 3D interactive en Three.js + MediaPipe.</p><div style="display:flex;gap:.3rem;margin-top:.6rem;"><span class="tag">Async Agency</span><span class="tag">n8n</span><span class="tag">Three.js</span><span class="tag">JS</span></div></div></div>
+
+    <div class="tl-item"><div class="tl-dot future"></div><div class="tl-card future" style="margin-left:auto;"><span style="font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--purple);letter-spacing:2px;">OBJECTIF · 2025-2027</span><h3 style="font-family:'Orbitron',sans-serif;font-size:.85rem;font-weight:600;color:#fff;margin:.4rem 0;">Epitech, spécialisation IA</h3><p style="color:var(--text-mid);font-size:.8rem;line-height:1.7;">Mon objectif est d'intégrer Epitech pour approfondir le développement et l'intelligence artificielle. J'ai le profil d'un autodidacte déterminé, mais il me manque la structure et les compétences avancées qu'une école comme Epitech peut apporter. Ce portfolio fait partie intégrante de ma candidature.</p><div style="display:flex;gap:.3rem;margin-top:.6rem;"><span class="tag" style="border-color:rgba(180,74,255,.2);color:var(--purple);background:rgba(180,74,255,.05);">IA</span><span class="tag" style="border-color:rgba(180,74,255,.2);color:var(--purple);background:rgba(180,74,255,.05);">Epitech</span><span class="tag" style="border-color:rgba(180,74,255,.2);color:var(--purple);background:rgba(180,74,255,.05);">Développement</span></div></div></div>
   </div>
 </div></section>
 
+<!-- SECTION 3: Ce qui me définit -->
+<section class="section"><div class="max-w">
+  <div style="margin-bottom:3rem;"><div class="s-label">// valeurs</div><h2 class="s-title">Ce qui me <span class="hl">définit</span></h2></div>
+  <div class="grid-3">
+    <div class="val-card"><div class="val-num" style="color:var(--cyan);">01</div><h4 style="color:var(--cyan);">Apprendre en faisant</h4><p>Je n'ai jamais suivi de formation en programmation. Face à un problème, j'ai cherché comment le résoudre et j'ai appris en développant. Mon bot de trading, mes workflows, ce site — chaque projet est né d'un besoin concret, pas d'un cours théorique.</p></div>
+    <div class="val-card"><div class="val-num" style="color:var(--purple);">02</div><h4 style="color:var(--purple);">Montrer plutôt que raconter</h4><p>Un CV mentionne "motivation et autonomie". Ce site adopte une autre approche : le code est accessible sur GitHub, la démo 3D est fonctionnelle, et vous pouvez évaluer mes compétences directement. Je préfère démontrer que promettre.</p></div>
+    <div class="val-card"><div class="val-num" style="color:var(--green);">03</div><h4 style="color:var(--green);">Ne rien lâcher</h4><p>15 ans de breakdance forgent le caractère. Quand mon Expert Advisor a échoué 50 fois, je l'ai corrigé 50 fois. Quand un workflow rencontre un problème, je le résous avant de passer à la suite. La persévérance n'est pas un mot sur un CV — c'est une pratique quotidienne.</p></div>
+    <div class="val-card"><div class="val-num" style="color:var(--pink);">04</div><h4 style="color:var(--pink);">Transmettre</h4><p>Enseigner le breakdance à des enfants depuis 5 ans m'a appris à vulgariser des concepts, à faire preuve de patience et à m'adapter au niveau de chacun. C'est cette même approche qui m'a conduit à intégrer une section explicative dans la page Demo.</p></div>
+    <div class="val-card"><div class="val-num" style="color:#ffc800;">05</div><h4 style="color:#ffc800;">Construire pour être libre</h4><p>Mon objectif n'est pas d'occuper un poste confortable. C'est de concevoir des systèmes qui fonctionnent de manière autonome. Le trading automatisé, les workflows 24/7, les agents IA — chaque projet contribue au même objectif : l'indépendance.</p></div>
+    <div class="val-card"><div class="val-num" style="color:#ff6b35;">06</div><h4 style="color:#ff6b35;">Rester curieux</h4><p>Three.js pour la 3D, MediaPipe pour le hand tracking, MQL5 pour le trading — j'explore des domaines en apparence distincts et je trouve toujours un moyen de les connecter. La curiosité est mon principal moteur.</p></div>
+  </div>
+</div></section>
+
+<!-- SECTION 4: La suite -->
 <section class="section"><div class="max-w">
   <div style="margin-bottom:3rem;"><div class="s-label">// la suite</div><h2 class="s-title">Où je <span class="hl">vais</span></h2></div>
   <div style="max-width:700px;margin:0 auto;">
-    <p style="color:var(--text-mid);font-size:1.1rem;line-height:1.85;">Mon BUT TC se termine en 2025. La suite, c'est <span style="color:#fff;font-weight:600;">Epitech</span>, avec une spécialisation en intelligence artificielle. Je veux les compétences techniques qui me manquent encore.</p>
-    <p style="color:var(--text-mid);font-size:1.1rem;line-height:1.85;margin-top:1.25rem;">En parallèle, je continue de développer <span style="color:var(--cyan);font-weight:500;">Async Agency</span> avec mon associé. L'objectif à 5 ans : en vivre. Freelance, entrepreneur, ou les deux.</p>
-    <p style="color:var(--text-mid);font-size:1.1rem;line-height:1.85;margin-top:1.25rem;">Ce qui me motive, c'est pas d'avoir un titre sur une carte de visite. C'est de pouvoir choisir sur quoi je travaille.</p>
+    <p style="color:var(--text-mid);font-size:1.1rem;line-height:1.85;">Mon BUT TC se termine en 2025. L'étape suivante : <span style="color:#fff;font-weight:600;">Epitech</span>, avec une spécialisation en intelligence artificielle. J'ai la détermination et les projets — il me manque la profondeur technique qu'une école d'ingénierie logicielle peut apporter.</p>
+    <p style="color:var(--text-mid);font-size:1.1rem;line-height:1.85;margin-top:1.25rem;">En parallèle, je continue de développer <span style="color:var(--cyan);font-weight:500;">Async Agency</span> avec mon associé. L'objectif à 5 ans : en faire notre activité principale. Nos propres clients, nos propres produits, notre propre indépendance.</p>
+    <p style="color:var(--text-mid);font-size:1.1rem;line-height:1.85;margin-top:1.25rem;">Ce qui me motive, ce n'est pas un titre sur une carte de visite. C'est la liberté de choisir sur quoi je travaille, avec qui, et dans quel but.</p>
   </div>
-  <div style="max-width:700px;margin:2.5rem auto 0;padding:2rem;border:1px solid rgba(0,240,255,.15);background:linear-gradient(135deg,rgba(0,240,255,.03),rgba(180,74,255,.03));">
-    <h4 style="font-family:'Orbitron',sans-serif;font-size:.9rem;color:var(--cyan);letter-spacing:2px;margin-bottom:1.25rem;">CONCRÈTEMENT</h4>
+  <div style="max-width:700px;margin:2.5rem auto 0;padding:2rem;border:1px solid rgba(0,240,255,.15);background:linear-gradient(135deg,rgba(0,240,255,.03),rgba(180,74,255,.03));position:relative;">
+    <div class="accent-line" style="position:absolute;top:-1px;left:20%;right:20%;"></div>
+    <h4 style="font-family:'Orbitron',sans-serif;font-size:.9rem;color:var(--cyan);letter-spacing:2px;margin-bottom:1.25rem;">ROADMAP</h4>
     <div style="display:flex;flex-direction:column;gap:.75rem;">
-      <div style="display:flex;gap:.75rem;color:var(--text);font-size:.95rem;line-height:1.7;"><span style="color:var(--green);font-family:'JetBrains Mono',monospace;">&gt;</span><span>Intégrer Epitech en spécialisation IA (2025)</span></div>
-      <div style="display:flex;gap:.75rem;color:var(--text);font-size:.95rem;line-height:1.7;"><span style="color:var(--green);font-family:'JetBrains Mono',monospace;">&gt;</span><span>Développer Async Agency jusqu'à en vivre</span></div>
-      <div style="display:flex;gap:.75rem;color:var(--text);font-size:.95rem;line-height:1.7;"><span style="color:var(--green);font-family:'JetBrains Mono',monospace;">&gt;</span><span>Devenir freelance ou entrepreneur dans l'automatisation IA</span></div>
-      <div style="display:flex;gap:.75rem;color:var(--text);font-size:.95rem;line-height:1.7;"><span style="color:var(--green);font-family:'JetBrains Mono',monospace;">&gt;</span><span>Continuer à apprendre en construisant, pas en regardant des tutos</span></div>
+      <div style="display:flex;gap:.75rem;color:var(--text);font-size:.95rem;line-height:1.7;"><span style="color:var(--green);font-family:'JetBrains Mono',monospace;font-weight:600;">2025</span><span>Intégrer Epitech en spécialisation IA</span></div>
+      <div style="display:flex;gap:.75rem;color:var(--text);font-size:.95rem;line-height:1.7;"><span style="color:var(--cyan);font-family:'JetBrains Mono',monospace;font-weight:600;">2026</span><span>Premiers clients réguliers pour Async Agency</span></div>
+      <div style="display:flex;gap:.75rem;color:var(--text);font-size:.95rem;line-height:1.7;"><span style="color:var(--purple);font-family:'JetBrains Mono',monospace;font-weight:600;">2027</span><span>Diplôme Epitech + activité freelance/entrepreneur</span></div>
+      <div style="display:flex;gap:.75rem;color:var(--text);font-size:.95rem;line-height:1.7;"><span style="color:var(--pink);font-family:'JetBrains Mono',monospace;font-weight:600;">2030</span><span>Vivre de mes propres systèmes d'automatisation IA</span></div>
     </div>
   </div>
-  <div style="text-align:center;margin-top:3rem;font-family:'Orbitron',sans-serif;font-size:clamp(1rem,2.2vw,1.35rem);font-weight:700;letter-spacing:2px;color:#fff;line-height:2;">Je ne cherche pas un poste.<br><span style="color:var(--cyan);text-shadow:0 0 20px rgba(0,240,255,.4);">Je construis ce qui va me permettre de ne plus en chercher.</span></div>
+  <div style="text-align:center;margin-top:3rem;font-family:'Orbitron',sans-serif;font-size:clamp(1rem,2.2vw,1.35rem);font-weight:700;letter-spacing:2px;color:#fff;line-height:2;">Je ne cherche pas un poste.<br><span style="color:var(--cyan);text-shadow:0 0 20px rgba(0,240,255,.4);">Je construis les systèmes qui me rendront libre d'en choisir un.</span></div>
 </div></section>
-<footer class="footer"><h2 style="font-family:'Orbitron',sans-serif;font-size:1.2rem;font-weight:700;letter-spacing:2px;color:#fff;">ON ÉCHANGE ?</h2><p style="color:var(--text-mid);max-width:450px;margin:.75rem auto 2rem;line-height:1.7;font-size:.95rem;">Je cherche une école (Epitech), des missions en automatisation, ou juste à discuter.</p><div class="footer-links"><a href="mailto:herman.vanel@gmail.com">Email</a><a href="#">LinkedIn</a><a href="https://github.com/hermanvanel-ui" target="_blank">GitHub</a></div><p style="color:var(--text-faint);font-size:.65rem;font-family:'JetBrains Mono',monospace;letter-spacing:1px;">© 2025 HERMAN VANEL · NICE</p></footer>
+<footer class="footer"><h2 style="font-family:'Orbitron',sans-serif;font-size:1.2rem;font-weight:700;letter-spacing:2px;color:#fff;">ÉCHANGEONS</h2><p style="color:var(--text-mid);max-width:450px;margin:.75rem auto 2rem;line-height:1.7;font-size:.95rem;">Je recherche une école (Epitech), des missions en automatisation, ou l'occasion d'échanger.</p><div class="footer-links"><a href="mailto:herman.vanel@gmail.com">Email</a><a href="#">LinkedIn</a><a href="https://github.com/hermanvanel-ui" target="_blank">GitHub</a></div><p style="color:var(--text-faint);font-size:.65rem;font-family:'JetBrains Mono',monospace;letter-spacing:1px;">© 2025 HERMAN VANEL · NICE</p></footer>
 </div>
 
 <!-- =============== CONTACT =============== -->
@@ -564,7 +654,7 @@ p.card-sub{color:var(--text-mid);font-size:.9rem;line-height:1.75;font-weight:40
       <div style="display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.75rem;">
         <span class="tag">MediaPipe Hands</span><span class="tag">Three.js r128</span><span class="tag">JavaScript</span><span class="tag">WebGL</span><span class="tag">HTML5 Canvas</span><span class="tag">API getUserMedia</span>
       </div>
-      <p class="card-sub">Pas de backend, pas d'IA distante, pas de framework lourd. Tout tourne en local dans le navigateur avec du JavaScript pur et deux bibliothèques open-source. Le code source est disponible sur <a href="https://github.com/hermanvanel-ui/herman-portfolio" target="_blank" style="color:var(--cyan);text-decoration:underline;">GitHub</a>.</p>
+      <p class="card-sub">Aucun backend, aucune IA distante, aucun framework lourd. L'ensemble fonctionne localement dans le navigateur avec du JavaScript pur et deux bibliothèques open-source. Le code source est disponible sur <a href="https://github.com/hermanvanel-ui/herman-portfolio" target="_blank" style="color:var(--cyan);text-decoration:underline;">GitHub</a>.</p>
     </div>
   </div>
 </div></section>
@@ -574,8 +664,8 @@ p.card-sub{color:var(--text-mid);font-size:.9rem;line-height:1.75;font-weight:40
 <!-- =============== CONTACT =============== -->
 <div class="page" id="p-contact">
 <section class="section" style="padding-top:6rem;"><div class="max-w">
-  <div style="margin-bottom:3rem;"><div class="s-label">// contact</div><h2 class="s-title">On <span class="hl">échange</span> ?</h2>
-  <p style="color:var(--text-mid);font-size:1.05rem;line-height:1.8;max-width:650px;margin-top:.75rem;">Je cherche une école comme Epitech pour aller plus loin en développement, des missions en automatisation, ou simplement échanger avec des gens qui construisent des trucs. N'hésitez pas à me contacter par le moyen qui vous arrange.</p></div>
+  <div style="margin-bottom:3rem;"><div class="s-label">// contact</div><h2 class="s-title">Prenons <span class="hl">contact</span></h2>
+  <p style="color:var(--text-mid);font-size:1.05rem;line-height:1.8;max-width:650px;margin-top:.75rem;">Je recherche une école comme Epitech pour approfondir le développement, des missions en automatisation, ou l'opportunité d'échanger avec des professionnels partageant cette vision. N'hésitez pas à me contacter par le moyen qui vous convient.</p></div>
 
   <div class="grid-2">
     <div class="holo-card"><div class="corner c-tl"></div><div class="corner c-tr"></div><div class="corner c-bl"></div><div class="corner c-br"></div>
@@ -586,7 +676,7 @@ p.card-sub{color:var(--text-mid);font-size:.9rem;line-height:1.75;font-weight:40
     <div class="holo-card"><div class="corner c-tl"></div><div class="corner c-tr"></div><div class="corner c-bl"></div><div class="corner c-br"></div>
       <div style="font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--green);letter-spacing:2px;text-transform:uppercase;margin-bottom:.75rem;">LinkedIn</div>
       <h3 class="card-title"><a href="#" style="color:var(--cyan);text-decoration:none;transition:color .3s;">Herman Vanel</a></h3>
-      <p class="card-text">Pour le côté professionnel. Ajoutez-moi, on discute.</p>
+      <p class="card-text">Pour les échanges professionnels. N'hésitez pas à me contacter.</p>
     </div>
   </div>
 
@@ -594,14 +684,43 @@ p.card-sub{color:var(--text-mid);font-size:.9rem;line-height:1.75;font-weight:40
     <div class="holo-card"><div class="corner c-tl"></div><div class="corner c-tr"></div><div class="corner c-bl"></div><div class="corner c-br"></div>
       <div style="font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--green);letter-spacing:2px;text-transform:uppercase;margin-bottom:.75rem;">GitHub</div>
       <h3 class="card-title"><a href="https://github.com/hermanvanel-ui" target="_blank" style="color:var(--cyan);text-decoration:none;transition:color .3s;">github.com/hermanvanel-ui</a></h3>
-      <p class="card-text">Tout mon code est là. Le portfolio, les workflows, les bots. Regardez, clonez, proposez des améliorations.</p>
+      <p class="card-text">L'ensemble de mon code est accessible ici. Portfolio, workflows, bots. Vous pouvez consulter, cloner ou proposer des améliorations.</p>
     </div>
   </div>
 
   <div style="margin-top:2.5rem;padding:2rem;border:1px solid rgba(0,240,255,.15);background:linear-gradient(135deg,rgba(0,240,255,.04),rgba(180,74,255,.04));text-align:center;">
     <div class="accent-line" style="position:relative;top:-2rem;left:20%;right:20%;width:60%;margin:0 auto;"></div>
     <p style="font-family:'Orbitron',sans-serif;font-size:.85rem;letter-spacing:2px;color:#fff;margin-bottom:.75rem;">CE QUE JE CHERCHE</p>
-    <p style="color:var(--text-mid);font-size:.95rem;line-height:1.85;max-width:600px;margin:0 auto;">Une école qui forme des vrais développeurs (Epitech, c'est le plan). Des clients ou missions en automatisation IA via Async Agency. Et des gens curieux qui veulent construire des trucs ensemble.</p>
+    <p style="color:var(--text-mid);font-size:.95rem;line-height:1.85;max-width:600px;margin:0 auto;">Une école qui forme de véritables développeurs (Epitech est l'objectif). Des clients ou missions en automatisation IA via Async Agency. Et des personnes animées par l'envie de créer et d'innover ensemble.</p>
+  </div>
+
+  <!-- DOCUMENTS TÉLÉCHARGEABLES -->
+  <div style="margin-top:2.5rem;">
+    <div class="accent-line" style="margin-bottom:2rem;"></div>
+    <div style="margin-bottom:1.5rem;"><div class="s-label">// documents</div><h2 class="s-title">Fichiers <span class="hl">à télécharger</span></h2>
+    <p style="color:var(--text-mid);font-size:1rem;line-height:1.7;max-width:650px;margin-top:.75rem;">Retrouvez ici mes documents à destination des recruteurs, écoles et partenaires potentiels.</p></div>
+
+    <div class="grid-3" id="docGrid">
+      <a href="./documents/CV_Herman_Vanel.pdf" download class="holo-card" style="text-decoration:none;cursor:pointer;text-align:center;transition:all .4s;">
+        <div class="corner c-tl"></div><div class="corner c-tr"></div><div class="corner c-bl"></div><div class="corner c-br"></div>
+        <div style="font-size:2rem;margin-bottom:.75rem;">📄</div>
+        <h3 class="card-title" style="font-size:.85rem;">CV</h3>
+        <p style="color:var(--text-dim);font-size:.75rem;font-family:'JetBrains Mono',monospace;letter-spacing:1px;">PDF · Télécharger</p>
+      </a>
+      <a href="./documents/Lettre_Motivation_Herman_Vanel.pdf" download class="holo-card" style="text-decoration:none;cursor:pointer;text-align:center;transition:all .4s;">
+        <div class="corner c-tl"></div><div class="corner c-tr"></div><div class="corner c-bl"></div><div class="corner c-br"></div>
+        <div style="font-size:2rem;margin-bottom:.75rem;">✉️</div>
+        <h3 class="card-title" style="font-size:.85rem;">Lettre de motivation</h3>
+        <p style="color:var(--text-dim);font-size:.75rem;font-family:'JetBrains Mono',monospace;letter-spacing:1px;">PDF · Télécharger</p>
+      </a>
+      <a href="./documents/Portfolio_Herman_Vanel.pdf" download class="holo-card" style="text-decoration:none;cursor:pointer;text-align:center;transition:all .4s;">
+        <div class="corner c-tl"></div><div class="corner c-tr"></div><div class="corner c-bl"></div><div class="corner c-br"></div>
+        <div style="font-size:2rem;margin-bottom:.75rem;">📁</div>
+        <h3 class="card-title" style="font-size:.85rem;">Dossier de candidature</h3>
+        <p style="color:var(--text-dim);font-size:.75rem;font-family:'JetBrains Mono',monospace;letter-spacing:1px;">PDF · Télécharger</p>
+      </a>
+    </div>
+    <p style="color:var(--text-faint);font-size:.75rem;font-family:'JetBrains Mono',monospace;letter-spacing:1px;margin-top:1rem;text-align:center;">Placez vos fichiers dans le dossier <span style="color:var(--cyan);">./documents/</span> pour qu'ils soient accessibles au téléchargement.</p>
   </div>
 
 </div></section>
@@ -822,6 +941,11 @@ function stopCam(){
 }
 
 addEventListener('resize',()=>{if(ren){const r=document.getElementById('demoContainer').getBoundingClientRect();ren.setSize(r.width,r.height);c3.aspect=r.width/r.height;c3.updateProjectionMatrix();}});
+
+// ===== ANIMATED STAT COUNTERS =====
+function animateCounters(){const nums=document.querySelectorAll('.stat-num[data-target]');nums.forEach(el=>{const target=parseInt(el.dataset.target,10);if(isNaN(target))return;let current=0;const duration=1800;const step=Math.max(1,Math.floor(target/60));const interval=duration/Math.ceil(target/step);const timer=setInterval(()=>{current+=step;if(current>=target){current=target;clearInterval(timer);}el.textContent=current;},interval);});}
+// Trigger counters when About page is shown
+const origGo=go;go=function(id){origGo(id);if(id==='about'){setTimeout(()=>{document.querySelectorAll('.stat-num[data-target]').forEach(el=>el.textContent='0');animateCounters();},200);}};
 </script>
 </body>
 </html>
