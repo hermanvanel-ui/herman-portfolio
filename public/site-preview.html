@@ -167,6 +167,21 @@ p.card-sub{color:var(--text-mid);font-size:.9rem;line-height:1.75;font-weight:40
 .badge{display:inline-flex;align-items:center;gap:.3rem;padding:.15rem .5rem;font-family:'JetBrains Mono',monospace;font-size:.55rem;letter-spacing:1px;border:1px solid;}
 .badge .dot{width:5px;height:5px;border-radius:50%;}
 .no-hand-msg{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:10;font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--text-faint);background:rgba(5,5,16,.6);padding:.5rem 1.5rem;border:1px solid rgba(255,100,0,.15);backdrop-filter:blur(10px);transition:opacity .4s;pointer-events:none;}
+
+/* ===== PHOTOS ===== */
+.photo-hero{width:160px;height:160px;border-radius:50%;object-fit:cover;border:2px solid rgba(0,240,255,.3);box-shadow:0 0 30px rgba(0,240,255,.15),0 0 60px rgba(0,240,255,.05);margin-bottom:1.5rem;filter:grayscale(20%);transition:all .5s;}
+.photo-hero:hover{border-color:rgba(0,240,255,.6);box-shadow:0 0 40px rgba(0,240,255,.25);filter:grayscale(0%);}
+.photo-card{width:100%;height:200px;object-fit:cover;border-radius:0;margin-bottom:1rem;border:1px solid rgba(0,240,255,.1);filter:brightness(.9);transition:all .4s;}
+.photo-card:hover{filter:brightness(1);border-color:rgba(0,240,255,.3);}
+.photo-about{width:100%;max-width:380px;height:auto;aspect-ratio:3/4;object-fit:cover;border:1px solid rgba(0,240,255,.2);box-shadow:0 0 40px rgba(0,240,255,.08);transition:all .5s;filter:brightness(.9) contrast(1.05);}
+.photo-about:hover{border-color:rgba(0,240,255,.4);box-shadow:0 0 50px rgba(0,240,255,.15);filter:brightness(1) contrast(1.05);}
+.photo-tl{width:100%;height:160px;object-fit:cover;margin-top:.75rem;border:1px solid rgba(0,240,255,.1);filter:brightness(.85);transition:all .4s;}
+.photo-tl:hover{filter:brightness(1);border-color:rgba(0,240,255,.25);}
+.photo-avatar{width:90px;height:90px;border-radius:50%;object-fit:cover;border:2px solid rgba(0,240,255,.25);box-shadow:0 0 20px rgba(0,240,255,.1);margin:0 auto 1.5rem;}
+.photo-gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem;margin-top:1.5rem;}
+.photo-gallery img{width:100%;height:180px;object-fit:cover;border:1px solid rgba(0,240,255,.08);filter:brightness(.85);transition:all .4s;cursor:pointer;}
+.photo-gallery img:hover{filter:brightness(1);border-color:rgba(0,240,255,.25);transform:scale(1.02);}
+@media(max-width:768px){.photo-hero{width:120px;height:120px;}.photo-about{max-width:100%;}.photo-gallery{grid-template-columns:1fr 1fr;}.photo-tl{height:130px;}}
 </style>
 </head>
 <body>
@@ -188,6 +203,7 @@ p.card-sub{color:var(--text-mid);font-size:.9rem;line-height:1.75;font-weight:40
 <div class="page active" id="p-accueil">
 <section class="hero"><div class="hero-bg"></div>
 <div class="hero-content">
+  <img src="images/portrait.jpg" alt="Herman Vanel" class="photo-hero">
   <h1><span class="name-sub">Herman Vanel</span><span class="gradient-text">J'automatise tout.</span></h1>
   <div style="display:flex;justify-content:center;margin-top:1.25rem;overflow:hidden;"><div class="typing">$ 21 ans · Nice · trading · n8n · agents IA</div></div>
   <p class="hero-desc">Étudiant en BUT TC en alternance le jour, je développe des bots de trading et des agents IA le soir. Ce site n'est pas un CV classique — c'est une démonstration concrète de ce que je sais faire, avec du code fonctionnel.</p>
@@ -197,11 +213,13 @@ p.card-sub{color:var(--text-mid);font-size:.9rem;line-height:1.75;font-weight:40
   <div style="margin-bottom:3rem;"><div class="s-label">// aujourd'hui</div><h2 class="s-title">Deux vies <span class="hl">en parallèle</span></h2></div>
   <div class="grid-2" style="margin-bottom:2.5rem;">
     <div class="holo-card"><div class="corner c-tl"></div><div class="corner c-tr"></div><div class="corner c-bl"></div><div class="corner c-br"></div>
+      <img src="images/paal-travail.jpg" alt="Herman au travail chez PAAL" class="photo-card">
       <h3 class="card-title">Le jour : commerce & terrain</h3>
       <p class="card-text">Je suis en 3e année de BUT Techniques de Commercialisation à l'IUT de Nice. Mon alternance se déroule chez <span style="color:var(--cyan-bright);font-weight:600;">PAAL</span>, une entreprise de menuiserie aluminium à Contes, en tant qu'assistant marketing et commercial : prospection téléphonique, développement marketing, gestion des réseaux sociaux.</p>
       <p class="card-sub">Cette expérience m'a appris à communiquer, à convaincre et à comprendre le fonctionnement d'une entreprise de l'intérieur. Ce n'est pas du code, mais c'est un socle essentiel pour entreprendre.</p>
     </div>
     <div class="holo-card"><div class="corner c-tl"></div><div class="corner c-tr"></div><div class="corner c-bl"></div><div class="corner c-br"></div>
+      <img src="images/code-soir.jpg" alt="Herman en train de coder" class="photo-card" style="opacity:.5;border-style:dashed;">
       <h3 class="card-title">Le soir : code & automatisation</h3>
       <p class="card-text">En parallèle, je développe un <span style="color:var(--purple-bright);font-weight:600;">Expert Advisor en MQL5</span> pour trader le Forex et le Gold sur MT5. Je monte des workflows n8n pour automatiser tout ce qui peut l'être. Et avec un associé, on construit <span style="color:var(--purple-bright);font-weight:600;">Async Agency</span>, une agence d'automatisation et d'agents IA pour entreprises.</p>
       <p class="card-sub">Personne ne m'a demandé d'apprendre Python, JavaScript ou MQL5. Chaque langage est venu en réponse à un besoin concret.</p>
@@ -497,9 +515,10 @@ p.card-sub{color:var(--text-mid);font-size:.9rem;line-height:1.75;font-weight:40
       <p style="color:var(--text-mid);font-size:1.05rem;line-height:1.85;margin-bottom:1.25rem;">Le jour, je finis mon BUT Techniques de Commercialisation à l'IUT de Nice en alternance chez <span style="color:var(--cyan);font-weight:600;">PAAL</span>, une entreprise de menuiserie aluminium à Contes. Prospection, marketing digital, réseaux sociaux.</p>
       <p style="color:var(--text-mid);font-size:1.05rem;line-height:1.85;">Le soir, je développe. Des bots de trading, des workflows d'automatisation, des agents IA. Avec mon associé, nous avons lancé <span style="color:var(--purple);font-weight:600;">Async Agency</span>. Personne ne m'a demandé de faire tout cela. Je le fais parce que je veux construire des systèmes autonomes.</p>
     </div>
-    <div>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:1.5rem;">
+      <img src="images/break-freeze.jpg" alt="Herman en breakdance — freeze" class="photo-about">
       <!-- Orbite de compétences -->
-      <div class="orbit-wrap">
+      <div class="orbit-wrap" style="margin:0;">
         <div class="orbit-center">HERMAN<br>.DEV</div>
         <div class="orbit-ring" style="width:180px;height:180px;transform:translate(-50%,-50%);">
           <div class="orbit-item" style="top:0;left:50%;color:var(--cyan);border-color:rgba(0,240,255,.3);background:rgba(0,240,255,.06);">Python</div>
@@ -535,9 +554,9 @@ p.card-sub{color:var(--text-mid);font-size:.9rem;line-height:1.75;font-weight:40
   <div class="tl"><div class="tl-line"></div>
     <div class="tl-item"><div class="tl-dot"></div><div class="tl-card" style="margin-left:auto;"><span style="font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--cyan);letter-spacing:2px;">LES RACINES · 2005</span><h3 style="font-family:'Orbitron',sans-serif;font-size:.85rem;font-weight:600;color:#fff;margin:.4rem 0;">Né en Éthiopie, adopté à 2 ans</h3><p style="color:var(--text-mid);font-size:.8rem;line-height:1.7;">Né en Éthiopie, adopté à l'âge de 2 ans, j'ai grandi dans le sud de la France. Cette double culture m'a apporté une ouverture d'esprit et une capacité d'adaptation que je mobilise au quotidien.</p></div></div>
 
-    <div class="tl-item left"><div class="tl-dot"></div><div class="tl-card" style="margin-right:auto;"><span style="font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--cyan);letter-spacing:2px;">LA DANSE · ~2011 → AUJOURD'HUI</span><h3 style="font-family:'Orbitron',sans-serif;font-size:.85rem;font-weight:600;color:#fff;margin:.4rem 0;">15 ans de breakdance</h3><p style="color:var(--text-mid);font-size:.8rem;line-height:1.7;">J'ai commencé le breakdance vers 6 ans. C'est l'engagement le plus long de ma vie. Les battles m'ont appris à gérer la pression. L'entraînement quotidien m'a inculqué la discipline. Depuis 5-6 ans, j'enseigne à des enfants et adolescents à l'association La Semeuse à Nice. J'ai également donné des cours à Menton pendant un an.</p><div style="display:flex;gap:.3rem;margin-top:.6rem;"><span class="tag">Discipline</span><span class="tag">Transmission</span><span class="tag">Créativité</span><span class="tag">Gestion du stress</span></div></div></div>
+    <div class="tl-item left"><div class="tl-dot"></div><div class="tl-card" style="margin-right:auto;"><span style="font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--cyan);letter-spacing:2px;">LA DANSE · ~2011 → AUJOURD'HUI</span><h3 style="font-family:'Orbitron',sans-serif;font-size:.85rem;font-weight:600;color:#fff;margin:.4rem 0;">15 ans de breakdance</h3><p style="color:var(--text-mid);font-size:.8rem;line-height:1.7;">J'ai commencé le breakdance vers 6 ans. C'est l'engagement le plus long de ma vie. Les battles m'ont appris à gérer la pression. L'entraînement quotidien m'a inculqué la discipline. Depuis 5-6 ans, j'enseigne à des enfants et adolescents à l'association La Semeuse à Nice. J'ai également donné des cours à Menton pendant un an.</p><div style="display:flex;gap:.3rem;margin-top:.6rem;"><span class="tag">Discipline</span><span class="tag">Transmission</span><span class="tag">Créativité</span><span class="tag">Gestion du stress</span></div><img src="images/break-backflip-groupe.jpg" alt="Herman en backflip devant ses élèves — La Semeuse" class="photo-tl"></div></div>
 
-    <div class="tl-item"><div class="tl-dot"></div><div class="tl-card" style="margin-left:auto;"><span style="font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--cyan);letter-spacing:2px;">PREMIÈRES EXPÉRIENCES · 2020-2022</span><h3 style="font-family:'Orbitron',sans-serif;font-size:.85rem;font-weight:600;color:#fff;margin:.4rem 0;">Animation, bénévolat, industrie</h3><p style="color:var(--text-mid);font-size:.8rem;line-height:1.7;">Animateur d'enfants de 6 ans au collège Nazareth tous les mercredis et pendant les vacances. Bénévole à l'épicerie solidaire Solid'Act à Nice : accueil, vente, stocks, caisse. Stage d'observation chez MEI Industries, tôlerie fine à Carros. Et le BAFA en 10 mois, avec la qualification surveillant de baignade.</p><div style="display:flex;gap:.3rem;margin-top:.6rem;"><span class="tag">BAFA</span><span class="tag">Nazareth</span><span class="tag">Solid'Act</span><span class="tag">MEI Industries</span></div></div></div>
+    <div class="tl-item"><div class="tl-dot"></div><div class="tl-card" style="margin-left:auto;"><span style="font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--cyan);letter-spacing:2px;">PREMIÈRES EXPÉRIENCES · 2020-2022</span><h3 style="font-family:'Orbitron',sans-serif;font-size:.85rem;font-weight:600;color:#fff;margin:.4rem 0;">Animation, bénévolat, industrie</h3><p style="color:var(--text-mid);font-size:.8rem;line-height:1.7;">Animateur d'enfants de 6 ans au collège Nazareth tous les mercredis et pendant les vacances. Bénévole à l'épicerie solidaire Solid'Act à Nice : accueil, vente, stocks, caisse. Stage d'observation chez MEI Industries, tôlerie fine à Carros. Et le BAFA en 10 mois, avec la qualification surveillant de baignade.</p><div style="display:flex;gap:.3rem;margin-top:.6rem;"><span class="tag">BAFA</span><span class="tag">Nazareth</span><span class="tag">Solid'Act</span><span class="tag">MEI Industries</span></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin-top:.75rem;"><img src="images/animation-enfants.jpg" alt="Herman animateur avec des enfants" class="photo-tl" style="height:120px;margin:0;"><img src="images/animation-plage.jpg" alt="Herman animateur sur la plage de Nice" class="photo-tl" style="height:120px;margin:0;"></div></div></div>
 
     <div class="tl-item left"><div class="tl-dot hl"></div><div class="tl-card hl" style="margin-right:auto;"><span style="font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--cyan);letter-spacing:2px;">FORMATION · 2022-2025</span><h3 style="font-family:'Orbitron',sans-serif;font-size:.85rem;font-weight:600;color:#fff;margin:.4rem 0;">BUT TC à l'IUT de Nice + PAAL</h3><p style="color:var(--text-mid);font-size:.8rem;line-height:1.7;">Trois ans de Techniques de Commercialisation. En alternance chez PAAL à Contes : prospection téléphonique, développement marketing et gestion des réseaux sociaux. C'est au cours de cette période que j'ai découvert la programmation, en autodidacte, en dehors de mes cours. Le commerce m'a appris à convaincre. Le code m'a appris à construire.</p><div style="display:flex;gap:.3rem;margin-top:.6rem;"><span class="tag">Marketing</span><span class="tag">Prospection B2B</span><span class="tag">Réseaux sociaux</span></div></div></div>
 
@@ -556,9 +575,22 @@ p.card-sub{color:var(--text-mid);font-size:.9rem;line-height:1.75;font-weight:40
     <div class="val-card"><div class="val-num" style="color:var(--cyan);">01</div><h4 style="color:var(--cyan);">Apprendre en faisant</h4><p>Je n'ai jamais suivi de formation en programmation. Face à un problème, j'ai cherché comment le résoudre et j'ai appris en développant. Mon bot de trading, mes workflows, ce site — chaque projet est né d'un besoin concret, pas d'un cours théorique.</p></div>
     <div class="val-card"><div class="val-num" style="color:var(--purple);">02</div><h4 style="color:var(--purple);">Montrer plutôt que raconter</h4><p>Un CV mentionne "motivation et autonomie". Ce site adopte une autre approche : le code est accessible sur GitHub, la démo 3D est fonctionnelle, et vous pouvez évaluer mes compétences directement. Je préfère démontrer que promettre.</p></div>
     <div class="val-card"><div class="val-num" style="color:var(--green);">03</div><h4 style="color:var(--green);">Ne rien lâcher</h4><p>15 ans de breakdance forgent le caractère. Quand mon Expert Advisor a échoué 50 fois, je l'ai corrigé 50 fois. Quand un workflow rencontre un problème, je le résous avant de passer à la suite. La persévérance n'est pas un mot sur un CV — c'est une pratique quotidienne.</p></div>
-    <div class="val-card"><div class="val-num" style="color:var(--pink);">04</div><h4 style="color:var(--pink);">Transmettre</h4><p>Enseigner le breakdance à des enfants depuis 5 ans m'a appris à vulgariser des concepts, à faire preuve de patience et à m'adapter au niveau de chacun. C'est cette même approche qui m'a conduit à intégrer une section explicative dans la page Demo.</p></div>
+    <div class="val-card"><div class="val-num" style="color:var(--pink);">04</div><h4 style="color:var(--pink);">Transmettre</h4><p>Enseigner le breakdance à des enfants depuis 5 ans m'a appris à vulgariser des concepts, à faire preuve de patience et à m'adapter au niveau de chacun. C'est cette même approche qui m'a conduit à intégrer une section explicative dans la page Demo.</p><img src="images/animation-micro.jpg" alt="Herman animateur avec micro" class="photo-tl" style="height:140px;margin-top:.75rem;"></div>
     <div class="val-card"><div class="val-num" style="color:#ffc800;">05</div><h4 style="color:#ffc800;">Construire pour être libre</h4><p>Mon objectif n'est pas d'occuper un poste confortable. C'est de concevoir des systèmes qui fonctionnent de manière autonome. Le trading automatisé, les workflows 24/7, les agents IA — chaque projet contribue au même objectif : l'indépendance.</p></div>
     <div class="val-card"><div class="val-num" style="color:#ff6b35;">06</div><h4 style="color:#ff6b35;">Rester curieux</h4><p>Three.js pour la 3D, MediaPipe pour le hand tracking, MQL5 pour le trading — j'explore des domaines en apparence distincts et je trouve toujours un moyen de les connecter. La curiosité est mon principal moteur.</p></div>
+  </div>
+</div></section>
+
+<!-- SECTION 3b: Galerie photos -->
+<section class="section" style="padding-top:2rem;"><div class="max-w">
+  <div style="margin-bottom:2rem;"><div class="s-label">// en images</div><h2 class="s-title">Quelques <span class="hl">moments</span></h2></div>
+  <div class="photo-gallery">
+    <img src="images/break-freeze.jpg" alt="Freeze breakdance">
+    <img src="images/break-backflip-groupe.jpg" alt="Backflip devant les élèves">
+    <img src="images/break-eleves-pose.jpg" alt="Les élèves en pose">
+    <img src="images/paal-travail.jpg" alt="Au travail chez PAAL">
+    <img src="images/animation-enfants.jpg" alt="Animation avec les enfants">
+    <img src="images/animation-plage.jpg" alt="Animation sur la plage de Nice">
   </div>
 </div></section>
 
@@ -664,7 +696,8 @@ p.card-sub{color:var(--text-mid);font-size:.9rem;line-height:1.75;font-weight:40
 <!-- =============== CONTACT =============== -->
 <div class="page" id="p-contact">
 <section class="section" style="padding-top:6rem;"><div class="max-w">
-  <div style="margin-bottom:3rem;"><div class="s-label">// contact</div><h2 class="s-title">Prenons <span class="hl">contact</span></h2>
+  <div style="margin-bottom:3rem;"><img src="images/portrait.jpg" alt="Herman Vanel" class="photo-avatar">
+  <div class="s-label">// contact</div><h2 class="s-title">Prenons <span class="hl">contact</span></h2>
   <p style="color:var(--text-mid);font-size:1.05rem;line-height:1.8;max-width:650px;margin-top:.75rem;">Je recherche une école comme Epitech pour approfondir le développement, des missions en automatisation, ou l'opportunité d'échanger avec des professionnels partageant cette vision. N'hésitez pas à me contacter par le moyen qui vous convient.</p></div>
 
   <div class="grid-2">
