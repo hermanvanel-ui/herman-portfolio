@@ -110,6 +110,34 @@ p.card-sub{color:var(--text-mid);font-size:.9rem;line-height:1.75;font-weight:40
 .demo-stop-btn{padding:.2rem .6rem;border:1px solid rgba(255,80,80,.4);background:rgba(255,80,80,.06);color:#ff5050;font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:1px;cursor:pointer;transition:all .3s;display:none;}
 .demo-stop-btn.show{display:inline-block;}
 .demo-stop-btn:hover{background:rgba(255,80,80,.15);}
+/* ===== SKILL CARDS ===== */
+.sk-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+@media(max-width:768px){.sk-grid{grid-template-columns:1fr;}}
+.sk-card{position:relative;border:1px solid rgba(0,240,255,.1);background:var(--surface);overflow:hidden;cursor:pointer;transition:all .35s;}
+.sk-card:hover{border-color:rgba(0,240,255,.25);transform:translateY(-1px);}
+.sk-card.open{border-color:rgba(0,240,255,.3);}
+.sk-head{padding:1.25rem 1.25rem .75rem;display:flex;align-items:flex-start;justify-content:space-between;gap:.75rem;}
+.sk-icon{width:36px;height:36px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;}
+.sk-info{flex:1;}
+.sk-name{font-family:'Orbitron',sans-serif;font-size:.8rem;font-weight:600;color:#fff;letter-spacing:1px;}
+.sk-sub{font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--text-dim);letter-spacing:1px;margin-top:.25rem;}
+.sk-bar-wrap{padding:0 1.25rem .75rem;}
+.sk-bar{height:3px;background:rgba(255,255,255,.05);border-radius:2px;overflow:hidden;}
+.sk-bar-fill{height:100%;border-radius:2px;transition:width 1s ease;}
+.sk-arrow{font-size:.7rem;color:var(--text-dim);transition:transform .3s;padding:.2rem;}
+.sk-card.open .sk-arrow{transform:rotate(180deg);color:var(--cyan);}
+.sk-body{max-height:0;overflow:hidden;transition:max-height .4s ease,padding .3s ease;padding:0 1.25rem;}
+.sk-card.open .sk-body{max-height:300px;padding:0 1.25rem 1.25rem;}
+.sk-case{font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--green);letter-spacing:2px;text-transform:uppercase;margin-bottom:.4rem;}
+.sk-case-text{color:var(--text-mid);font-size:.85rem;line-height:1.7;}
+.sk-tags{display:flex;flex-wrap:wrap;gap:.3rem;margin-top:.6rem;}
+.sk-filter{display:flex;gap:.5rem;margin-bottom:1.5rem;flex-wrap:wrap;}
+.sk-filter-btn{padding:.3rem .8rem;font-family:'JetBrains Mono',monospace;font-size:.65rem;letter-spacing:1px;border:1px solid rgba(0,240,255,.15);background:transparent;color:var(--text-dim);cursor:pointer;transition:all .3s;text-transform:uppercase;}
+.sk-filter-btn:hover,.sk-filter-btn.active{color:var(--cyan);border-color:var(--cyan);background:rgba(0,240,255,.06);}
+.sk-filter-btn[data-f="soft"].active{color:var(--purple);border-color:var(--purple);background:rgba(180,74,255,.06);}
+.sk-filter-btn[data-f="lang"].active{color:var(--green);border-color:var(--green);background:rgba(0,255,65,.06);}
+.sk-card.hidden-sk{display:none;}
+
 .badge-row{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:.75rem;}
 .badge{display:inline-flex;align-items:center;gap:.3rem;padding:.15rem .5rem;font-family:'JetBrains Mono',monospace;font-size:.55rem;letter-spacing:1px;border:1px solid;}
 .badge .dot{width:5px;height:5px;border-radius:50%;}
@@ -200,23 +228,232 @@ p.card-sub{color:var(--text-mid);font-size:.9rem;line-height:1.75;font-weight:40
 </div></section>
 
 <section class="section"><div class="max-w">
-  <div style="margin-bottom:3rem;"><div class="s-label">// outils & compétences</div><h2 class="s-title">Ce avec quoi je <span class="hl">travaille</span></h2>
-  <p style="color:var(--text-mid);font-size:1rem;line-height:1.7;max-width:650px;margin-top:.75rem;">Je ne suis pas développeur senior. Je suis quelqu'un qui apprend vite et qui n'a pas peur de casser des trucs pour comprendre comment ils marchent.</p></div>
-  <h3 style="font-family:'Orbitron',sans-serif;font-size:.8rem;letter-spacing:2px;color:var(--cyan);margin-bottom:1.25rem;">TECHNIQUE</h3>
-  <div class="grid-3" style="margin-bottom:2.5rem;">
-    <div style="padding:1rem;border:1px solid rgba(0,240,255,.08);background:var(--surface);"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.4rem;"><span style="font-family:'Orbitron',sans-serif;font-size:.8rem;font-weight:600;color:#fff;">Python</span><span class="tag">Intermédiaire</span></div><p style="color:var(--text-dim);font-size:.75rem;">Scripts, automatisations, analyse</p></div>
-    <div style="padding:1rem;border:1px solid rgba(0,240,255,.08);background:var(--surface);"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.4rem;"><span style="font-family:'Orbitron',sans-serif;font-size:.8rem;font-weight:600;color:#fff;">JavaScript</span><span class="tag">Intermédiaire</span></div><p style="color:var(--text-dim);font-size:.75rem;">Web, API, bots</p></div>
-    <div style="padding:1rem;border:1px solid rgba(0,240,255,.08);background:var(--surface);"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.4rem;"><span style="font-family:'Orbitron',sans-serif;font-size:.8rem;font-weight:600;color:#fff;">MQL5</span><span class="tag">En apprentissage</span></div><p style="color:var(--text-dim);font-size:.75rem;">Expert Advisors MetaTrader 5</p></div>
-    <div style="padding:1rem;border:1px solid rgba(0,240,255,.08);background:var(--surface);"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.4rem;"><span style="font-family:'Orbitron',sans-serif;font-size:.8rem;font-weight:600;color:#fff;">n8n</span><span class="tag">Avancé</span></div><p style="color:var(--text-dim);font-size:.75rem;">Workflows, webhooks, intégrations</p></div>
-    <div style="padding:1rem;border:1px solid rgba(0,240,255,.08);background:var(--surface);"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.4rem;"><span style="font-family:'Orbitron',sans-serif;font-size:.8rem;font-weight:600;color:#fff;">APIs REST</span><span class="tag">Intermédiaire</span></div><p style="color:var(--text-dim);font-size:.75rem;">OpenAI, Telegram, trading</p></div>
-    <div style="padding:1rem;border:1px solid rgba(0,240,255,.08);background:var(--surface);"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.4rem;"><span style="font-family:'Orbitron',sans-serif;font-size:.8rem;font-weight:600;color:#fff;">Next.js / React</span><span class="tag">En apprentissage</span></div><p style="color:var(--text-dim);font-size:.75rem;">Ce site est construit avec</p></div>
+  <div style="margin-bottom:2rem;"><div class="s-label">// compétences</div><h2 class="s-title">Ce que je sais <span class="hl">faire</span></h2>
+  <p style="color:var(--text-mid);font-size:1rem;line-height:1.7;max-width:700px;margin-top:.75rem;">Cliquez sur une compétence pour voir un cas concret où je l'ai utilisée. Pas de blabla, que du vécu.</p></div>
+
+  <!-- Filtres -->
+  <div class="sk-filter">
+    <button class="sk-filter-btn active" data-f="all" onclick="filterSk('all')">Toutes</button>
+    <button class="sk-filter-btn" data-f="hard" onclick="filterSk('hard')">Hard Skills</button>
+    <button class="sk-filter-btn" data-f="soft" onclick="filterSk('soft')">Soft Skills</button>
+    <button class="sk-filter-btn" data-f="lang" onclick="filterSk('lang')">Langues</button>
   </div>
-  <h3 style="font-family:'Orbitron',sans-serif;font-size:.8rem;letter-spacing:2px;color:var(--purple);margin-bottom:1.25rem;">CE QUE LE CODE N'APPREND PAS</h3>
-  <div class="grid-2">
-    <div style="padding:1rem;border:1px solid rgba(180,74,255,.08);background:var(--surface);"><span style="font-family:'Orbitron',sans-serif;font-size:.8rem;font-weight:600;color:#fff;">Persévérant</span><p style="color:var(--text-dim);font-size:.8rem;margin-top:.4rem;">15 ans de breakdance. On n'apprend pas un headspin en une semaine.</p></div>
-    <div style="padding:1rem;border:1px solid rgba(180,74,255,.08);background:var(--surface);"><span style="font-family:'Orbitron',sans-serif;font-size:.8rem;font-weight:600;color:#fff;">Autonome</span><p style="color:var(--text-dim);font-size:.8rem;margin-top:.4rem;">Personne ne m'a dit d'apprendre Python. J'avais un bot à coder, j'ai appris.</p></div>
-    <div style="padding:1rem;border:1px solid rgba(180,74,255,.08);background:var(--surface);"><span style="font-family:'Orbitron',sans-serif;font-size:.8rem;font-weight:600;color:#fff;">Leader naturel</span><p style="color:var(--text-dim);font-size:.8rem;margin-top:.4rem;">Délégué de classe pendant des années. Prof de break depuis 5 ans.</p></div>
-    <div style="padding:1rem;border:1px solid rgba(180,74,255,.08);background:var(--surface);"><span style="font-family:'Orbitron',sans-serif;font-size:.8rem;font-weight:600;color:#fff;">Adaptable</span><p style="color:var(--text-dim);font-size:.8rem;margin-top:.4rem;">De l'animation enfants à la prospection B2B en passant par le trading algo.</p></div>
+
+  <div class="sk-grid" id="skGrid">
+
+    <!-- HARD SKILLS -->
+    <div class="sk-card" data-cat="hard" onclick="toggleSk(this)">
+      <div class="sk-head">
+        <div class="sk-icon" style="background:rgba(0,240,255,.1);color:var(--cyan);">Py</div>
+        <div class="sk-info"><div class="sk-name">Python</div><div class="sk-sub">Intermédiaire</div></div>
+        <div class="sk-arrow">▼</div>
+      </div>
+      <div class="sk-bar-wrap"><div class="sk-bar"><div class="sk-bar-fill" style="width:65%;background:var(--cyan);"></div></div></div>
+      <div class="sk-body">
+        <div class="sk-case">Cas pratique</div>
+        <p class="sk-case-text">J'utilise Python pour coder des scripts d'analyse de données de marché pour mon bot de trading MT5. J'ai aussi développé des agents IA en Python pour Async Agency, capables de traiter des requêtes clients et d'exécuter des actions automatiquement via des APIs.</p>
+        <div class="sk-tags"><span class="tag">Trading</span><span class="tag">Async Agency</span><span class="tag">Agents IA</span></div>
+      </div>
+    </div>
+
+    <div class="sk-card" data-cat="hard" onclick="toggleSk(this)">
+      <div class="sk-head">
+        <div class="sk-icon" style="background:rgba(255,200,0,.1);color:#ffc800;">JS</div>
+        <div class="sk-info"><div class="sk-name">JavaScript</div><div class="sk-sub">Intermédiaire</div></div>
+        <div class="sk-arrow">▼</div>
+      </div>
+      <div class="sk-bar-wrap"><div class="sk-bar"><div class="sk-bar-fill" style="width:60%;background:#ffc800;"></div></div></div>
+      <div class="sk-body">
+        <div class="sk-case">Cas pratique</div>
+        <p class="sk-case-text">Ce portfolio est codé en JavaScript. La démo 3D sur la page Demo utilise Three.js et MediaPipe, entièrement en JS vanilla. J'ai aussi construit des bots Telegram en Node.js pour relayer des signaux de trading.</p>
+        <div class="sk-tags"><span class="tag">Ce site</span><span class="tag">Demo 3D</span><span class="tag">Bots Telegram</span></div>
+      </div>
+    </div>
+
+    <div class="sk-card" data-cat="hard" onclick="toggleSk(this)">
+      <div class="sk-head">
+        <div class="sk-icon" style="background:rgba(255,107,53,.1);color:#ff6b35;">M5</div>
+        <div class="sk-info"><div class="sk-name">MQL5</div><div class="sk-sub">En apprentissage</div></div>
+        <div class="sk-arrow">▼</div>
+      </div>
+      <div class="sk-bar-wrap"><div class="sk-bar"><div class="sk-bar-fill" style="width:40%;background:#ff6b35;"></div></div></div>
+      <div class="sk-body">
+        <div class="sk-case">Cas pratique</div>
+        <p class="sk-case-text">Je développe un Expert Advisor qui trade automatiquement le Forex et le XAUUSD sur MetaTrader 5. Le bot analyse les données de marché, applique mes stratégies, place des ordres et gère le risque. Je backteste, j'ajuste, je recommence.</p>
+        <div class="sk-tags"><span class="tag">Expert Advisor</span><span class="tag">Forex</span><span class="tag">Backtesting</span></div>
+      </div>
+    </div>
+
+    <div class="sk-card" data-cat="hard" onclick="toggleSk(this)">
+      <div class="sk-head">
+        <div class="sk-icon" style="background:rgba(0,240,255,.1);color:var(--cyan);">n8n</div>
+        <div class="sk-info"><div class="sk-name">n8n / Automatisation</div><div class="sk-sub">Avancé</div></div>
+        <div class="sk-arrow">▼</div>
+      </div>
+      <div class="sk-bar-wrap"><div class="sk-bar"><div class="sk-bar-fill" style="width:80%;background:var(--cyan);"></div></div></div>
+      <div class="sk-body">
+        <div class="sk-case">Cas pratique</div>
+        <p class="sk-case-text">J'ai créé un workflow n8n qui capte des signaux de trading sur Telegram, les filtre, et les relaye vers MT5. Un autre génère automatiquement les plannings de publication pour Metricool. Chez PAAL, j'ai automatisé des tâches marketing répétitives avec des webhooks.</p>
+        <div class="sk-tags"><span class="tag">Telegram → MT5</span><span class="tag">Metricool</span><span class="tag">PAAL</span></div>
+      </div>
+    </div>
+
+    <div class="sk-card" data-cat="hard" onclick="toggleSk(this)">
+      <div class="sk-head">
+        <div class="sk-icon" style="background:rgba(180,74,255,.1);color:var(--purple);">API</div>
+        <div class="sk-info"><div class="sk-name">APIs REST</div><div class="sk-sub">Intermédiaire</div></div>
+        <div class="sk-arrow">▼</div>
+      </div>
+      <div class="sk-bar-wrap"><div class="sk-bar"><div class="sk-bar-fill" style="width:55%;background:var(--purple);"></div></div></div>
+      <div class="sk-body">
+        <div class="sk-case">Cas pratique</div>
+        <p class="sk-case-text">J'intègre les APIs d'OpenAI, Telegram, MetaTrader et d'autres services dans mes workflows et bots. Pour Async Agency, je connecte les APIs de nos clients entre elles pour créer des automatisations sur mesure : CRM, messagerie, facturation.</p>
+        <div class="sk-tags"><span class="tag">OpenAI</span><span class="tag">Webhooks</span><span class="tag">Intégrations clients</span></div>
+      </div>
+    </div>
+
+    <div class="sk-card" data-cat="hard" onclick="toggleSk(this)">
+      <div class="sk-head">
+        <div class="sk-icon" style="background:rgba(0,255,65,.1);color:var(--green);">3D</div>
+        <div class="sk-info"><div class="sk-name">Three.js / WebGL</div><div class="sk-sub">En apprentissage</div></div>
+        <div class="sk-arrow">▼</div>
+      </div>
+      <div class="sk-bar-wrap"><div class="sk-bar"><div class="sk-bar-fill" style="width:35%;background:var(--green);"></div></div></div>
+      <div class="sk-body">
+        <div class="sk-case">Cas pratique</div>
+        <p class="sk-case-text">La démo sur la page Demo de ce site : un cube 3D déformable en temps réel contrôlé par les mains via la webcam. Géométrie déformable, système de ressort, fils d'énergie animés, particules. Tout en Three.js r128 dans le navigateur.</p>
+        <div class="sk-tags"><span class="tag">Ce site</span><span class="tag">MediaPipe</span><span class="tag">Hand tracking</span></div>
+      </div>
+    </div>
+
+    <div class="sk-card" data-cat="hard" onclick="toggleSk(this)">
+      <div class="sk-head">
+        <div class="sk-icon" style="background:rgba(236,72,153,.1);color:var(--pink);">Mk</div>
+        <div class="sk-info"><div class="sk-name">Marketing digital</div><div class="sk-sub">Pratique terrain</div></div>
+        <div class="sk-arrow">▼</div>
+      </div>
+      <div class="sk-bar-wrap"><div class="sk-bar"><div class="sk-bar-fill" style="width:60%;background:var(--pink);"></div></div></div>
+      <div class="sk-body">
+        <div class="sk-case">Cas pratique</div>
+        <p class="sk-case-text">Chez PAAL en alternance, je gère la prospection téléphonique, le développement marketing et les réseaux sociaux de l'entreprise. En BUT TC, j'ai appris les stratégies commerciales, le comportement consommateur et la gestion de projet marketing.</p>
+        <div class="sk-tags"><span class="tag">PAAL</span><span class="tag">Réseaux sociaux</span><span class="tag">Prospection B2B</span></div>
+      </div>
+    </div>
+
+    <!-- SOFT SKILLS -->
+    <div class="sk-card" data-cat="soft" onclick="toggleSk(this)" style="border-color:rgba(180,74,255,.1);">
+      <div class="sk-head">
+        <div class="sk-icon" style="background:rgba(180,74,255,.1);color:var(--purple);">💪</div>
+        <div class="sk-info"><div class="sk-name">Persévérance</div><div class="sk-sub">Depuis toujours</div></div>
+        <div class="sk-arrow">▼</div>
+      </div>
+      <div class="sk-bar-wrap"><div class="sk-bar"><div class="sk-bar-fill" style="width:95%;background:var(--purple);"></div></div></div>
+      <div class="sk-body">
+        <div class="sk-case" style="color:var(--purple);">Cas pratique</div>
+        <p class="sk-case-text">15 ans de breakdance. On n'apprend pas un headspin en une semaine. Quand mon bot de trading a crashé 50 fois de suite, j'ai debuggé 50 fois. Quand un workflow n8n plante à 3h du matin, je le répare avant de dormir.</p>
+        <div class="sk-tags"><span class="tag" style="border-color:rgba(180,74,255,.2);color:var(--purple);">Breakdance</span><span class="tag" style="border-color:rgba(180,74,255,.2);color:var(--purple);">Trading</span><span class="tag" style="border-color:rgba(180,74,255,.2);color:var(--purple);">Debug</span></div>
+      </div>
+    </div>
+
+    <div class="sk-card" data-cat="soft" onclick="toggleSk(this)" style="border-color:rgba(180,74,255,.1);">
+      <div class="sk-head">
+        <div class="sk-icon" style="background:rgba(180,74,255,.1);color:var(--purple);">🧭</div>
+        <div class="sk-info"><div class="sk-name">Autonomie</div><div class="sk-sub">Autodidacte</div></div>
+        <div class="sk-arrow">▼</div>
+      </div>
+      <div class="sk-bar-wrap"><div class="sk-bar"><div class="sk-bar-fill" style="width:90%;background:var(--purple);"></div></div></div>
+      <div class="sk-body">
+        <div class="sk-case" style="color:var(--purple);">Cas pratique</div>
+        <p class="sk-case-text">Personne ne m'a demandé d'apprendre Python, JavaScript ou MQL5. J'avais un bot de trading à coder, j'ai appris. J'avais des tâches à automatiser, j'ai découvert n8n. Avec mon associé, on a monté Async Agency sans attendre une formation.</p>
+        <div class="sk-tags"><span class="tag" style="border-color:rgba(180,74,255,.2);color:var(--purple);">Autodidacte</span><span class="tag" style="border-color:rgba(180,74,255,.2);color:var(--purple);">Async Agency</span></div>
+      </div>
+    </div>
+
+    <div class="sk-card" data-cat="soft" onclick="toggleSk(this)" style="border-color:rgba(180,74,255,.1);">
+      <div class="sk-head">
+        <div class="sk-icon" style="background:rgba(180,74,255,.1);color:var(--purple);">👥</div>
+        <div class="sk-info"><div class="sk-name">Leadership</div><div class="sk-sub">Délégué 10 ans + prof de break</div></div>
+        <div class="sk-arrow">▼</div>
+      </div>
+      <div class="sk-bar-wrap"><div class="sk-bar"><div class="sk-bar-fill" style="width:85%;background:var(--purple);"></div></div></div>
+      <div class="sk-body">
+        <div class="sk-case" style="color:var(--purple);">Cas pratique</div>
+        <p class="sk-case-text">Délégué de classe depuis le collège, pendant une dizaine d'années. Depuis 5 ans, j'enseigne le breakdance à des groupes d'enfants et ados à l'association La Semeuse à Nice. J'ai aussi encadré des enfants de 6 ans comme animateur au collège Nazareth.</p>
+        <div class="sk-tags"><span class="tag" style="border-color:rgba(180,74,255,.2);color:var(--purple);">La Semeuse</span><span class="tag" style="border-color:rgba(180,74,255,.2);color:var(--purple);">Nazareth</span><span class="tag" style="border-color:rgba(180,74,255,.2);color:var(--purple);">BAFA</span></div>
+      </div>
+    </div>
+
+    <div class="sk-card" data-cat="soft" onclick="toggleSk(this)" style="border-color:rgba(180,74,255,.1);">
+      <div class="sk-head">
+        <div class="sk-icon" style="background:rgba(180,74,255,.1);color:var(--purple);">🔄</div>
+        <div class="sk-info"><div class="sk-name">Adaptabilité</div><div class="sk-sub">Tous les terrains</div></div>
+        <div class="sk-arrow">▼</div>
+      </div>
+      <div class="sk-bar-wrap"><div class="sk-bar"><div class="sk-bar-fill" style="width:88%;background:var(--purple);"></div></div></div>
+      <div class="sk-body">
+        <div class="sk-case" style="color:var(--purple);">Cas pratique</div>
+        <p class="sk-case-text">Animation d'enfants de 6 ans le mercredi, prospection téléphonique B2B chez PAAL la semaine, bénévolat en épicerie solidaire chez Solid'Act, stage en industrie chez MEI Industries, et du code le soir. Je m'adapte au contexte et aux gens en face de moi.</p>
+        <div class="sk-tags"><span class="tag" style="border-color:rgba(180,74,255,.2);color:var(--purple);">PAAL</span><span class="tag" style="border-color:rgba(180,74,255,.2);color:var(--purple);">Solid'Act</span><span class="tag" style="border-color:rgba(180,74,255,.2);color:var(--purple);">MEI Industries</span></div>
+      </div>
+    </div>
+
+    <div class="sk-card" data-cat="soft" onclick="toggleSk(this)" style="border-color:rgba(180,74,255,.1);">
+      <div class="sk-head">
+        <div class="sk-icon" style="background:rgba(180,74,255,.1);color:var(--purple);">🤝</div>
+        <div class="sk-info"><div class="sk-name">Travail en équipe</div><div class="sk-sub">Associé, danse, alternance</div></div>
+        <div class="sk-arrow">▼</div>
+      </div>
+      <div class="sk-bar-wrap"><div class="sk-bar"><div class="sk-bar-fill" style="width:82%;background:var(--purple);"></div></div></div>
+      <div class="sk-body">
+        <div class="sk-case" style="color:var(--purple);">Cas pratique</div>
+        <p class="sk-case-text">Async Agency, c'est un projet à deux : on se répartit les tâches, on code ensemble, on décide ensemble. En breakdance, je crée des chorégraphies de groupe pour les spectacles. Chez PAAL, je travaille avec l'équipe marketing et commerciale au quotidien.</p>
+        <div class="sk-tags"><span class="tag" style="border-color:rgba(180,74,255,.2);color:var(--purple);">Async Agency</span><span class="tag" style="border-color:rgba(180,74,255,.2);color:var(--purple);">Spectacles</span><span class="tag" style="border-color:rgba(180,74,255,.2);color:var(--purple);">PAAL</span></div>
+      </div>
+    </div>
+
+    <div class="sk-card" data-cat="soft" onclick="toggleSk(this)" style="border-color:rgba(180,74,255,.1);">
+      <div class="sk-head">
+        <div class="sk-icon" style="background:rgba(180,74,255,.1);color:var(--purple);">💡</div>
+        <div class="sk-info"><div class="sk-name">Créativité</div><div class="sk-sub">Danse + code</div></div>
+        <div class="sk-arrow">▼</div>
+      </div>
+      <div class="sk-bar-wrap"><div class="sk-bar"><div class="sk-bar-fill" style="width:85%;background:var(--purple);"></div></div></div>
+      <div class="sk-body">
+        <div class="sk-case" style="color:var(--purple);">Cas pratique</div>
+        <p class="sk-case-text">Le breakdance, c'est de l'improvisation et de la création permanente. Ce portfolio n'est pas un template : la démo 3D interactive, le design futuriste, l'idée de montrer plutôt que raconter. Même les workflows n8n demandent de la créativité pour connecter des services qui n'étaient pas faits pour marcher ensemble.</p>
+        <div class="sk-tags"><span class="tag" style="border-color:rgba(180,74,255,.2);color:var(--purple);">Portfolio</span><span class="tag" style="border-color:rgba(180,74,255,.2);color:var(--purple);">Breakdance</span><span class="tag" style="border-color:rgba(180,74,255,.2);color:var(--purple);">Workflows</span></div>
+      </div>
+    </div>
+
+    <!-- LANGUES -->
+    <div class="sk-card" data-cat="lang" onclick="toggleSk(this)" style="border-color:rgba(0,255,65,.1);">
+      <div class="sk-head">
+        <div class="sk-icon" style="background:rgba(0,255,65,.1);color:var(--green);">EN</div>
+        <div class="sk-info"><div class="sk-name">Anglais</div><div class="sk-sub">Bon niveau (B2)</div></div>
+        <div class="sk-arrow">▼</div>
+      </div>
+      <div class="sk-bar-wrap"><div class="sk-bar"><div class="sk-bar-fill" style="width:70%;background:var(--green);"></div></div></div>
+      <div class="sk-body">
+        <div class="sk-case" style="color:var(--green);">Cas pratique</div>
+        <p class="sk-case-text">Toute la documentation technique que je lis est en anglais : docs de Three.js, MediaPipe, n8n, APIs, Stack Overflow. Je code en anglais (noms de variables, commentaires). Les forums de trading sont aussi majoritairement en anglais.</p>
+        <div class="sk-tags"><span class="tag" style="border-color:rgba(0,255,65,.2);color:var(--green);">Documentation</span><span class="tag" style="border-color:rgba(0,255,65,.2);color:var(--green);">Code</span><span class="tag" style="border-color:rgba(0,255,65,.2);color:var(--green);">Forums</span></div>
+      </div>
+    </div>
+
+    <div class="sk-card" data-cat="lang" onclick="toggleSk(this)" style="border-color:rgba(0,255,65,.1);">
+      <div class="sk-head">
+        <div class="sk-icon" style="background:rgba(0,255,65,.1);color:var(--green);">IT</div>
+        <div class="sk-info"><div class="sk-name">Italien</div><div class="sk-sub">Notions (A2)</div></div>
+        <div class="sk-arrow">▼</div>
+      </div>
+      <div class="sk-bar-wrap"><div class="sk-bar"><div class="sk-bar-fill" style="width:30%;background:var(--green);"></div></div></div>
+      <div class="sk-body">
+        <div class="sk-case" style="color:var(--green);">Cas pratique</div>
+        <p class="sk-case-text">Appris au lycée et en BUT. Nice étant proche de l'Italie, ça sert au quotidien et c'est un plus pour les relations commerciales transfrontalières, notamment chez PAAL qui travaille dans la région.</p>
+        <div class="sk-tags"><span class="tag" style="border-color:rgba(0,255,65,.2);color:var(--green);">PAAL</span><span class="tag" style="border-color:rgba(0,255,65,.2);color:var(--green);">Nice / Italie</span></div>
+      </div>
+    </div>
+
   </div>
 </div></section>
 <footer class="footer"><h2 style="font-family:'Orbitron',sans-serif;font-size:1.2rem;font-weight:700;letter-spacing:2px;color:#fff;">ON ÉCHANGE ?</h2><p style="color:var(--text-mid);max-width:450px;margin:.75rem auto 2rem;line-height:1.7;font-size:.95rem;">Je cherche une école (Epitech), des missions en automatisation, ou juste à discuter.</p><div class="footer-links"><a href="mailto:herman.vanel@gmail.com">Email</a><a href="#">LinkedIn</a><a href="https://github.com/hermanvanel-ui" target="_blank">GitHub</a></div><p style="color:var(--text-faint);font-size:.65rem;font-family:'JetBrains Mono',monospace;letter-spacing:1px;">© 2025 HERMAN VANEL · NICE</p></footer>
@@ -374,6 +611,10 @@ p.card-sub{color:var(--text-mid);font-size:.9rem;line-height:1.75;font-weight:40
 <script>
 // ===== NAV =====
 function go(id){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.querySelectorAll('.nav-links a').forEach(a=>a.classList.remove('active'));document.getElementById('p-'+id).classList.add('active');document.getElementById('n-'+id).classList.add('active');window.scrollTo({top:0,behavior:'smooth'});}
+
+// ===== SKILLS =====
+function toggleSk(el){el.classList.toggle('open');}
+function filterSk(cat){document.querySelectorAll('.sk-filter-btn').forEach(b=>b.classList.remove('active'));document.querySelector('.sk-filter-btn[data-f="'+cat+'"]').classList.add('active');document.querySelectorAll('.sk-card').forEach(c=>{if(cat==='all')c.classList.remove('hidden-sk');else if(c.dataset.cat===cat)c.classList.remove('hidden-sk');else c.classList.add('hidden-sk');});}
 
 // ===== MATRIX =====
 const mc=document.getElementById('matrixCanvas'),mx=mc.getContext('2d');mc.width=innerWidth;mc.height=innerHeight;
