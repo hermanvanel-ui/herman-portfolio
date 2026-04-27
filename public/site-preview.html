@@ -189,6 +189,13 @@ p.card-sub{color:var(--text-mid);font-size:.9rem;line-height:1.75;font-weight:40
 .photo-gallery img{width:100%;height:180px;object-fit:cover;border:1px solid rgba(96,165,250,.08);filter:brightness(.85);transition:all .4s;cursor:pointer;}
 .photo-gallery img:hover{filter:brightness(1);border-color:rgba(96,165,250,.25);transform:scale(1.02);}
 @media(max-width:768px){.photo-hero{width:170px;height:170px;}.photo-about{max-width:100%;}.photo-gallery{grid-template-columns:1fr 1fr;}.photo-tl{height:130px;}}
+
+/* ===== LANGUAGE TOGGLE ===== */
+.lang-toggle{display:flex;align-items:center;gap:0;margin-left:2rem;border:1px solid rgba(96,165,250,.2);border-radius:4px;overflow:hidden;}
+.lang-btn{font-family:'JetBrains Mono',monospace;font-size:.75rem;letter-spacing:1px;text-transform:uppercase;background:none;border:none;color:var(--text-dim);cursor:pointer;transition:all .3s;padding:.45rem .75rem;line-height:1;-webkit-tap-highlight-color:transparent;}
+.lang-btn:hover{color:var(--text);background:rgba(255,255,255,.05);}
+.lang-btn.active{color:var(--cyan);background:rgba(96,165,250,.12);text-shadow:0 0 8px rgba(96,165,250,.3);}
+.lang-separator{color:var(--text-faint);font-size:.65rem;line-height:1;}
 </style>
 </head>
 <body>
@@ -198,12 +205,17 @@ p.card-sub{color:var(--text-mid);font-size:.9rem;line-height:1.75;font-weight:40
 <div class="nav"><div class="nav-inner">
   <div class="nav-logo" onclick="go('accueil')"><span class="c">HERMAN</span><span class="g">.</span><span class="c">DEV</span></div>
   <ul class="nav-links">
-    <li><a onclick="go('accueil')" id="n-accueil" class="active">_accueil</a></li>
-    <li><a onclick="go('projets')" id="n-projets">_projets</a></li>
-    <li><a onclick="go('about')" id="n-about">_à propos</a></li>
-    <li><a onclick="go('demo')" id="n-demo">_demo</a></li>
-    <li><a onclick="go('contact')" id="n-contact">_contact</a></li>
+    <li><a onclick="go('accueil')" id="n-accueil" class="active" data-i18n="nav-accueil">_accueil</a></li>
+    <li><a onclick="go('projets')" id="n-projets" data-i18n="nav-projets">_projets</a></li>
+    <li><a onclick="go('about')" id="n-about" data-i18n="nav-about">_à propos</a></li>
+    <li><a onclick="go('demo')" id="n-demo" data-i18n="nav-demo">_demo</a></li>
+    <li><a onclick="go('contact')" id="n-contact" data-i18n="nav-contact">_contact</a></li>
   </ul>
+  <div class="lang-toggle" id="langToggle" style="z-index:1001;position:relative;">
+    <button class="lang-btn active" data-lang="fr" onclick="event.stopPropagation();switchLang('fr')">FR</button>
+    <span class="lang-separator">|</span>
+    <button class="lang-btn" data-lang="en" onclick="event.stopPropagation();switchLang('en')">EN</button>
+  </div>
 </div></div>
 
 <!-- =============== ACCUEIL =============== -->
@@ -211,23 +223,23 @@ p.card-sub{color:var(--text-mid);font-size:.9rem;line-height:1.75;font-weight:40
 <section class="hero"><div class="hero-bg"></div>
 <div class="hero-content">
   <img src="images/portrait-classe.jpg" alt="Herman Vanel" class="photo-hero">
-  <h1><span class="name-sub">Herman Vanel</span><span class="gradient-text">J'automatise tout.</span></h1>
-  <div style="display:flex;justify-content:center;margin-top:1.25rem;overflow:hidden;"><div class="typing">$ 21 ans · Nice · trading · n8n · agents IA</div></div>
-  <p class="hero-desc">Étudiant en BUT TC en alternance le jour, je développe des robots de trading et des systèmes d'automatisation le soir. Ce site est une vitrine de ce que je sais faire, avec du code fonctionnel et des projets concrets.</p>
+  <h1><span class="name-sub" data-i18n="hero-name-sub">Herman Vanel</span><span class="gradient-text" data-i18n="hero-gradient">J'automatise tout.</span></h1>
+  <div style="display:flex;justify-content:center;margin-top:1.25rem;overflow:hidden;"><div class="typing" data-i18n="hero-typing">$ 21 ans · Nice · trading · n8n · agents IA</div></div>
+  <p class="hero-desc" data-i18n="hero-desc">Étudiant en BUT TC en alternance le jour, je développe des robots de trading et des systèmes d'automatisation le soir. Ce site est une vitrine de ce que je sais faire, avec du code fonctionnel et des projets concrets.</p>
 </div></section>
 
 <section class="section"><div class="max-w">
-  <div style="margin-bottom:3rem;"><div class="s-label">// aujourd'hui</div><h2 class="s-title">Deux vies <span class="hl">en parallèle</span></h2></div>
+  <div style="margin-bottom:3rem;"><div class="s-label" data-i18n="acc-sec1-label">// aujourd'hui</div><h2 class="s-title"><span data-i18n="acc-sec1-title">Deux vies </span><span class="hl" data-i18n="acc-sec1-hl">en parallèle</span></h2></div>
   <div class="grid-2" style="margin-bottom:2.5rem;">
     <div class="holo-card"><div class="corner c-tl"></div><div class="corner c-tr"></div><div class="corner c-bl"></div><div class="corner c-br"></div>
       <img src="images/paal-travail.jpg" alt="Herman au travail chez PAAL" class="photo-card">
-      <h3 class="card-title">Le jour : commerce & terrain</h3>
+      <h3 class="card-title" data-i18n="acc-sec1-card1-title">Le jour : commerce & terrain</h3>
       <p class="card-text">Je suis en 3e année de BUT Techniques de Commercialisation à l'IUT de Nice. Mon alternance se déroule chez <span style="color:var(--cyan-bright);font-weight:600;">PAAL</span>, une entreprise de menuiserie aluminium à Contes, en tant qu'assistant marketing et commercial : prospection téléphonique, développement marketing, gestion des réseaux sociaux.</p>
       <p class="card-sub">Cette expérience m'a appris à communiquer, à convaincre et à comprendre le fonctionnement d'une entreprise de l'intérieur. Ce n'est pas du code, mais c'est un socle essentiel pour entreprendre.</p>
     </div>
     <div class="holo-card"><div class="corner c-tl"></div><div class="corner c-tr"></div><div class="corner c-bl"></div><div class="corner c-br"></div>
       <img src="images/code-soir.jpg" alt="Herman en train de coder" class="photo-card" style="opacity:.5;border-style:dashed;">
-      <h3 class="card-title">Le soir : code & automatisation</h3>
+      <h3 class="card-title" data-i18n="acc-sec1-card2-title">Le soir : code & automatisation</h3>
       <p class="card-text">En parallèle, je développe un <span style="color:var(--purple-bright);font-weight:600;">Expert Advisor en MQL5</span> — un robot qui analyse les marchés financiers et passe des ordres de trading automatiquement sur MetaTrader 5. Je monte aussi des workflows n8n, des chaînes d'automatisation qui suppriment les tâches répétitives. Et avec un associé, on construit <span style="color:var(--purple-bright);font-weight:600;">Async Agency</span>, une agence d'automatisation et d'agents IA pour les entreprises.</p>
       <p class="card-sub">Personne ne m'a demandé d'apprendre à coder. Chaque langage est venu en réponse à un besoin concret.</p>
     </div>
@@ -235,57 +247,57 @@ p.card-sub{color:var(--text-mid);font-size:.9rem;line-height:1.75;font-weight:40
 </div></section>
 
 <section class="section"><div class="max-w">
-  <div style="margin-bottom:3rem;"><div class="s-label">// explorer</div><h2 class="s-title">La <span class="hl">suite</span></h2></div>
+  <div style="margin-bottom:3rem;"><div class="s-label" data-i18n="acc-sec2-label">// explorer</div><h2 class="s-title"><span data-i18n="acc-sec2-title">La </span><span class="hl" data-i18n="acc-sec2-hl">suite</span></h2></div>
   <div class="grid-3">
     <div class="holo-card" style="cursor:pointer;" onclick="go('projets')"><div class="corner c-tl"></div><div class="corner c-tr"></div><div class="corner c-bl"></div><div class="corner c-br"></div>
       <div class="proj-num" style="color:var(--cyan);">01</div>
-      <h3 class="card-title">Mes projets</h3>
+      <h3 class="card-title" data-i18n="acc-sec2-card1-title">Mes projets</h3>
       <p style="color:var(--text-mid);font-size:.85rem;line-height:1.7;">Un Expert Advisor sur MetaTrader 5 (robot de trading autonome), des workflows n8n pour automatiser des processus, et Async Agency en cours de développement.</p>
       <div style="margin-top:1rem;font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--cyan);letter-spacing:2px;">VOIR →</div>
     </div>
     <div class="holo-card" style="cursor:pointer;" onclick="go('about')"><div class="corner c-tl"></div><div class="corner c-tr"></div><div class="corner c-bl"></div><div class="corner c-br"></div>
       <div class="proj-num" style="color:var(--purple);">02</div>
-      <h3 class="card-title">Mon parcours</h3>
+      <h3 class="card-title" data-i18n="acc-sec2-card2-title">Mon parcours</h3>
       <p style="color:var(--text-mid);font-size:.85rem;line-height:1.7;">Né en Éthiopie, 15 ans de breakdance, BAFA, BUT TC à Nice, alternance chez PAAL et développement autodidacte.</p>
       <div style="margin-top:1rem;font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--purple);letter-spacing:2px;">VOIR →</div>
     </div>
     <div class="holo-card" style="cursor:pointer;" onclick="go('demo')"><div class="corner c-tl"></div><div class="corner c-tr"></div><div class="corner c-bl"></div><div class="corner c-br"></div>
       <div class="proj-num" style="color:var(--green);">03</div>
-      <h3 class="card-title">Demo 3D</h3>
+      <h3 class="card-title" data-i18n="acc-sec2-card3-title">Demo 3D</h3>
       <p style="color:var(--text-mid);font-size:.85rem;line-height:1.7;">Sculptez un cube 3D déformable avec vos mains, en direct dans le navigateur.</p>
       <div style="margin-top:1rem;font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--green);letter-spacing:2px;">TESTER →</div>
     </div>
   </div>
 </div></section>
-<footer class="footer"><h2 style="font-family:'Orbitron',sans-serif;font-size:1.2rem;font-weight:700;letter-spacing:2px;color:#fff;">ÉCHANGEONS</h2><p style="color:var(--text-mid);max-width:450px;margin:.75rem auto 2rem;line-height:1.7;font-size:.95rem;">Je recherche une école (Epitech), des missions en automatisation, ou simplement l'occasion d'échanger avec des professionnels qui partagent cette vision.</p><div class="footer-links"><a href="mailto:herman.vanel@gmail.com">Email</a><a href="#" target="_blank">LinkedIn</a></div><p style="color:var(--text-faint);font-size:.65rem;font-family:'JetBrains Mono',monospace;letter-spacing:1px;">© 2026 HERMAN VANEL · NICE</p></footer>
+<footer class="footer"><h2 style="font-family:'Orbitron',sans-serif;font-size:1.2rem;font-weight:700;letter-spacing:2px;color:#fff;" data-i18n="acc-footer-title">ÉCHANGEONS</h2><p style="color:var(--text-mid);max-width:450px;margin:.75rem auto 2rem;line-height:1.7;font-size:.95rem;" data-i18n="acc-footer-desc">Je recherche une école (Epitech), des missions en automatisation, ou simplement l'occasion d'échanger avec des professionnels qui partagent cette vision.</p><div class="footer-links"><a href="mailto:herman.vanel@gmail.com">Email</a><a href="#" target="_blank">LinkedIn</a></div><p style="color:var(--text-faint);font-size:.65rem;font-family:'JetBrains Mono',monospace;letter-spacing:1px;">© 2026 HERMAN VANEL · NICE</p></footer>
 </div>
 
 <!-- =============== PROJETS =============== -->
 <div class="page" id="p-projets">
 <section class="section" style="padding-top:6rem;"><div class="max-w">
-  <div style="margin-bottom:3rem;"><div class="s-label">// projets</div><h2 class="s-title">Ce que je <span class="hl">construis</span></h2>
-  <p style="color:var(--text-mid);font-size:1rem;line-height:1.7;max-width:650px;margin-top:.75rem;">Ce ne sont pas des projets scolaires. Ce sont des initiatives personnelles, développées le soir, le week-end, en dehors des cours. Certains sont opérationnels, d'autres encore en développement.</p></div>
+  <div style="margin-bottom:3rem;"><div class="s-label" data-i18n="proj-sec-label">// projets</div><h2 class="s-title"><span data-i18n="proj-sec-title">Ce que je </span><span class="hl" data-i18n="proj-sec-hl">construis</span></h2>
+  <p style="color:var(--text-mid);font-size:1rem;line-height:1.7;max-width:650px;margin-top:.75rem;" data-i18n="proj-intro">Ce ne sont pas des projets scolaires. Ce sont des initiatives personnelles, développées le soir, le week-end, en dehors des cours. Certains sont opérationnels, d'autres encore en développement.</p></div>
   <div class="grid-3">
-    <div class="proj-card"><div class="proj-num" style="color:#fb923c;">01</div><h3 class="card-title">Expert Advisor MT5</h3><div style="font-family:'JetBrains Mono',monospace;font-size:.65rem;color:#fb923c;letter-spacing:1px;text-transform:uppercase;margin-bottom:.75rem;">Robot de trading automatisé · Forex & Gold</div><p style="color:var(--text-mid);font-size:.85rem;line-height:1.7;margin-bottom:.75rem;">Je développe en MQL5 un Expert Advisor — un programme qui analyse les marchés (devises et or) et passe des ordres d'achat/vente automatiquement sur MetaTrader 5, sans intervention humaine. Je backteste mes stratégies (test sur données passées), j'optimise, et je recommence. Un projet de long terme.</p><p style="color:var(--text-dim);font-size:.8rem;line-height:1.7;font-style:italic;margin-bottom:1rem;">Le trading m'a enseigné la rigueur. Quand le capital est en jeu, chaque ligne de code compte.</p><div style="display:flex;flex-wrap:wrap;gap:.4rem;"><span class="tag" style="border-color:rgba(251,146,60,.3);color:#fb923c;background:rgba(251,146,60,.06);">MQL5</span><span class="tag" style="border-color:rgba(251,146,60,.3);color:#fb923c;background:rgba(251,146,60,.06);">Python</span><span class="tag" style="border-color:rgba(251,146,60,.3);color:#fb923c;background:rgba(251,146,60,.06);">Trading</span><span class="tag" style="border-color:rgba(251,146,60,.3);color:#fb923c;background:rgba(251,146,60,.06);">Finance</span></div></div>
-    <div class="proj-card"><div class="proj-num" style="color:var(--cyan);">02</div><h3 class="card-title">Workflows n8n</h3><div style="font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--cyan);letter-spacing:1px;text-transform:uppercase;margin-bottom:.75rem;">Automatisations qui tournent 24/7</div><p style="color:var(--text-mid);font-size:.85rem;line-height:1.7;margin-bottom:.75rem;">Avec n8n (un outil d'automatisation), je crée des workflows — des chaînes d'actions qui connectent plusieurs services entre eux. Par exemple : un workflow qui capte des signaux de trading sur Telegram et les exécute sur MT5, ou qui génère automatiquement les plannings de publication sur les réseaux sociaux.</p><p style="color:var(--text-dim);font-size:.8rem;line-height:1.7;font-style:italic;margin-bottom:1rem;">Toute tâche répétitive est une opportunité d'automatisation.</p><div style="display:flex;flex-wrap:wrap;gap:.4rem;"><span class="tag">n8n</span><span class="tag">Automatisation</span><span class="tag">APIs</span><span class="tag">Telegram</span></div></div>
-    <div class="proj-card"><div class="proj-num" style="color:var(--purple);">03</div><h3 class="card-title">Async Agency</h3><div style="font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--purple);letter-spacing:1px;text-transform:uppercase;margin-bottom:.75rem;">Agence d'automatisation & intelligence artificielle</div><p style="color:var(--text-mid);font-size:.85rem;line-height:1.7;margin-bottom:.75rem;">Avec mon associé, on monte Async Agency. On propose des automatisations et des agents IA — des assistants intelligents capables de répondre aux clients, trier des emails ou exécuter des tâches complexes à partir d'une simple demande.</p><p style="color:var(--text-dim);font-size:.8rem;line-height:1.7;font-style:italic;margin-bottom:1rem;">On développe en Python ou en no-code avec n8n, selon les besoins du client.</p><div style="display:flex;flex-wrap:wrap;gap:.4rem;"><span class="tag" style="border-color:rgba(129,140,248,.3);color:var(--purple);background:rgba(129,140,248,.06);">Agents IA</span><span class="tag" style="border-color:rgba(129,140,248,.3);color:var(--purple);background:rgba(129,140,248,.06);">Python</span><span class="tag" style="border-color:rgba(129,140,248,.3);color:var(--purple);background:rgba(129,140,248,.06);">n8n</span></div></div>
+    <div class="proj-card"><div class="proj-num" style="color:#fb923c;">01</div><h3 class="card-title" data-i18n="proj-card1-title">Expert Advisor MT5</h3><div style="font-family:'JetBrains Mono',monospace;font-size:.65rem;color:#fb923c;letter-spacing:1px;text-transform:uppercase;margin-bottom:.75rem;" data-i18n="proj-card1-sub">Robot de trading automatisé · Forex & Gold</div><p style="color:var(--text-mid);font-size:.85rem;line-height:1.7;margin-bottom:.75rem;" data-i18n="proj-card1-text">Je développe en MQL5 un Expert Advisor — un programme qui analyse les marchés (devises et or) et passe des ordres d'achat/vente automatiquement sur MetaTrader 5, sans intervention humaine. Je backteste mes stratégies (test sur données passées), j'optimise, et je recommence. Un projet de long terme.</p><p style="color:var(--text-dim);font-size:.8rem;line-height:1.7;font-style:italic;margin-bottom:1rem;" data-i18n="proj-card1-quote">Le trading m'a enseigné la rigueur. Quand le capital est en jeu, chaque ligne de code compte.</p><div style="display:flex;flex-wrap:wrap;gap:.4rem;"><span class="tag" style="border-color:rgba(251,146,60,.3);color:#fb923c;background:rgba(251,146,60,.06);">MQL5</span><span class="tag" style="border-color:rgba(251,146,60,.3);color:#fb923c;background:rgba(251,146,60,.06);">Python</span><span class="tag" style="border-color:rgba(251,146,60,.3);color:#fb923c;background:rgba(251,146,60,.06);">Trading</span><span class="tag" style="border-color:rgba(251,146,60,.3);color:#fb923c;background:rgba(251,146,60,.06);">Finance</span></div></div>
+    <div class="proj-card"><div class="proj-num" style="color:var(--cyan);">02</div><h3 class="card-title" data-i18n="proj-card2-title">Workflows n8n</h3><div style="font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--cyan);letter-spacing:1px;text-transform:uppercase;margin-bottom:.75rem;" data-i18n="proj-card2-sub">Automatisations qui tournent 24/7</div><p style="color:var(--text-mid);font-size:.85rem;line-height:1.7;margin-bottom:.75rem;" data-i18n="proj-card2-text">Avec n8n (un outil d'automatisation), je crée des workflows — des chaînes d'actions qui connectent plusieurs services entre eux. Par exemple : un workflow qui capte des signaux de trading sur Telegram et les exécute sur MT5, ou qui génère automatiquement les plannings de publication sur les réseaux sociaux.</p><p style="color:var(--text-dim);font-size:.8rem;line-height:1.7;font-style:italic;margin-bottom:1rem;" data-i18n="proj-card2-quote">Toute tâche répétitive est une opportunité d'automatisation.</p><div style="display:flex;flex-wrap:wrap;gap:.4rem;"><span class="tag">n8n</span><span class="tag">Automatisation</span><span class="tag">APIs</span><span class="tag">Telegram</span></div></div>
+    <div class="proj-card"><div class="proj-num" style="color:var(--purple);">03</div><h3 class="card-title" data-i18n="proj-card3-title">Async Agency</h3><div style="font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--purple);letter-spacing:1px;text-transform:uppercase;margin-bottom:.75rem;" data-i18n="proj-card3-sub">Agence d'automatisation & intelligence artificielle</div><p style="color:var(--text-mid);font-size:.85rem;line-height:1.7;margin-bottom:.75rem;" data-i18n="proj-card3-text">Avec mon associé, on monte Async Agency. On propose des automatisations et des agents IA — des assistants intelligents capables de répondre aux clients, trier des emails ou exécuter des tâches complexes à partir d'une simple demande.</p><p style="color:var(--text-dim);font-size:.8rem;line-height:1.7;font-style:italic;margin-bottom:1rem;" data-i18n="proj-card3-quote">On développe en Python ou en no-code avec n8n, selon les besoins du client.</p><div style="display:flex;flex-wrap:wrap;gap:.4rem;"><span class="tag" style="border-color:rgba(129,140,248,.3);color:var(--purple);background:rgba(129,140,248,.06);">Agents IA</span><span class="tag" style="border-color:rgba(129,140,248,.3);color:var(--purple);background:rgba(129,140,248,.06);">Python</span><span class="tag" style="border-color:rgba(129,140,248,.3);color:var(--purple);background:rgba(129,140,248,.06);">n8n</span></div></div>
   </div>
 </div></section>
 
 <section class="section"><div class="max-w">
   <div style="margin-bottom:3rem;">
-    <div class="s-label">// en action</div>
-    <h2 class="s-title">Workflows <span class="hl">réels</span></h2>
-    <p style="color:var(--text-mid);font-size:1rem;line-height:1.7;max-width:700px;margin-top:.75rem;">Voici des exemples concrets de workflows que j'ai construits avec n8n. Chacun répond à un vrai besoin d'entreprise.</p>
+    <div class="s-label" data-i18n="wf-section-label">// en action</div>
+    <h2 class="s-title"><span data-i18n="wf-section-title">Workflows </span><span class="hl" data-i18n="wf-section-hl">réels</span></h2>
+    <p style="color:var(--text-mid);font-size:1rem;line-height:1.7;max-width:700px;margin-top:.75rem;" data-i18n="wf-section-desc">Voici des exemples concrets de workflows que j'ai construits avec n8n. Chacun répond à un vrai besoin d'entreprise.</p>
   </div>
 
   <div class="grid-3">
     <div class="holo-card" style="padding:0;overflow:hidden;"><div class="corner c-tl"></div><div class="corner c-tr"></div><div class="corner c-bl"></div><div class="corner c-br"></div>
       <img src="images/workflow-rappel-rdv.png" alt="Workflow rappel de rendez-vous" style="width:100%;height:180px;object-fit:cover;object-position:center;border-bottom:1px solid rgba(96,165,250,.1);">
       <div style="padding:1.25rem;">
-        <div style="font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--green);letter-spacing:2px;text-transform:uppercase;margin-bottom:.5rem;">Rappel de RDV</div>
-        <h3 class="card-title" style="font-size:.85rem;">Réduire les absences aux rendez-vous</h3>
-        <p class="card-text">Dès qu'un rendez-vous est créé dans Google Calendar, le workflow envoie automatiquement un rappel au client par WhatsApp, Slack ou email. Résultat : moins d'oublis, moins de no-shows.</p>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--green);letter-spacing:2px;text-transform:uppercase;margin-bottom:.5rem;" data-i18n="wf-card1-label">Rappel de RDV</div>
+        <h3 class="card-title" style="font-size:.85rem;" data-i18n="wf-card1-title">Réduire les absences aux rendez-vous</h3>
+        <p class="card-text" data-i18n="wf-card1-text">Dès qu'un rendez-vous est créé dans Google Calendar, le workflow envoie automatiquement un rappel au client par WhatsApp, Slack ou email. Résultat : moins d'oublis, moins de no-shows.</p>
         <div style="display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.75rem;"><span class="tag">Google Calendar</span><span class="tag">WhatsApp</span><span class="tag">Slack</span><span class="tag">Email</span></div>
       </div>
     </div>
@@ -293,9 +305,9 @@ p.card-sub{color:var(--text-mid);font-size:.9rem;line-height:1.75;font-weight:40
     <div class="holo-card" style="padding:0;overflow:hidden;"><div class="corner c-tl"></div><div class="corner c-tr"></div><div class="corner c-bl"></div><div class="corner c-br"></div>
       <img src="images/workflow-reservation.png" alt="Workflow réservation restaurant" style="width:100%;height:180px;object-fit:cover;object-position:center;border-bottom:1px solid rgba(96,165,250,.1);">
       <div style="padding:1.25rem;">
-        <div style="font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--purple);letter-spacing:2px;text-transform:uppercase;margin-bottom:.5rem;">Agent IA Restaurant</div>
-        <h3 class="card-title" style="font-size:.85rem;">Réservation par chat avec une IA</h3>
-        <p class="card-text">Un client écrit par chat pour réserver une table. Un agent IA (OpenAI) comprend la demande, vérifie les disponibilités dans Google Sheets, et confirme ou modifie la réservation tout seul.</p>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--purple);letter-spacing:2px;text-transform:uppercase;margin-bottom:.5rem;" data-i18n="wf-card2-label">Agent IA Restaurant</div>
+        <h3 class="card-title" style="font-size:.85rem;" data-i18n="wf-card2-title">Réservation par chat avec une IA</h3>
+        <p class="card-text" data-i18n="wf-card2-text">Un client écrit par chat pour réserver une table. Un agent IA (OpenAI) comprend la demande, vérifie les disponibilités dans Google Sheets, et confirme ou modifie la réservation tout seul.</p>
         <div style="display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.75rem;"><span class="tag" style="border-color:rgba(129,140,248,.3);color:var(--purple);background:rgba(129,140,248,.06);">OpenAI</span><span class="tag" style="border-color:rgba(129,140,248,.3);color:var(--purple);background:rgba(129,140,248,.06);">Google Sheets</span><span class="tag" style="border-color:rgba(129,140,248,.3);color:var(--purple);background:rgba(129,140,248,.06);">Chat</span></div>
       </div>
     </div>
@@ -303,9 +315,9 @@ p.card-sub{color:var(--text-mid);font-size:.9rem;line-height:1.75;font-weight:40
     <div class="holo-card" style="padding:0;overflow:hidden;"><div class="corner c-tl"></div><div class="corner c-tr"></div><div class="corner c-bl"></div><div class="corner c-br"></div>
       <img src="images/workflow-reseaux.png" alt="Workflow publication réseaux sociaux" style="width:100%;height:180px;object-fit:cover;object-position:center;border-bottom:1px solid rgba(96,165,250,.1);">
       <div style="padding:1.25rem;">
-        <div style="font-family:'JetBrains Mono',monospace;font-size:.6rem;color:#fb923c;letter-spacing:2px;text-transform:uppercase;margin-bottom:.5rem;">Publication auto</div>
-        <h3 class="card-title" style="font-size:.85rem;">Publier sur 4 réseaux en un clic</h3>
-        <p class="card-text">Le workflow lit un planning dans Google Sheets, améliore le texte avec l'IA (Claude), puis publie automatiquement sur Instagram, X/Twitter, Reddit et TikTok. En cas d'erreur, une alerte Telegram prévient.</p>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:.6rem;color:#fb923c;letter-spacing:2px;text-transform:uppercase;margin-bottom:.5rem;" data-i18n="wf-card3-label">Publication auto</div>
+        <h3 class="card-title" style="font-size:.85rem;" data-i18n="wf-card3-title">Publier sur 4 réseaux en un clic</h3>
+        <p class="card-text" data-i18n="wf-card3-text">Le workflow lit un planning dans Google Sheets, améliore le texte avec l'IA (Claude), puis publie automatiquement sur Instagram, X/Twitter, Reddit et TikTok. En cas d'erreur, une alerte Telegram prévient.</p>
         <div style="display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.75rem;"><span class="tag" style="border-color:rgba(251,146,60,.3);color:#fb923c;background:rgba(251,146,60,.06);">Claude API</span><span class="tag" style="border-color:rgba(251,146,60,.3);color:#fb923c;background:rgba(251,146,60,.06);">Instagram</span><span class="tag" style="border-color:rgba(251,146,60,.3);color:#fb923c;background:rgba(251,146,60,.06);">X/Twitter</span><span class="tag" style="border-color:rgba(251,146,60,.3);color:#fb923c;background:rgba(251,146,60,.06);">TikTok</span></div>
       </div>
     </div>
@@ -313,15 +325,15 @@ p.card-sub{color:var(--text-mid);font-size:.9rem;line-height:1.75;font-weight:40
 </div></section>
 
 <section class="section"><div class="max-w">
-  <div style="margin-bottom:2rem;"><div class="s-label">// compétences</div><h2 class="s-title">Ce que je sais <span class="hl">faire</span></h2>
-  <p style="color:var(--text-mid);font-size:1rem;line-height:1.7;max-width:700px;margin-top:.75rem;">Cliquez sur une compétence pour découvrir un cas concret d'application. Chaque exemple est tiré de mon expérience réelle.</p></div>
+  <div style="margin-bottom:2rem;"><div class="s-label" data-i18n="skill-section-label">// compétences</div><h2 class="s-title"><span data-i18n="skill-section-title">Ce que je sais </span><span class="hl" data-i18n="skill-section-hl">faire</span></h2>
+  <p style="color:var(--text-mid);font-size:1rem;line-height:1.7;max-width:700px;margin-top:.75rem;" data-i18n="skill-section-desc">Cliquez sur une compétence pour découvrir un cas concret d'application. Chaque exemple est tiré de mon expérience réelle.</p></div>
 
   <!-- Filtres -->
   <div class="sk-filter">
-    <button class="sk-filter-btn active" data-f="all" onclick="filterSk('all')">Toutes</button>
-    <button class="sk-filter-btn" data-f="hard" onclick="filterSk('hard')">Hard Skills</button>
-    <button class="sk-filter-btn" data-f="soft" onclick="filterSk('soft')">Soft Skills</button>
-    <button class="sk-filter-btn" data-f="lang" onclick="filterSk('lang')">Langues</button>
+    <button class="sk-filter-btn active" data-f="all" onclick="filterSk('all')" data-i18n="sk-filter-all">Toutes</button>
+    <button class="sk-filter-btn" data-f="hard" onclick="filterSk('hard')" data-i18n="sk-filter-hard">Hard Skills</button>
+    <button class="sk-filter-btn" data-f="soft" onclick="filterSk('soft')" data-i18n="sk-filter-soft">Soft Skills</button>
+    <button class="sk-filter-btn" data-f="lang" onclick="filterSk('lang')" data-i18n="sk-filter-lang">Langues</button>
   </div>
 
   <div class="sk-grid" id="skGrid">
@@ -330,13 +342,13 @@ p.card-sub{color:var(--text-mid);font-size:.9rem;line-height:1.75;font-weight:40
     <div class="sk-card" data-cat="hard" onclick="toggleSk(this)">
       <div class="sk-head">
         <div class="sk-icon" style="background:rgba(96,165,250,.1);color:var(--cyan);">Py</div>
-        <div class="sk-info"><div class="sk-name">Python</div><div class="sk-sub">Intermédiaire</div></div>
+        <div class="sk-info"><div class="sk-name" data-i18n="skill-python-name">Python</div><div class="sk-sub" data-i18n="skill-python-sub">Intermédiaire</div></div>
         <div class="sk-arrow">▼</div>
       </div>
       <div class="sk-bar-wrap"><div class="sk-bar"><div class="sk-bar-fill" style="width:65%;background:var(--cyan);"></div></div></div>
       <div class="sk-body">
-        <div class="sk-case">Cas pratique</div>
-        <p class="sk-case-text">J'utilise Python pour analyser les données de marché dans mon bot de trading MT5. J'ai aussi développé des agents IA en Python pour Async Agency — des programmes capables de traiter des demandes clients et d'exécuter des actions automatiquement via des APIs.</p>
+        <div class="sk-case" data-i18n="skill-python-case">Cas pratique</div>
+        <p class="sk-case-text" data-i18n="skill-python-text">J'utilise Python pour analyser les données de marché dans mon bot de trading MT5. J'ai aussi développé des agents IA en Python pour Async Agency — des programmes capables de traiter des demandes clients et d'exécuter des actions automatiquement via des APIs.</p>
         <div class="sk-tags"><span class="tag">Trading</span><span class="tag">Async Agency</span><span class="tag">Agents IA</span></div>
       </div>
     </div>
@@ -344,13 +356,13 @@ p.card-sub{color:var(--text-mid);font-size:.9rem;line-height:1.75;font-weight:40
     <div class="sk-card" data-cat="hard" onclick="toggleSk(this)">
       <div class="sk-head">
         <div class="sk-icon" style="background:rgba(251,191,36,.1);color:#fbbf24;">JS</div>
-        <div class="sk-info"><div class="sk-name">JavaScript</div><div class="sk-sub">Intermédiaire</div></div>
+        <div class="sk-info"><div class="sk-name" data-i18n="skill-js-name">JavaScript</div><div class="sk-sub" data-i18n="skill-js-sub">Intermédiaire</div></div>
         <div class="sk-arrow">▼</div>
       </div>
       <div class="sk-bar-wrap"><div class="sk-bar"><div class="sk-bar-fill" style="width:60%;background:#fbbf24;"></div></div></div>
       <div class="sk-body">
-        <div class="sk-case">Cas pratique</div>
-        <p class="sk-case-text">Ce portfolio est codé en JavaScript pur. La démo 3D (Three.js + MediaPipe) sur la page Demo est entièrement en JS vanilla. J'ai aussi construit des bots Telegram en Node.js qui relayent automatiquement des signaux de trading.</p>
+        <div class="sk-case" data-i18n="skill-js-case">Cas pratique</div>
+        <p class="sk-case-text" data-i18n="skill-js-text">Ce portfolio est codé en JavaScript pur. La démo 3D (Three.js + MediaPipe) sur la page Demo est entièrement en JS vanilla. J'ai aussi construit des bots Telegram en Node.js qui relayent automatiquement des signaux de trading.</p>
         <div class="sk-tags"><span class="tag">Ce site</span><span class="tag">Demo 3D</span><span class="tag">Bots Telegram</span></div>
       </div>
     </div>
@@ -358,13 +370,13 @@ p.card-sub{color:var(--text-mid);font-size:.9rem;line-height:1.75;font-weight:40
     <div class="sk-card" data-cat="hard" onclick="toggleSk(this)">
       <div class="sk-head">
         <div class="sk-icon" style="background:rgba(251,146,60,.1);color:#fb923c;">M5</div>
-        <div class="sk-info"><div class="sk-name">MQL5</div><div class="sk-sub">En apprentissage</div></div>
+        <div class="sk-info"><div class="sk-name" data-i18n="skill-mql5-name">MQL5</div><div class="sk-sub" data-i18n="skill-mql5-sub">En apprentissage</div></div>
         <div class="sk-arrow">▼</div>
       </div>
       <div class="sk-bar-wrap"><div class="sk-bar"><div class="sk-bar-fill" style="width:40%;background:#fb923c;"></div></div></div>
       <div class="sk-body">
-        <div class="sk-case">Cas pratique</div>
-        <p class="sk-case-text">Je développe un Expert Advisor qui trade automatiquement le Forex et le XAUUSD (or) sur MetaTrader 5. Le bot analyse les données de marché, applique mes stratégies, place des ordres et gère le risque. Je backteste (test sur l'historique), j'ajuste, je recommence.</p>
+        <div class="sk-case" data-i18n="skill-mql5-case">Cas pratique</div>
+        <p class="sk-case-text" data-i18n="skill-mql5-text">Je développe un Expert Advisor qui trade automatiquement le Forex et le XAUUSD (or) sur MetaTrader 5. Le bot analyse les données de marché, applique mes stratégies, place des ordres et gère le risque. Je backteste (test sur l'historique), j'ajuste, je recommence.</p>
         <div class="sk-tags"><span class="tag">Expert Advisor</span><span class="tag">Forex</span><span class="tag">Backtesting</span></div>
       </div>
     </div>
@@ -372,13 +384,13 @@ p.card-sub{color:var(--text-mid);font-size:.9rem;line-height:1.75;font-weight:40
     <div class="sk-card" data-cat="hard" onclick="toggleSk(this)">
       <div class="sk-head">
         <div class="sk-icon" style="background:rgba(96,165,250,.1);color:var(--cyan);">n8n</div>
-        <div class="sk-info"><div class="sk-name">n8n / Automatisation</div><div class="sk-sub">Avancé</div></div>
+        <div class="sk-info"><div class="sk-name" data-i18n="skill-n8n-name">n8n / Automatisation</div><div class="sk-sub" data-i18n="skill-n8n-sub">Avancé</div></div>
         <div class="sk-arrow">▼</div>
       </div>
       <div class="sk-bar-wrap"><div class="sk-bar"><div class="sk-bar-fill" style="width:80%;background:var(--cyan);"></div></div></div>
       <div class="sk-body">
-        <div class="sk-case">Cas pratique</div>
-        <p class="sk-case-text">J'ai créé un workflow n8n qui capte des signaux de trading sur Telegram, les filtre et les relaye vers MT5. Un autre génère automatiquement les plannings de publication pour Metricool. Chez PAAL, j'ai automatisé des tâches marketing répétitives via des webhooks (déclencheurs automatiques entre outils).</p>
+        <div class="sk-case" data-i18n="skill-n8n-case">Cas pratique</div>
+        <p class="sk-case-text" data-i18n="skill-n8n-text">J'ai créé un workflow n8n qui capte des signaux de trading sur Telegram, les filtre et les relaye vers MT5. Un autre génère automatiquement les plannings de publication pour Metricool. Chez PAAL, j'ai automatisé des tâches marketing répétitives via des webhooks (déclencheurs automatiques entre outils).</p>
         <div class="sk-tags"><span class="tag">Telegram → MT5</span><span class="tag">Metricool</span><span class="tag">PAAL</span></div>
       </div>
     </div>
@@ -386,13 +398,13 @@ p.card-sub{color:var(--text-mid);font-size:.9rem;line-height:1.75;font-weight:40
     <div class="sk-card" data-cat="hard" onclick="toggleSk(this)">
       <div class="sk-head">
         <div class="sk-icon" style="background:rgba(129,140,248,.1);color:var(--purple);">API</div>
-        <div class="sk-info"><div class="sk-name">APIs REST</div><div class="sk-sub">Intermédiaire</div></div>
+        <div class="sk-info"><div class="sk-name" data-i18n="skill-api-name">APIs REST</div><div class="sk-sub" data-i18n="skill-api-sub">Intermédiaire</div></div>
         <div class="sk-arrow">▼</div>
       </div>
       <div class="sk-bar-wrap"><div class="sk-bar"><div class="sk-bar-fill" style="width:55%;background:var(--purple);"></div></div></div>
       <div class="sk-body">
-        <div class="sk-case">Cas pratique</div>
-        <p class="sk-case-text">J'intègre les APIs (interfaces de communication entre logiciels) d'OpenAI, Telegram, MetaTrader et d'autres services dans mes workflows et bots. Pour Async Agency, je connecte les APIs de nos clients entre elles pour créer des automatisations sur mesure : CRM, messagerie, facturation.</p>
+        <div class="sk-case" data-i18n="skill-api-case">Cas pratique</div>
+        <p class="sk-case-text" data-i18n="skill-api-text">J'intègre les APIs (interfaces de communication entre logiciels) d'OpenAI, Telegram, MetaTrader et d'autres services dans mes workflows et bots. Pour Async Agency, je connecte les APIs de nos clients entre elles pour créer des automatisations sur mesure : CRM, messagerie, facturation.</p>
         <div class="sk-tags"><span class="tag">OpenAI</span><span class="tag">Webhooks</span><span class="tag">Intégrations clients</span></div>
       </div>
     </div>
@@ -400,13 +412,13 @@ p.card-sub{color:var(--text-mid);font-size:.9rem;line-height:1.75;font-weight:40
     <div class="sk-card" data-cat="hard" onclick="toggleSk(this)">
       <div class="sk-head">
         <div class="sk-icon" style="background:rgba(110,231,183,.1);color:var(--green);">3D</div>
-        <div class="sk-info"><div class="sk-name">Three.js / WebGL</div><div class="sk-sub">En apprentissage</div></div>
+        <div class="sk-info"><div class="sk-name" data-i18n="skill-threejs-name">Three.js / WebGL</div><div class="sk-sub" data-i18n="skill-threejs-sub">En apprentissage</div></div>
         <div class="sk-arrow">▼</div>
       </div>
       <div class="sk-bar-wrap"><div class="sk-bar"><div class="sk-bar-fill" style="width:35%;background:var(--green);"></div></div></div>
       <div class="sk-body">
-        <div class="sk-case">Cas pratique</div>
-        <p class="sk-case-text">La démo sur la page Demo de ce site : un cube 3D déformable en temps réel contrôlé par les mains via la webcam. Géométrie déformable, système de ressort, fils d'énergie animés, particules. Tout en Three.js r128 dans le navigateur.</p>
+        <div class="sk-case" data-i18n="skill-threejs-case">Cas pratique</div>
+        <p class="sk-case-text" data-i18n="skill-threejs-text">La démo sur la page Demo de ce site : un cube 3D déformable en temps réel contrôlé par les mains via la webcam. Géométrie déformable, système de ressort, fils d'énergie animés, particules. Tout en Three.js r128 dans le navigateur.</p>
         <div class="sk-tags"><span class="tag">Ce site</span><span class="tag">MediaPipe</span><span class="tag">Hand tracking</span></div>
       </div>
     </div>
@@ -414,13 +426,13 @@ p.card-sub{color:var(--text-mid);font-size:.9rem;line-height:1.75;font-weight:40
     <div class="sk-card" data-cat="hard" onclick="toggleSk(this)">
       <div class="sk-head">
         <div class="sk-icon" style="background:rgba(240,171,252,.1);color:var(--pink);">Mk</div>
-        <div class="sk-info"><div class="sk-name">Marketing digital</div><div class="sk-sub">Pratique terrain</div></div>
+        <div class="sk-info"><div class="sk-name" data-i18n="skill-marketing-name">Marketing digital</div><div class="sk-sub" data-i18n="skill-marketing-sub">Pratique terrain</div></div>
         <div class="sk-arrow">▼</div>
       </div>
       <div class="sk-bar-wrap"><div class="sk-bar"><div class="sk-bar-fill" style="width:60%;background:var(--pink);"></div></div></div>
       <div class="sk-body">
-        <div class="sk-case">Cas pratique</div>
-        <p class="sk-case-text">Chez PAAL en alternance, je gère la prospection téléphonique, le développement marketing et les réseaux sociaux de l'entreprise. En BUT TC, j'ai appris les stratégies commerciales, le comportement consommateur et la gestion de projet marketing.</p>
+        <div class="sk-case" data-i18n="skill-marketing-case">Cas pratique</div>
+        <p class="sk-case-text" data-i18n="skill-marketing-text">Chez PAAL en alternance, je gère la prospection téléphonique, le développement marketing et les réseaux sociaux de l'entreprise. En BUT TC, j'ai appris les stratégies commerciales, le comportement consommateur et la gestion de projet marketing.</p>
         <div class="sk-tags"><span class="tag">PAAL</span><span class="tag">Réseaux sociaux</span><span class="tag">Prospection B2B</span></div>
       </div>
     </div>
@@ -429,13 +441,13 @@ p.card-sub{color:var(--text-mid);font-size:.9rem;line-height:1.75;font-weight:40
     <div class="sk-card" data-cat="soft" onclick="toggleSk(this)" style="border-color:rgba(129,140,248,.1);">
       <div class="sk-head">
         <div class="sk-icon" style="background:rgba(129,140,248,.1);color:var(--purple);">💪</div>
-        <div class="sk-info"><div class="sk-name">Persévérance</div><div class="sk-sub">Depuis toujours</div></div>
+        <div class="sk-info"><div class="sk-name" data-i18n="skill-perseverance-name">Persévérance</div><div class="sk-sub" data-i18n="skill-perseverance-sub">Depuis toujours</div></div>
         <div class="sk-arrow">▼</div>
       </div>
       <div class="sk-bar-wrap"><div class="sk-bar"><div class="sk-bar-fill" style="width:95%;background:var(--purple);"></div></div></div>
       <div class="sk-body">
-        <div class="sk-case" style="color:var(--purple);">Cas pratique</div>
-        <p class="sk-case-text">15 ans de breakdance m'ont forgé cette qualité. La maîtrise d'un mouvement demande des mois de travail. Quand mon bot de trading a échoué 50 fois, je l'ai corrigé 50 fois. Quand un workflow plante, je le débugue avant de passer à autre chose.</p>
+        <div class="sk-case" style="color:var(--purple);" data-i18n="skill-perseverance-case">Cas pratique</div>
+        <p class="sk-case-text" data-i18n="skill-perseverance-text">15 ans de breakdance m'ont forgé cette qualité. La maîtrise d'un mouvement demande des mois de travail. Quand mon bot de trading a échoué 50 fois, je l'ai corrigé 50 fois. Quand un workflow plante, je le débugue avant de passer à autre chose.</p>
         <div class="sk-tags"><span class="tag" style="border-color:rgba(129,140,248,.2);color:var(--purple);">Breakdance</span><span class="tag" style="border-color:rgba(129,140,248,.2);color:var(--purple);">Trading</span><span class="tag" style="border-color:rgba(129,140,248,.2);color:var(--purple);">Debug</span></div>
       </div>
     </div>
@@ -443,13 +455,13 @@ p.card-sub{color:var(--text-mid);font-size:.9rem;line-height:1.75;font-weight:40
     <div class="sk-card" data-cat="soft" onclick="toggleSk(this)" style="border-color:rgba(129,140,248,.1);">
       <div class="sk-head">
         <div class="sk-icon" style="background:rgba(129,140,248,.1);color:var(--purple);">🧭</div>
-        <div class="sk-info"><div class="sk-name">Autonomie</div><div class="sk-sub">Autodidacte</div></div>
+        <div class="sk-info"><div class="sk-name" data-i18n="skill-autonomy-name">Autonomie</div><div class="sk-sub" data-i18n="skill-autonomy-sub">Autodidacte</div></div>
         <div class="sk-arrow">▼</div>
       </div>
       <div class="sk-bar-wrap"><div class="sk-bar"><div class="sk-bar-fill" style="width:90%;background:var(--purple);"></div></div></div>
       <div class="sk-body">
-        <div class="sk-case" style="color:var(--purple);">Cas pratique</div>
-        <p class="sk-case-text">Personne ne m'a demandé d'apprendre à coder. Le besoin de coder un bot de trading m'a poussé vers Python et MQL5. Les tâches à automatiser m'ont conduit vers n8n. Avec mon associé, nous avons lancé Async Agency sans attendre de formation.</p>
+        <div class="sk-case" style="color:var(--purple);" data-i18n="skill-autonomy-case">Cas pratique</div>
+        <p class="sk-case-text" data-i18n="skill-autonomy-text">Personne ne m'a demandé d'apprendre à coder. Le besoin de coder un bot de trading m'a poussé vers Python et MQL5. Les tâches à automatiser m'ont conduit vers n8n. Avec mon associé, nous avons lancé Async Agency sans attendre de formation.</p>
         <div class="sk-tags"><span class="tag" style="border-color:rgba(129,140,248,.2);color:var(--purple);">Autodidacte</span><span class="tag" style="border-color:rgba(129,140,248,.2);color:var(--purple);">Async Agency</span></div>
       </div>
     </div>
@@ -457,13 +469,13 @@ p.card-sub{color:var(--text-mid);font-size:.9rem;line-height:1.75;font-weight:40
     <div class="sk-card" data-cat="soft" onclick="toggleSk(this)" style="border-color:rgba(129,140,248,.1);">
       <div class="sk-head">
         <div class="sk-icon" style="background:rgba(129,140,248,.1);color:var(--purple);">👥</div>
-        <div class="sk-info"><div class="sk-name">Leadership</div><div class="sk-sub">Délégué 10 ans + prof de break</div></div>
+        <div class="sk-info"><div class="sk-name" data-i18n="skill-leadership-name">Leadership</div><div class="sk-sub" data-i18n="skill-leadership-sub">Délégué 10 ans + prof de break</div></div>
         <div class="sk-arrow">▼</div>
       </div>
       <div class="sk-bar-wrap"><div class="sk-bar"><div class="sk-bar-fill" style="width:85%;background:var(--purple);"></div></div></div>
       <div class="sk-body">
-        <div class="sk-case" style="color:var(--purple);">Cas pratique</div>
-        <p class="sk-case-text">Délégué de classe depuis le collège, pendant une dizaine d'années. Depuis 5 ans, j'enseigne le breakdance à des groupes d'enfants et ados à l'association La Semeuse à Nice. J'ai aussi encadré des enfants de 6 ans comme animateur au collège Nazareth.</p>
+        <div class="sk-case" style="color:var(--purple);" data-i18n="skill-leadership-case">Cas pratique</div>
+        <p class="sk-case-text" data-i18n="skill-leadership-text">Délégué de classe depuis le collège, pendant une dizaine d'années. Depuis 5 ans, j'enseigne le breakdance à des groupes d'enfants et ados à l'association La Semeuse à Nice. J'ai aussi encadré des enfants de 6 ans comme animateur au collège Nazareth.</p>
         <div class="sk-tags"><span class="tag" style="border-color:rgba(129,140,248,.2);color:var(--purple);">La Semeuse</span><span class="tag" style="border-color:rgba(129,140,248,.2);color:var(--purple);">Nazareth</span><span class="tag" style="border-color:rgba(129,140,248,.2);color:var(--purple);">BAFA</span></div>
       </div>
     </div>
@@ -471,13 +483,13 @@ p.card-sub{color:var(--text-mid);font-size:.9rem;line-height:1.75;font-weight:40
     <div class="sk-card" data-cat="soft" onclick="toggleSk(this)" style="border-color:rgba(129,140,248,.1);">
       <div class="sk-head">
         <div class="sk-icon" style="background:rgba(129,140,248,.1);color:var(--purple);">🔄</div>
-        <div class="sk-info"><div class="sk-name">Adaptabilité</div><div class="sk-sub">Tous les terrains</div></div>
+        <div class="sk-info"><div class="sk-name" data-i18n="skill-adaptability-name">Adaptabilité</div><div class="sk-sub" data-i18n="skill-adaptability-sub">Tous les terrains</div></div>
         <div class="sk-arrow">▼</div>
       </div>
       <div class="sk-bar-wrap"><div class="sk-bar"><div class="sk-bar-fill" style="width:88%;background:var(--purple);"></div></div></div>
       <div class="sk-body">
-        <div class="sk-case" style="color:var(--purple);">Cas pratique</div>
-        <p class="sk-case-text">Animation d'enfants de 6 ans le mercredi, prospection téléphonique B2B chez PAAL la semaine, bénévolat en épicerie solidaire chez Solid'Act, stage en industrie chez MEI Industries, et développement le soir. Je m'adapte au contexte et aux interlocuteurs.</p>
+        <div class="sk-case" style="color:var(--purple);" data-i18n="skill-adaptability-case">Cas pratique</div>
+        <p class="sk-case-text" data-i18n="skill-adaptability-text">Animation d'enfants de 6 ans le mercredi, prospection téléphonique B2B chez PAAL la semaine, bénévolat en épicerie solidaire chez Solid'Act, stage en industrie chez MEI Industries, et développement le soir. Je m'adapte au contexte et aux interlocuteurs.</p>
         <div class="sk-tags"><span class="tag" style="border-color:rgba(129,140,248,.2);color:var(--purple);">PAAL</span><span class="tag" style="border-color:rgba(129,140,248,.2);color:var(--purple);">Solid'Act</span><span class="tag" style="border-color:rgba(129,140,248,.2);color:var(--purple);">MEI Industries</span></div>
       </div>
     </div>
@@ -485,13 +497,13 @@ p.card-sub{color:var(--text-mid);font-size:.9rem;line-height:1.75;font-weight:40
     <div class="sk-card" data-cat="soft" onclick="toggleSk(this)" style="border-color:rgba(129,140,248,.1);">
       <div class="sk-head">
         <div class="sk-icon" style="background:rgba(129,140,248,.1);color:var(--purple);">🤝</div>
-        <div class="sk-info"><div class="sk-name">Travail en équipe</div><div class="sk-sub">Associé, danse, alternance</div></div>
+        <div class="sk-info"><div class="sk-name" data-i18n="skill-teamwork-name">Travail en équipe</div><div class="sk-sub" data-i18n="skill-teamwork-sub">Associé, danse, alternance</div></div>
         <div class="sk-arrow">▼</div>
       </div>
       <div class="sk-bar-wrap"><div class="sk-bar"><div class="sk-bar-fill" style="width:82%;background:var(--purple);"></div></div></div>
       <div class="sk-body">
-        <div class="sk-case" style="color:var(--purple);">Cas pratique</div>
-        <p class="sk-case-text">Async Agency est un projet collaboratif : répartition des tâches, développement conjoint, décisions partagées. En breakdance, je conçois des chorégraphies de groupe pour les spectacles. Chez PAAL, je collabore quotidiennement avec l'équipe marketing et commerciale.</p>
+        <div class="sk-case" style="color:var(--purple);" data-i18n="skill-teamwork-case">Cas pratique</div>
+        <p class="sk-case-text" data-i18n="skill-teamwork-text">Async Agency est un projet collaboratif : répartition des tâches, développement conjoint, décisions partagées. En breakdance, je conçois des chorégraphies de groupe pour les spectacles. Chez PAAL, je collabore quotidiennement avec l'équipe marketing et commerciale.</p>
         <div class="sk-tags"><span class="tag" style="border-color:rgba(129,140,248,.2);color:var(--purple);">Async Agency</span><span class="tag" style="border-color:rgba(129,140,248,.2);color:var(--purple);">Spectacles</span><span class="tag" style="border-color:rgba(129,140,248,.2);color:var(--purple);">PAAL</span></div>
       </div>
     </div>
@@ -499,13 +511,13 @@ p.card-sub{color:var(--text-mid);font-size:.9rem;line-height:1.75;font-weight:40
     <div class="sk-card" data-cat="soft" onclick="toggleSk(this)" style="border-color:rgba(129,140,248,.1);">
       <div class="sk-head">
         <div class="sk-icon" style="background:rgba(129,140,248,.1);color:var(--purple);">💡</div>
-        <div class="sk-info"><div class="sk-name">Créativité</div><div class="sk-sub">Danse + code</div></div>
+        <div class="sk-info"><div class="sk-name" data-i18n="skill-creativity-name">Créativité</div><div class="sk-sub" data-i18n="skill-creativity-sub">Danse + code</div></div>
         <div class="sk-arrow">▼</div>
       </div>
       <div class="sk-bar-wrap"><div class="sk-bar"><div class="sk-bar-fill" style="width:85%;background:var(--purple);"></div></div></div>
       <div class="sk-body">
-        <div class="sk-case" style="color:var(--purple);">Cas pratique</div>
-        <p class="sk-case-text">Le breakdance repose sur l'improvisation et la création permanente. Ce portfolio en est un bon exemple : la démo 3D interactive et le design sont entièrement faits maison. Les workflows n8n demandent aussi de la créativité pour connecter des services qui n'étaient pas conçus pour fonctionner ensemble.</p>
+        <div class="sk-case" style="color:var(--purple);" data-i18n="skill-creativity-case">Cas pratique</div>
+        <p class="sk-case-text" data-i18n="skill-creativity-text">Le breakdance repose sur l'improvisation et la création permanente. Ce portfolio en est un bon exemple : la démo 3D interactive et le design sont entièrement faits maison. Les workflows n8n demandent aussi de la créativité pour connecter des services qui n'étaient pas conçus pour fonctionner ensemble.</p>
         <div class="sk-tags"><span class="tag" style="border-color:rgba(129,140,248,.2);color:var(--purple);">Portfolio</span><span class="tag" style="border-color:rgba(129,140,248,.2);color:var(--purple);">Breakdance</span><span class="tag" style="border-color:rgba(129,140,248,.2);color:var(--purple);">Workflows</span></div>
       </div>
     </div>
@@ -514,13 +526,13 @@ p.card-sub{color:var(--text-mid);font-size:.9rem;line-height:1.75;font-weight:40
     <div class="sk-card" data-cat="lang" onclick="toggleSk(this)" style="border-color:rgba(110,231,183,.1);">
       <div class="sk-head">
         <div class="sk-icon" style="background:rgba(110,231,183,.1);color:var(--green);">EN</div>
-        <div class="sk-info"><div class="sk-name">Anglais</div><div class="sk-sub">Bon niveau (B2)</div></div>
+        <div class="sk-info"><div class="sk-name" data-i18n="skill-english-name">Anglais</div><div class="sk-sub" data-i18n="skill-english-sub">Bon niveau (B2)</div></div>
         <div class="sk-arrow">▼</div>
       </div>
       <div class="sk-bar-wrap"><div class="sk-bar"><div class="sk-bar-fill" style="width:70%;background:var(--green);"></div></div></div>
       <div class="sk-body">
-        <div class="sk-case" style="color:var(--green);">Cas pratique</div>
-        <p class="sk-case-text">Toute la documentation technique que je lis est en anglais : Three.js, MediaPipe, n8n, APIs, Stack Overflow. Je code en anglais (variables, commentaires). Les forums de trading sont aussi majoritairement anglophones.</p>
+        <div class="sk-case" style="color:var(--green);" data-i18n="skill-english-case">Cas pratique</div>
+        <p class="sk-case-text" data-i18n="skill-english-text">Toute la documentation technique que je lis est en anglais : Three.js, MediaPipe, n8n, APIs, Stack Overflow. Je code en anglais (variables, commentaires). Les forums de trading sont aussi majoritairement anglophones.</p>
         <div class="sk-tags"><span class="tag" style="border-color:rgba(110,231,183,.2);color:var(--green);">Documentation</span><span class="tag" style="border-color:rgba(110,231,183,.2);color:var(--green);">Code</span><span class="tag" style="border-color:rgba(110,231,183,.2);color:var(--green);">Forums</span></div>
       </div>
     </div>
@@ -528,13 +540,13 @@ p.card-sub{color:var(--text-mid);font-size:.9rem;line-height:1.75;font-weight:40
     <div class="sk-card" data-cat="lang" onclick="toggleSk(this)" style="border-color:rgba(110,231,183,.1);">
       <div class="sk-head">
         <div class="sk-icon" style="background:rgba(110,231,183,.1);color:var(--green);">IT</div>
-        <div class="sk-info"><div class="sk-name">Italien</div><div class="sk-sub">Notions (A2)</div></div>
+        <div class="sk-info"><div class="sk-name" data-i18n="skill-italian-name">Italien</div><div class="sk-sub" data-i18n="skill-italian-sub">Notions (A2)</div></div>
         <div class="sk-arrow">▼</div>
       </div>
       <div class="sk-bar-wrap"><div class="sk-bar"><div class="sk-bar-fill" style="width:30%;background:var(--green);"></div></div></div>
       <div class="sk-body">
-        <div class="sk-case" style="color:var(--green);">Cas pratique</div>
-        <p class="sk-case-text">Appris au lycée et en BUT. Nice étant proche de l'Italie, ça sert au quotidien et c'est un plus pour les relations commerciales transfrontalières, notamment chez PAAL qui travaille dans la région.</p>
+        <div class="sk-case" style="color:var(--green);" data-i18n="skill-italian-case">Cas pratique</div>
+        <p class="sk-case-text" data-i18n="skill-italian-text">Appris au lycée et en BUT. Nice étant proche de l'Italie, ça sert au quotidien et c'est un plus pour les relations commerciales transfrontalières, notamment chez PAAL qui travaille dans la région.</p>
         <div class="sk-tags"><span class="tag" style="border-color:rgba(110,231,183,.2);color:var(--green);">PAAL</span><span class="tag" style="border-color:rgba(110,231,183,.2);color:var(--green);">Nice / Italie</span></div>
       </div>
     </div>
@@ -549,13 +561,13 @@ p.card-sub{color:var(--text-mid);font-size:.9rem;line-height:1.75;font-weight:40
 
 <!-- SECTION 1: Qui je suis -->
 <section class="section" style="padding-top:6rem;"><div class="max-w">
-  <div style="margin-bottom:2rem;"><div class="s-label">// qui je suis</div><h2 class="s-title">Herman <span class="hl">Vanel</span></h2></div>
+  <div style="margin-bottom:2rem;"><div class="s-label" data-i18n="about-section1-label">// qui je suis</div><h2 class="s-title"><span data-i18n="about-section1-title">Herman </span><span class="hl" data-i18n="about-section1-hl">Vanel</span></h2></div>
 
   <div class="grid-2" style="gap:2rem;align-items:start;">
     <div>
-      <p style="color:var(--text-mid);font-size:1.05rem;line-height:1.85;margin-bottom:1.25rem;">J'ai 21 ans. Je suis né en Éthiopie, adopté à 2 ans, et j'ai grandi dans le sud de la France. Aujourd'hui je vis à Nice.</p>
-      <p style="color:var(--text-mid);font-size:1.05rem;line-height:1.85;margin-bottom:1.25rem;">Le jour, je finis mon BUT Techniques de Commercialisation à l'IUT de Nice en alternance chez <span style="color:var(--cyan);font-weight:600;">PAAL</span>, une entreprise de menuiserie aluminium à Contes. Prospection, marketing digital, réseaux sociaux.</p>
-      <p style="color:var(--text-mid);font-size:1.05rem;line-height:1.85;">Le soir, je développe. Un bot de trading, des workflows d'automatisation, des agents IA. Avec mon associé, nous avons lancé <span style="color:var(--purple);font-weight:600;">Async Agency</span>. Personne ne m'a demandé de faire tout cela. Je le fais parce que je veux construire des systèmes autonomes.</p>
+      <p style="color:var(--text-mid);font-size:1.05rem;line-height:1.85;margin-bottom:1.25rem;" data-i18n="about-bio-p1">J'ai 21 ans. Je suis né en Éthiopie, adopté à 2 ans, et j'ai grandi dans le sud de la France. Aujourd'hui je vis à Nice.</p>
+      <p style="color:var(--text-mid);font-size:1.05rem;line-height:1.85;margin-bottom:1.25rem;" data-i18n="about-bio-p2">Le jour, je finis mon BUT Techniques de Commercialisation à l'IUT de Nice en alternance chez <span style="color:var(--cyan);font-weight:600;">PAAL</span>, une entreprise de menuiserie aluminium à Contes. Prospection, marketing digital, réseaux sociaux.</p>
+      <p style="color:var(--text-mid);font-size:1.05rem;line-height:1.85;" data-i18n="about-bio-p3">Le soir, je développe. Un bot de trading, des workflows d'automatisation, des agents IA. Avec mon associé, nous avons lancé <span style="color:var(--purple);font-weight:600;">Async Agency</span>. Personne ne m'a demandé de faire tout cela. Je le fais parce que je veux construire des systèmes autonomes.</p>
     </div>
     <div style="display:flex;flex-direction:column;align-items:center;gap:1.5rem;">
       <img src="images/break-freeze.jpg" alt="Herman en breakdance — freeze" class="photo-about">
@@ -563,17 +575,17 @@ p.card-sub{color:var(--text-mid);font-size:.9rem;line-height:1.75;font-weight:40
       <div class="orbit-wrap" style="margin:0;">
         <div class="orbit-center">HERMAN<br>.DEV</div>
         <div class="orbit-ring" style="width:180px;height:180px;transform:translate(-50%,-50%);">
-          <div class="orbit-item" style="top:0;left:50%;color:var(--cyan);border-color:rgba(96,165,250,.3);background:rgba(96,165,250,.06);">Python</div>
-          <div class="orbit-item" style="top:50%;right:-10px;left:auto;color:#fbbf24;border-color:rgba(251,191,36,.3);background:rgba(251,191,36,.06);">JavaScript</div>
-          <div class="orbit-item" style="bottom:0;left:50%;top:auto;color:#fb923c;border-color:rgba(251,146,60,.3);background:rgba(251,146,60,.06);">MQL5</div>
-          <div class="orbit-item" style="top:50%;left:-10px;color:var(--green);border-color:rgba(110,231,183,.3);background:rgba(110,231,183,.06);">n8n</div>
+          <div class="orbit-item" style="top:0;left:50%;color:var(--cyan);border-color:rgba(96,165,250,.3);background:rgba(96,165,250,.06);" data-i18n="orbit-python">Python</div>
+          <div class="orbit-item" style="top:50%;right:-10px;left:auto;color:#fbbf24;border-color:rgba(251,191,36,.3);background:rgba(251,191,36,.06);" data-i18n="orbit-js">JavaScript</div>
+          <div class="orbit-item" style="bottom:0;left:50%;top:auto;color:#fb923c;border-color:rgba(251,146,60,.3);background:rgba(251,146,60,.06);" data-i18n="orbit-mql5">MQL5</div>
+          <div class="orbit-item" style="top:50%;left:-10px;color:var(--green);border-color:rgba(110,231,183,.3);background:rgba(110,231,183,.06);" data-i18n="orbit-n8n">n8n</div>
         </div>
         <div class="orbit-ring" style="width:260px;height:260px;transform:translate(-50%,-50%);">
-          <div class="orbit-item" style="top:0;left:50%;color:var(--purple);border-color:rgba(129,140,248,.3);background:rgba(129,140,248,.06);">IA</div>
-          <div class="orbit-item" style="top:35%;right:-15px;left:auto;color:var(--pink);border-color:rgba(240,171,252,.3);background:rgba(240,171,252,.06);">Marketing</div>
-          <div class="orbit-item" style="bottom:10%;right:5%;left:auto;top:auto;color:var(--cyan);border-color:rgba(96,165,250,.3);background:rgba(96,165,250,.06);">Three.js</div>
-          <div class="orbit-item" style="bottom:10%;left:5%;top:auto;color:#fb923c;border-color:rgba(251,146,60,.3);background:rgba(251,146,60,.06);">Trading</div>
-          <div class="orbit-item" style="top:35%;left:-15px;color:var(--green);border-color:rgba(110,231,183,.3);background:rgba(110,231,183,.06);">APIs</div>
+          <div class="orbit-item" style="top:0;left:50%;color:var(--purple);border-color:rgba(129,140,248,.3);background:rgba(129,140,248,.06);" data-i18n="orbit-ai">IA</div>
+          <div class="orbit-item" style="top:35%;right:-15px;left:auto;color:var(--pink);border-color:rgba(240,171,252,.3);background:rgba(240,171,252,.06);" data-i18n="orbit-marketing">Marketing</div>
+          <div class="orbit-item" style="bottom:10%;right:5%;left:auto;top:auto;color:var(--cyan);border-color:rgba(96,165,250,.3);background:rgba(96,165,250,.06);" data-i18n="orbit-threejs">Three.js</div>
+          <div class="orbit-item" style="bottom:10%;left:5%;top:auto;color:#fb923c;border-color:rgba(251,146,60,.3);background:rgba(251,146,60,.06);" data-i18n="orbit-trading">Trading</div>
+          <div class="orbit-item" style="top:35%;left:-15px;color:var(--green);border-color:rgba(110,231,183,.3);background:rgba(110,231,183,.06);" data-i18n="orbit-apis">APIs</div>
         </div>
       </div>
     </div>
@@ -581,51 +593,51 @@ p.card-sub{color:var(--text-mid);font-size:.9rem;line-height:1.75;font-weight:40
 
   <!-- Chiffres animés -->
   <div class="stat-grid" id="statGrid">
-    <div class="stat-card" style="--sc:var(--cyan);"><div class="stat-card-inner"><span class="stat-num" style="color:var(--cyan);" data-target="15">0</span><span class="stat-label">Ans de breakdance</span></div><div style="position:absolute;top:0;left:0;right:0;height:2px;background:var(--cyan);opacity:.3;"></div></div>
-    <div class="stat-card" style="--sc:var(--purple);"><span class="stat-num" style="color:var(--purple);" data-target="5">0</span><span class="stat-label">Langages de code</span><div style="position:absolute;top:0;left:0;right:0;height:2px;background:var(--purple);opacity:.3;"></div></div>
-    <div class="stat-card" style="--sc:var(--green);"><span class="stat-num" style="color:var(--green);" data-target="3">0</span><span class="stat-label">Projets actifs</span><div style="position:absolute;top:0;left:0;right:0;height:2px;background:var(--green);opacity:.3;"></div></div>
-    <div class="stat-card" style="--sc:#fb923c;"><span class="stat-num" style="color:#fb923c;" data-target="10">0</span><span class="stat-label">Ans délégué de classe</span><div style="position:absolute;top:0;left:0;right:0;height:2px;background:#fb923c;opacity:.3;"></div></div>
+    <div class="stat-card" style="--sc:var(--cyan);"><div class="stat-card-inner"><span class="stat-num" style="color:var(--cyan);" data-target="15">0</span><span class="stat-label" data-i18n="stat-breakdance">Ans de breakdance</span></div><div style="position:absolute;top:0;left:0;right:0;height:2px;background:var(--cyan);opacity:.3;"></div></div>
+    <div class="stat-card" style="--sc:var(--purple);"><span class="stat-num" style="color:var(--purple);" data-target="5">0</span><span class="stat-label" data-i18n="stat-languages">Langages de code</span><div style="position:absolute;top:0;left:0;right:0;height:2px;background:var(--purple);opacity:.3;"></div></div>
+    <div class="stat-card" style="--sc:var(--green);"><span class="stat-num" style="color:var(--green);" data-target="3">0</span><span class="stat-label" data-i18n="stat-projects">Projets actifs</span><div style="position:absolute;top:0;left:0;right:0;height:2px;background:var(--green);opacity:.3;"></div></div>
+    <div class="stat-card" style="--sc:#fb923c;"><span class="stat-num" style="color:#fb923c;" data-target="10">0</span><span class="stat-label" data-i18n="stat-delegate">Ans délégué de classe</span><div style="position:absolute;top:0;left:0;right:0;height:2px;background:#fb923c;opacity:.3;"></div></div>
   </div>
 
-  <div class="about-quote"><div class="q-mark">"</div><p>Mon parcours n'est pas linéaire. Animation, breakdance, commerce, trading, développement. Cela peut sembler disparate, mais chaque étape m'a transmis des compétences que la suivante a mobilisées.</p></div>
+  <div class="about-quote"><div class="q-mark">"</div><p data-i18n="about-quote">Mon parcours n'est pas linéaire. Animation, breakdance, commerce, trading, développement. Cela peut sembler disparate, mais chaque étape m'a transmis des compétences que la suivante a mobilisées.</p></div>
 </div></section>
 
 <!-- SECTION 2: Parcours timeline -->
 <section class="section"><div class="max-w">
-  <div style="margin-bottom:3rem;"><div class="s-label">// parcours</div><h2 class="s-title">D'où je <span class="hl">viens</span></h2></div>
+  <div style="margin-bottom:3rem;"><div class="s-label" data-i18n="tl-section-label">// parcours</div><h2 class="s-title"><span data-i18n="tl-section-title">D'où je </span><span class="hl" data-i18n="tl-section-hl">viens</span></h2></div>
   <div class="tl"><div class="tl-line"></div>
-    <div class="tl-item"><div class="tl-dot"></div><div class="tl-card" style="margin-left:auto;"><span style="font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--cyan);letter-spacing:2px;">LES RACINES · 2005</span><h3 style="font-family:'Orbitron',sans-serif;font-size:.85rem;font-weight:600;color:#fff;margin:.4rem 0;">Né en Éthiopie, adopté à 2 ans</h3><p style="color:var(--text-mid);font-size:.8rem;line-height:1.7;">Né en Éthiopie, adopté à l'âge de 2 ans, j'ai grandi dans le sud de la France. Cette double culture m'a apporté une ouverture d'esprit et une capacité d'adaptation que je mobilise au quotidien.</p></div></div>
+    <div class="tl-item"><div class="tl-dot"></div><div class="tl-card" style="margin-left:auto;"><span style="font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--cyan);letter-spacing:2px;" data-i18n="tl-item1-label">LES RACINES · 2005</span><h3 style="font-family:'Orbitron',sans-serif;font-size:.85rem;font-weight:600;color:#fff;margin:.4rem 0;" data-i18n="tl-item1-title">Né en Éthiopie, adopté à 2 ans</h3><p style="color:var(--text-mid);font-size:.8rem;line-height:1.7;" data-i18n="tl-item1-text">Né en Éthiopie, adopté à l'âge de 2 ans, j'ai grandi dans le sud de la France. Cette double culture m'a apporté une ouverture d'esprit et une capacité d'adaptation que je mobilise au quotidien.</p></div></div>
 
-    <div class="tl-item left"><div class="tl-dot"></div><div class="tl-card" style="margin-right:auto;"><span style="font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--cyan);letter-spacing:2px;">LA DANSE · ~2011 → AUJOURD'HUI</span><h3 style="font-family:'Orbitron',sans-serif;font-size:.85rem;font-weight:600;color:#fff;margin:.4rem 0;">15 ans de breakdance</h3><p style="color:var(--text-mid);font-size:.8rem;line-height:1.7;">J'ai commencé le breakdance vers 6 ans. C'est l'engagement le plus long de ma vie. Les battles m'ont appris à gérer la pression. L'entraînement quotidien m'a inculqué la discipline. Depuis 5-6 ans, j'enseigne à des enfants et adolescents à l'association La Semeuse à Nice. J'ai également donné des cours à Menton pendant un an.</p><div style="display:flex;gap:.3rem;margin-top:.6rem;"><span class="tag">Discipline</span><span class="tag">Transmission</span><span class="tag">Créativité</span><span class="tag">Gestion du stress</span></div><img src="images/break-backflip-groupe.jpg" alt="Herman en backflip devant ses élèves — La Semeuse" class="photo-tl"><div class="video-showcase" onmouseenter="var v=this.querySelector('video');v.muted=false;v.play();" onmouseleave="var v=this.querySelector('video');v.pause();v.currentTime=0;"><video src="images/break-video.mp4" loop playsinline preload="metadata" poster="images/break-freeze.jpg"></video><button class="video-mute-btn" onclick="event.stopPropagation();var v=this.parentElement.querySelector('video');v.muted=!v.muted;this.textContent=v.muted?'🔇':'🔊';">🔊</button><div class="video-label">▶ Passage break · survolez pour lire</div></div></div></div>
+    <div class="tl-item left"><div class="tl-dot"></div><div class="tl-card" style="margin-right:auto;"><span style="font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--cyan);letter-spacing:2px;" data-i18n="tl-item2-label">LA DANSE · ~2011 → AUJOURD'HUI</span><h3 style="font-family:'Orbitron',sans-serif;font-size:.85rem;font-weight:600;color:#fff;margin:.4rem 0;" data-i18n="tl-item2-title">15 ans de breakdance</h3><p style="color:var(--text-mid);font-size:.8rem;line-height:1.7;" data-i18n="tl-item2-text">J'ai commencé le breakdance vers 6 ans. C'est l'engagement le plus long de ma vie. Les battles m'ont appris à gérer la pression. L'entraînement quotidien m'a inculqué la discipline. Depuis 5-6 ans, j'enseigne à des enfants et adolescents à l'association La Semeuse à Nice. J'ai également donné des cours à Menton pendant un an.</p><div style="display:flex;gap:.3rem;margin-top:.6rem;"><span class="tag">Discipline</span><span class="tag">Transmission</span><span class="tag">Créativité</span><span class="tag">Gestion du stress</span></div><img src="images/break-backflip-groupe.jpg" alt="Herman en backflip devant ses élèves — La Semeuse" class="photo-tl"><div class="video-showcase" onmouseenter="var v=this.querySelector('video');v.muted=false;v.play();" onmouseleave="var v=this.querySelector('video');v.pause();v.currentTime=0;"><video src="images/break-video.mp4" loop playsinline preload="metadata" poster="images/break-freeze.jpg"></video><button class="video-mute-btn" onclick="event.stopPropagation();var v=this.parentElement.querySelector('video');v.muted=!v.muted;this.textContent=v.muted?'🔇':'🔊';">🔊</button><div class="video-label">▶ Passage break · survolez pour lire</div></div></div></div>
 
-    <div class="tl-item"><div class="tl-dot"></div><div class="tl-card" style="margin-left:auto;"><span style="font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--cyan);letter-spacing:2px;">PREMIÈRES EXPÉRIENCES · 2020-2022</span><h3 style="font-family:'Orbitron',sans-serif;font-size:.85rem;font-weight:600;color:#fff;margin:.4rem 0;">Animation, bénévolat, industrie</h3><p style="color:var(--text-mid);font-size:.8rem;line-height:1.7;">Animateur d'enfants de 6 ans au collège Nazareth tous les mercredis et pendant les vacances. Bénévole à l'épicerie solidaire Solid'Act à Nice : accueil, vente, stocks, caisse. Stage d'observation chez MEI Industries, tôlerie fine à Carros. Et le BAFA en 10 mois, avec la qualification surveillant de baignade.</p><div style="display:flex;gap:.3rem;margin-top:.6rem;"><span class="tag">BAFA</span><span class="tag">Nazareth</span><span class="tag">Solid'Act</span><span class="tag">MEI Industries</span></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin-top:.75rem;"><img src="images/animation-enfants.jpg" alt="Herman animateur avec des enfants" class="photo-tl" style="height:120px;margin:0;"><img src="images/animation-plage.jpg" alt="Herman animateur sur la plage de Nice" class="photo-tl" style="height:120px;margin:0;"></div></div></div>
+    <div class="tl-item"><div class="tl-dot"></div><div class="tl-card" style="margin-left:auto;"><span style="font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--cyan);letter-spacing:2px;" data-i18n="tl-item3-label">PREMIÈRES EXPÉRIENCES · 2020-2022</span><h3 style="font-family:'Orbitron',sans-serif;font-size:.85rem;font-weight:600;color:#fff;margin:.4rem 0;" data-i18n="tl-item3-title">Animation, bénévolat, industrie</h3><p style="color:var(--text-mid);font-size:.8rem;line-height:1.7;" data-i18n="tl-item3-text">Animateur d'enfants de 6 ans au collège Nazareth tous les mercredis et pendant les vacances. Bénévole à l'épicerie solidaire Solid'Act à Nice : accueil, vente, stocks, caisse. Stage d'observation chez MEI Industries, tôlerie fine à Carros. Et le BAFA en 10 mois, avec la qualification surveillant de baignade.</p><div style="display:flex;gap:.3rem;margin-top:.6rem;"><span class="tag">BAFA</span><span class="tag">Nazareth</span><span class="tag">Solid'Act</span><span class="tag">MEI Industries</span></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin-top:.75rem;"><img src="images/animation-enfants.jpg" alt="Herman animateur avec des enfants" class="photo-tl" style="height:120px;margin:0;"><img src="images/animation-plage.jpg" alt="Herman animateur sur la plage de Nice" class="photo-tl" style="height:120px;margin:0;"></div></div></div>
 
-    <div class="tl-item left"><div class="tl-dot hl"></div><div class="tl-card hl" style="margin-right:auto;"><span style="font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--cyan);letter-spacing:2px;">FORMATION · 2022-2025</span><h3 style="font-family:'Orbitron',sans-serif;font-size:.85rem;font-weight:600;color:#fff;margin:.4rem 0;">BUT TC à l'IUT de Nice + PAAL</h3><p style="color:var(--text-mid);font-size:.8rem;line-height:1.7;">Trois ans de Techniques de Commercialisation. En alternance chez PAAL à Contes : prospection téléphonique, développement marketing et gestion des réseaux sociaux. C'est au cours de cette période que j'ai découvert la programmation, en autodidacte, en dehors de mes cours. Le commerce m'a appris à convaincre. Le code m'a appris à construire.</p><div style="display:flex;gap:.3rem;margin-top:.6rem;"><span class="tag">Marketing</span><span class="tag">Prospection B2B</span><span class="tag">Réseaux sociaux</span></div><img src="images/paal-equipe.jpg" alt="Herman avec l'équipe PAAL" class="photo-tl"></div></div>
+    <div class="tl-item left"><div class="tl-dot hl"></div><div class="tl-card hl" style="margin-right:auto;"><span style="font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--cyan);letter-spacing:2px;" data-i18n="tl-item4-label">FORMATION · 2022-2025</span><h3 style="font-family:'Orbitron',sans-serif;font-size:.85rem;font-weight:600;color:#fff;margin:.4rem 0;" data-i18n="tl-item4-title">BUT TC à l'IUT de Nice + PAAL</h3><p style="color:var(--text-mid);font-size:.8rem;line-height:1.7;" data-i18n="tl-item4-text">Trois ans de Techniques de Commercialisation. En alternance chez PAAL à Contes : prospection téléphonique, développement marketing et gestion des réseaux sociaux. C'est au cours de cette période que j'ai découvert la programmation, en autodidacte, en dehors de mes cours. Le commerce m'a appris à convaincre. Le code m'a appris à construire.</p><div style="display:flex;gap:.3rem;margin-top:.6rem;"><span class="tag">Marketing</span><span class="tag">Prospection B2B</span><span class="tag">Réseaux sociaux</span></div><img src="images/paal-equipe.jpg" alt="Herman avec l'équipe PAAL" class="photo-tl"></div></div>
 
-    <div class="tl-item"><div class="tl-dot hl"></div><div class="tl-card hl" style="margin-left:auto;"><span style="font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--cyan);letter-spacing:2px;">LE DÉCLIC · 2023</span><h3 style="font-family:'Orbitron',sans-serif;font-size:.85rem;font-weight:600;color:#fff;margin:.4rem 0;">Le trading ouvre la porte du code</h3><p style="color:var(--text-mid);font-size:.8rem;line-height:1.7;">Tout a commencé par le trading. L'envie d'automatiser mes stratégies m'a conduit vers MQL5 pour développer un Expert Advisor sur MetaTrader 5. Puis Python s'est imposé pour l'analyse de données. Puis n8n pour connecter mes outils. Puis JavaScript pour créer des interfaces. Chaque problème résolu a ouvert la porte d'un nouveau langage.</p><div style="display:flex;gap:.3rem;margin-top:.6rem;"><span class="tag">MQL5</span><span class="tag">Python</span><span class="tag">Autodidacte</span></div></div></div>
+    <div class="tl-item"><div class="tl-dot hl"></div><div class="tl-card hl" style="margin-left:auto;"><span style="font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--cyan);letter-spacing:2px;" data-i18n="tl-item5-label">LE DÉCLIC · 2023</span><h3 style="font-family:'Orbitron',sans-serif;font-size:.85rem;font-weight:600;color:#fff;margin:.4rem 0;" data-i18n="tl-item5-title">Le trading ouvre la porte du code</h3><p style="color:var(--text-mid);font-size:.8rem;line-height:1.7;" data-i18n="tl-item5-text">Tout a commencé par le trading. L'envie d'automatiser mes stratégies m'a conduit vers MQL5 pour développer un Expert Advisor sur MetaTrader 5. Puis Python s'est imposé pour l'analyse de données. Puis n8n pour connecter mes outils. Puis JavaScript pour créer des interfaces. Chaque problème résolu a ouvert la porte d'un nouveau langage.</p><div style="display:flex;gap:.3rem;margin-top:.6rem;"><span class="tag">MQL5</span><span class="tag">Python</span><span class="tag">Autodidacte</span></div></div></div>
 
-    <div class="tl-item left"><div class="tl-dot hl"></div><div class="tl-card hl" style="margin-right:auto;"><span style="font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--cyan);letter-spacing:2px;">EN PARALLÈLE · 2024-2026</span><h3 style="font-family:'Orbitron',sans-serif;font-size:.85rem;font-weight:600;color:#fff;margin:.4rem 0;">Async Agency + agents IA</h3><p style="color:var(--text-mid);font-size:.8rem;line-height:1.7;">Avec mon associé, nous lançons Async Agency : une agence d'automatisation et d'agents IA pour entreprises. Nous développons en Python ou en no-code avec n8n selon les besoins. En parallèle, je poursuis le trading algorithmique, les workflows, et j'ai conçu ce portfolio avec une démo 3D interactive en Three.js + MediaPipe.</p><div style="display:flex;gap:.3rem;margin-top:.6rem;"><span class="tag">Async Agency</span><span class="tag">n8n</span><span class="tag">Three.js</span><span class="tag">JS</span></div></div></div>
+    <div class="tl-item left"><div class="tl-dot hl"></div><div class="tl-card hl" style="margin-right:auto;"><span style="font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--cyan);letter-spacing:2px;" data-i18n="tl-item6-label">EN PARALLÈLE · 2024-2026</span><h3 style="font-family:'Orbitron',sans-serif;font-size:.85rem;font-weight:600;color:#fff;margin:.4rem 0;" data-i18n="tl-item6-title">Async Agency + agents IA</h3><p style="color:var(--text-mid);font-size:.8rem;line-height:1.7;" data-i18n="tl-item6-text">Avec mon associé, nous lançons Async Agency : une agence d'automatisation et d'agents IA pour entreprises. Nous développons en Python ou en no-code avec n8n selon les besoins. En parallèle, je poursuis le trading algorithmique, les workflows, et j'ai conçu ce portfolio avec une démo 3D interactive en Three.js + MediaPipe.</p><div style="display:flex;gap:.3rem;margin-top:.6rem;"><span class="tag">Async Agency</span><span class="tag">n8n</span><span class="tag">Three.js</span><span class="tag">JS</span></div></div></div>
 
-    <div class="tl-item"><div class="tl-dot future"></div><div class="tl-card future" style="margin-left:auto;"><span style="font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--purple);letter-spacing:2px;">OBJECTIF · 2026-2028</span><h3 style="font-family:'Orbitron',sans-serif;font-size:.85rem;font-weight:600;color:#fff;margin:.4rem 0;">Epitech, spécialisation IA</h3><p style="color:var(--text-mid);font-size:.8rem;line-height:1.7;">Mon objectif est d'intégrer Epitech pour approfondir le développement et l'intelligence artificielle. J'ai le profil d'un autodidacte déterminé, mais il me manque la structure et les compétences avancées qu'une école comme Epitech peut apporter. Ce portfolio fait partie intégrante de ma candidature.</p><div style="display:flex;gap:.3rem;margin-top:.6rem;"><span class="tag" style="border-color:rgba(129,140,248,.2);color:var(--purple);background:rgba(129,140,248,.05);">IA</span><span class="tag" style="border-color:rgba(129,140,248,.2);color:var(--purple);background:rgba(129,140,248,.05);">Epitech</span><span class="tag" style="border-color:rgba(129,140,248,.2);color:var(--purple);background:rgba(129,140,248,.05);">Développement</span></div></div></div>
+    <div class="tl-item"><div class="tl-dot future"></div><div class="tl-card future" style="margin-left:auto;"><span style="font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--purple);letter-spacing:2px;" data-i18n="tl-item7-label">OBJECTIF · 2026-2028</span><h3 style="font-family:'Orbitron',sans-serif;font-size:.85rem;font-weight:600;color:#fff;margin:.4rem 0;" data-i18n="tl-item7-title">Epitech, spécialisation IA</h3><p style="color:var(--text-mid);font-size:.8rem;line-height:1.7;" data-i18n="tl-item7-text">Mon objectif est d'intégrer Epitech pour approfondir le développement et l'intelligence artificielle. J'ai le profil d'un autodidacte déterminé, mais il me manque la structure et les compétences avancées qu'une école comme Epitech peut apporter. Ce portfolio fait partie intégrante de ma candidature.</p><div style="display:flex;gap:.3rem;margin-top:.6rem;"><span class="tag" style="border-color:rgba(129,140,248,.2);color:var(--purple);background:rgba(129,140,248,.05);">IA</span><span class="tag" style="border-color:rgba(129,140,248,.2);color:var(--purple);background:rgba(129,140,248,.05);">Epitech</span><span class="tag" style="border-color:rgba(129,140,248,.2);color:var(--purple);background:rgba(129,140,248,.05);">Développement</span></div></div></div>
   </div>
 </div></section>
 
 <!-- SECTION 3: Ce qui me définit -->
 <section class="section"><div class="max-w">
-  <div style="margin-bottom:3rem;"><div class="s-label">// valeurs</div><h2 class="s-title">Ce qui me <span class="hl">définit</span></h2></div>
+  <div style="margin-bottom:3rem;"><div class="s-label" data-i18n="val-section-label">// valeurs</div><h2 class="s-title"><span data-i18n="val-section-title">Ce qui me </span><span class="hl" data-i18n="val-section-hl">définit</span></h2></div>
   <div class="grid-3">
-    <div class="val-card"><div class="val-num" style="color:var(--cyan);">01</div><h4 style="color:var(--cyan);">Apprendre en faisant</h4><p>Je n'ai jamais suivi de formation en programmation. Face à un problème, j'ai cherché comment le résoudre et j'ai appris en faisant. Mon bot de trading, mes workflows, ce site — chaque projet est né d'un besoin concret, pas d'un cours théorique.</p></div>
-    <div class="val-card"><div class="val-num" style="color:var(--purple);">02</div><h4 style="color:var(--purple);">Prouver par l'action</h4><p>Ce site en est la preuve : la démo 3D fonctionne, le design est entièrement codé à la main, et chaque projet présenté ici est réel. Je préfère montrer ce que je sais faire plutôt que simplement le dire.</p></div>
-    <div class="val-card"><div class="val-num" style="color:var(--green);">03</div><h4 style="color:var(--green);">Ne rien lâcher</h4><p>15 ans de breakdance forgent le caractère. Quand mon Expert Advisor a échoué 50 fois, je l'ai corrigé 50 fois. Quand un workflow plante, je le débugue avant de passer à la suite. La persévérance n'est pas un mot — c'est une pratique quotidienne.</p></div>
-    <div class="val-card"><div class="val-num" style="color:var(--pink);">04</div><h4 style="color:var(--pink);">Transmettre</h4><p>Enseigner le breakdance à des enfants depuis 5 ans m'a appris à vulgariser des concepts, à faire preuve de patience et à m'adapter au niveau de chacun. C'est cette même approche qui m'a conduit à intégrer une section explicative dans la page Demo.</p><img src="images/animation-micro.jpg" alt="Herman animateur avec micro" class="photo-tl" style="height:140px;margin-top:.75rem;"></div>
-    <div class="val-card"><div class="val-num" style="color:#fbbf24;">05</div><h4 style="color:#fbbf24;">Construire pour être libre</h4><p>Mon objectif n'est pas d'occuper un poste confortable. C'est de concevoir des systèmes qui fonctionnent de manière autonome. Le trading automatisé, les workflows 24/7, les agents IA — chaque projet contribue au même objectif : l'indépendance.</p></div>
-    <div class="val-card"><div class="val-num" style="color:#fb923c;">06</div><h4 style="color:#fb923c;">Rester curieux</h4><p>Three.js pour la 3D, MediaPipe pour le hand tracking, MQL5 pour le trading — j'explore des domaines variés et je trouve toujours un moyen de les relier. La curiosité est mon principal moteur.</p></div>
+    <div class="val-card"><div class="val-num" style="color:var(--cyan);" data-i18n="val-card-1-num">01</div><h4 style="color:var(--cyan);" data-i18n="val-card-1-title">Apprendre en faisant</h4><p data-i18n="val-card-1-text">Je n'ai jamais suivi de formation en programmation. Face à un problème, j'ai cherché comment le résoudre et j'ai appris en faisant. Mon bot de trading, mes workflows, ce site — chaque projet est né d'un besoin concret, pas d'un cours théorique.</p></div>
+    <div class="val-card"><div class="val-num" style="color:var(--purple);" data-i18n="val-card-2-num">02</div><h4 style="color:var(--purple);" data-i18n="val-card-2-title">Prouver par l'action</h4><p data-i18n="val-card-2-text">Ce site en est la preuve : la démo 3D fonctionne, le design est entièrement codé à la main, et chaque projet présenté ici est réel. Je préfère montrer ce que je sais faire plutôt que simplement le dire.</p></div>
+    <div class="val-card"><div class="val-num" style="color:var(--green);" data-i18n="val-card-3-num">03</div><h4 style="color:var(--green);" data-i18n="val-card-3-title">Ne rien lâcher</h4><p data-i18n="val-card-3-text">15 ans de breakdance forgent le caractère. Quand mon Expert Advisor a échoué 50 fois, je l'ai corrigé 50 fois. Quand un workflow plante, je le débugue avant de passer à la suite. La persévérance n'est pas un mot — c'est une pratique quotidienne.</p></div>
+    <div class="val-card"><div class="val-num" style="color:var(--pink);" data-i18n="val-card-4-num">04</div><h4 style="color:var(--pink);" data-i18n="val-card-4-title">Transmettre</h4><p data-i18n="val-card-4-text">Enseigner le breakdance à des enfants depuis 5 ans m'a appris à vulgariser des concepts, à faire preuve de patience et à m'adapter au niveau de chacun. C'est cette même approche qui m'a conduit à intégrer une section explicative dans la page Demo.</p><img src="images/animation-micro.jpg" alt="Herman animateur avec micro" class="photo-tl" style="height:140px;margin-top:.75rem;"></div>
+    <div class="val-card"><div class="val-num" style="color:#fbbf24;" data-i18n="val-card-5-num">05</div><h4 style="color:#fbbf24;" data-i18n="val-card-5-title">Construire pour être libre</h4><p data-i18n="val-card-5-text">Mon objectif n'est pas d'occuper un poste confortable. C'est de concevoir des systèmes qui fonctionnent de manière autonome. Le trading automatisé, les workflows 24/7, les agents IA — chaque projet contribue au même objectif : l'indépendance.</p></div>
+    <div class="val-card"><div class="val-num" style="color:#fb923c;" data-i18n="val-card-6-num">06</div><h4 style="color:#fb923c;" data-i18n="val-card-6-title">Rester curieux</h4><p data-i18n="val-card-6-text">Three.js pour la 3D, MediaPipe pour le hand tracking, MQL5 pour le trading — j'explore des domaines variés et je trouve toujours un moyen de les relier. La curiosité est mon principal moteur.</p></div>
   </div>
 </div></section>
 
 <!-- SECTION 3b: Galerie photos -->
 <section class="section" style="padding-top:2rem;"><div class="max-w">
-  <div style="margin-bottom:2rem;"><div class="s-label">// en images</div><h2 class="s-title">Quelques <span class="hl">moments</span></h2></div>
+  <div style="margin-bottom:2rem;"><div class="s-label" data-i18n="photo-gallery-label">// en images</div><h2 class="s-title"><span data-i18n="photo-gallery-title">Quelques </span><span class="hl" data-i18n="photo-gallery-hl">moments</span></h2></div>
   <div class="photo-gallery">
     <img src="images/break-freeze.jpg" alt="Freeze breakdance">
     <img src="images/break-backflip-groupe.jpg" alt="Backflip devant les élèves">
@@ -638,23 +650,23 @@ p.card-sub{color:var(--text-mid);font-size:.9rem;line-height:1.75;font-weight:40
 
 <!-- SECTION 4: La suite -->
 <section class="section"><div class="max-w">
-  <div style="margin-bottom:3rem;"><div class="s-label">// la suite</div><h2 class="s-title">Où je <span class="hl">vais</span></h2></div>
+  <div style="margin-bottom:3rem;"><div class="s-label" data-i18n="roadmap-section-label">// la suite</div><h2 class="s-title"><span data-i18n="roadmap-section-title">Où je </span><span class="hl" data-i18n="roadmap-section-hl">vais</span></h2></div>
   <div style="max-width:700px;margin:0 auto;">
-    <p style="color:var(--text-mid);font-size:1.1rem;line-height:1.85;">Mon BUT TC se termine en 2025. L'étape suivante en 2026 : <span style="color:#fff;font-weight:600;">Epitech</span>, avec une spécialisation en intelligence artificielle. J'ai la détermination et les projets — il me manque la profondeur technique qu'une école d'ingénierie logicielle peut apporter.</p>
-    <p style="color:var(--text-mid);font-size:1.1rem;line-height:1.85;margin-top:1.25rem;">En parallèle, je continue de développer <span style="color:var(--cyan);font-weight:500;">Async Agency</span> avec mon associé. L'objectif à 5 ans : en faire notre activité principale. Nos propres clients, nos propres produits, notre propre indépendance.</p>
-    <p style="color:var(--text-mid);font-size:1.1rem;line-height:1.85;margin-top:1.25rem;">Ce qui me motive, ce n'est pas un titre sur une carte de visite. C'est la liberté de choisir sur quoi je travaille, avec qui, et dans quel but.</p>
+    <p style="color:var(--text-mid);font-size:1.1rem;line-height:1.85;" data-i18n="about-roadmap-p1">Mon BUT TC se termine en 2025. L'étape suivante en 2026 : <span style="color:#fff;font-weight:600;">Epitech</span>, avec une spécialisation en intelligence artificielle. J'ai la détermination et les projets — il me manque la profondeur technique qu'une école d'ingénierie logicielle peut apporter.</p>
+    <p style="color:var(--text-mid);font-size:1.1rem;line-height:1.85;margin-top:1.25rem;" data-i18n="about-roadmap-p2">En parallèle, je continue de développer <span style="color:var(--cyan);font-weight:500;">Async Agency</span> avec mon associé. L'objectif à 5 ans : en faire notre activité principale. Nos propres clients, nos propres produits, notre propre indépendance.</p>
+    <p style="color:var(--text-mid);font-size:1.1rem;line-height:1.85;margin-top:1.25rem;" data-i18n="about-roadmap-p3">Ce qui me motive, ce n'est pas un titre sur une carte de visite. C'est la liberté de choisir sur quoi je travaille, avec qui, et dans quel but.</p>
   </div>
   <div style="max-width:700px;margin:2.5rem auto 0;padding:2rem;border:1px solid rgba(96,165,250,.15);background:linear-gradient(135deg,rgba(96,165,250,.03),rgba(129,140,248,.03));position:relative;">
     <div class="accent-line" style="position:absolute;top:-1px;left:20%;right:20%;"></div>
-    <h4 style="font-family:'Orbitron',sans-serif;font-size:.9rem;color:var(--cyan);letter-spacing:2px;margin-bottom:1.25rem;">ROADMAP</h4>
+    <h4 style="font-family:'Orbitron',sans-serif;font-size:.9rem;color:var(--cyan);letter-spacing:2px;margin-bottom:1.25rem;" data-i18n="roadmap-title">ROADMAP</h4>
     <div style="display:flex;flex-direction:column;gap:.75rem;">
-      <div style="display:flex;gap:.75rem;color:var(--text);font-size:.95rem;line-height:1.7;"><span style="color:var(--green);font-family:'JetBrains Mono',monospace;font-weight:600;">2026</span><span>Intégrer Epitech en spécialisation IA</span></div>
-      <div style="display:flex;gap:.75rem;color:var(--text);font-size:.95rem;line-height:1.7;"><span style="color:var(--cyan);font-family:'JetBrains Mono',monospace;font-weight:600;">2027</span><span>Premiers clients réguliers pour Async Agency</span></div>
-      <div style="display:flex;gap:.75rem;color:var(--text);font-size:.95rem;line-height:1.7;"><span style="color:var(--purple);font-family:'JetBrains Mono',monospace;font-weight:600;">2028</span><span>Diplôme Epitech + activité freelance/entrepreneur</span></div>
-      <div style="display:flex;gap:.75rem;color:var(--text);font-size:.95rem;line-height:1.7;"><span style="color:var(--pink);font-family:'JetBrains Mono',monospace;font-weight:600;">2030</span><span>Vivre de mes propres systèmes d'automatisation IA</span></div>
+      <div style="display:flex;gap:.75rem;color:var(--text);font-size:.95rem;line-height:1.7;"><span style="color:var(--green);font-family:'JetBrains Mono',monospace;font-weight:600;">2026</span><span data-i18n="roadmap-2026">Intégrer Epitech en spécialisation IA</span></div>
+      <div style="display:flex;gap:.75rem;color:var(--text);font-size:.95rem;line-height:1.7;"><span style="color:var(--cyan);font-family:'JetBrains Mono',monospace;font-weight:600;">2027</span><span data-i18n="roadmap-2027">Premiers clients réguliers pour Async Agency</span></div>
+      <div style="display:flex;gap:.75rem;color:var(--text);font-size:.95rem;line-height:1.7;"><span style="color:var(--purple);font-family:'JetBrains Mono',monospace;font-weight:600;">2028</span><span data-i18n="roadmap-2028">Diplôme Epitech + activité freelance/entrepreneur</span></div>
+      <div style="display:flex;gap:.75rem;color:var(--text);font-size:.95rem;line-height:1.7;"><span style="color:var(--pink);font-family:'JetBrains Mono',monospace;font-weight:600;">2030</span><span data-i18n="roadmap-2030">Vivre de mes propres systèmes d'automatisation IA</span></div>
     </div>
   </div>
-  <div style="text-align:center;margin-top:3rem;font-family:'Orbitron',sans-serif;font-size:clamp(1rem,2.2vw,1.35rem);font-weight:700;letter-spacing:2px;color:#fff;line-height:2;">Je ne cherche pas un poste.<br><span style="color:var(--cyan);text-shadow:0 0 12px rgba(96,165,250,.2);">Je construis les systèmes qui me rendront libre d'en choisir un.</span></div>
+  <div style="text-align:center;margin-top:3rem;font-family:'Orbitron',sans-serif;font-size:clamp(1rem,2.2vw,1.35rem);font-weight:700;letter-spacing:2px;color:#fff;line-height:2;" data-i18n="about-freedom-quote">Je ne cherche pas un poste.<br><span style="color:var(--cyan);text-shadow:0 0 12px rgba(96,165,250,.2);" data-i18n="about-freedom-highlight">Je construis les systèmes qui me rendront libre d'en choisir un.</span></div>
 </div></section>
 <footer class="footer"><h2 style="font-family:'Orbitron',sans-serif;font-size:1.2rem;font-weight:700;letter-spacing:2px;color:#fff;">ÉCHANGEONS</h2><p style="color:var(--text-mid);max-width:450px;margin:.75rem auto 2rem;line-height:1.7;font-size:.95rem;">Je recherche une école (Epitech), des missions en automatisation, ou l'occasion d'échanger.</p><div class="footer-links"><a href="mailto:herman.vanel@gmail.com">Email</a><a href="#" target="_blank">LinkedIn</a></div><p style="color:var(--text-faint);font-size:.65rem;font-family:'JetBrains Mono',monospace;letter-spacing:1px;">© 2026 HERMAN VANEL · NICE</p></footer>
 </div>
@@ -662,8 +674,8 @@ p.card-sub{color:var(--text-mid);font-size:.9rem;line-height:1.75;font-weight:40
 <!-- =============== CONTACT =============== -->
 <div class="page" id="p-demo">
 <section class="section" style="padding-top:6rem;"><div class="max-w">
-  <div style="margin-bottom:2rem;"><div class="s-label" style="color:var(--green);">// demo interactive</div><h2 class="s-title">Sculptez avec vos <span class="hl">mains</span></h2>
-  <p style="color:var(--text-mid);font-size:1rem;line-height:1.7;max-width:700px;margin-top:.75rem;">Manipulez un cube déformable en temps réel. Main 1 : poing pour compresser, pinch pour tirer, 2-3 doigts pour les ondes. Main 2 : poing fermé pour attraper et déplacer le cube, main ouverte pour le faire tourner. Des fils d'énergie relient vos doigts au cube.</p></div>
+  <div style="margin-bottom:2rem;"><div class="s-label" style="color:var(--green);" data-i18n="demo-section-label">// demo interactive</div><h2 class="s-title"><span data-i18n="demo-section-title">Sculptez avec vos </span><span class="hl" data-i18n="demo-section-hl">mains</span></h2>
+  <p style="color:var(--text-mid);font-size:1rem;line-height:1.7;max-width:700px;margin-top:.75rem;" data-i18n="demo-section-desc">Manipulez un cube déformable en temps réel. Main 1 : poing pour compresser, pinch pour tirer, 2-3 doigts pour les ondes. Main 2 : poing fermé pour attraper et déplacer le cube, main ouverte pour le faire tourner. Des fils d'énergie relient vos doigts au cube.</p></div>
 
   <!-- Controls -->
   <div style="margin-bottom:.75rem;padding:.6rem 1rem;border:1px solid rgba(96,165,250,.12);background:rgba(96,165,250,.02);display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:.5rem;font-family:'JetBrains Mono',monospace;font-size:.65rem;">
@@ -676,7 +688,7 @@ p.card-sub{color:var(--text-mid);font-size:.9rem;line-height:1.75;font-weight:40
       <span>✊ <span style="color:#ff8800;">2e poing</span>=attraper</span>
       <span>🖐 <span style="color:var(--purple);">2e ouverte</span>=tourner</span>
     </div>
-    <button class="demo-stop-btn" id="demoStopBtn" onclick="stopCam()">■ Couper caméra</button>
+    <button class="demo-stop-btn" id="demoStopBtn" onclick="stopCam()" data-i18n="demo-cut-btn">■ Couper caméra</button>
   </div>
 
   <!-- Badges -->
@@ -694,41 +706,41 @@ p.card-sub{color:var(--text-mid);font-size:.9rem;line-height:1.75;font-weight:40
     <div class="demo-scanlines"></div>
     <div class="demo-corners"><div class="dc dc-tl"></div><div class="dc dc-tr"></div><div class="dc dc-bl"></div><div class="dc dc-br"></div></div>
     <div style="position:absolute;top:.5rem;left:.75rem;z-index:6;font-family:'JetBrains Mono',monospace;font-size:.5rem;color:rgba(96,165,250,.5);letter-spacing:2px;pointer-events:none;">CUBE SCULPT</div>
-    <div class="no-hand-msg" id="noHandMsg">Montrez vos mains pour manipuler le cube</div>
+    <div class="no-hand-msg" id="noHandMsg" data-i18n="demo-no-hands">Montrez vos mains pour manipuler le cube</div>
     <div class="demo-overlay" id="demoOverlay">
       <div style="font-family:'Orbitron',sans-serif;font-size:1.5rem;font-weight:700;color:#fff;letter-spacing:3px;margin-bottom:.5rem;">CUBE SCULPT 3D</div>
       <div style="font-family:'Rajdhani',sans-serif;font-size:1rem;color:var(--text-mid);margin-bottom:1.75rem;">Déformez un cube avec votre main</div>
-      <button class="demo-start-btn" id="demoStartBtn" onclick="startCam()">Lancer la caméra</button>
-      <div class="demo-loading" id="demoLoading">Chargement MediaPipe (2 mains)...</div>
+      <button class="demo-start-btn" id="demoStartBtn" onclick="startCam()" data-i18n="demo-start-btn">Lancer la caméra</button>
+      <div class="demo-loading" id="demoLoading" data-i18n="demo-loading">Chargement MediaPipe (2 mains)...</div>
     </div>
   </div>
 
   <!-- EXPLICATION -->
   <div style="margin-top:2.5rem;">
     <div class="accent-line" style="margin-bottom:2rem;"></div>
-    <div style="margin-bottom:2rem;"><div class="s-label">// comment ça marche</div><h2 class="s-title">Sous le <span class="hl">capot</span></h2></div>
+    <div style="margin-bottom:2rem;"><div class="s-label" data-i18n="tech-section-label">// comment ça marche</div><h2 class="s-title"><span data-i18n="tech-section-title">Sous le </span><span class="hl" data-i18n="tech-section-hl">capot</span></h2></div>
 
     <div style="padding:1.75rem;border:1px solid rgba(96,165,250,.12);background:var(--surface);margin-bottom:1.5rem;">
-      <h3 class="card-title" style="color:var(--cyan);">La caméra voit vos mains</h3>
-      <p class="card-text">Quand vous lancez la démo, votre navigateur active la webcam et envoie les images à <span style="color:var(--cyan);font-weight:600;">MediaPipe Hands</span>, une bibliothèque open-source créée par Google. Elle détecte vos mains en temps réel et repère 21 points par main (bouts des doigts, articulations, poignet). Tout ça tourne directement dans votre navigateur, rien n'est envoyé sur un serveur.</p>
+      <h3 class="card-title" style="color:var(--cyan);" data-i18n="tech-card-1-title">La caméra voit vos mains</h3>
+      <p class="card-text" data-i18n="tech-card-1-text">Quand vous lancez la démo, votre navigateur active la webcam et envoie les images à <span style="color:var(--cyan);font-weight:600;">MediaPipe Hands</span>, une bibliothèque open-source créée par Google. Elle détecte vos mains en temps réel et repère 21 points par main (bouts des doigts, articulations, poignet). Tout ça tourne directement dans votre navigateur, rien n'est envoyé sur un serveur.</p>
     </div>
 
     <div style="padding:1.75rem;border:1px solid rgba(129,140,248,.12);background:var(--surface);margin-bottom:1.5rem;">
-      <h3 class="card-title" style="color:var(--purple);">Les gestes sont traduits en actions</h3>
-      <p class="card-text">Mon code analyse la position des 21 points pour comprendre ce que fait votre main : poing fermé, doigts écartés, pinch (pouce + index qui se touchent), etc. Chaque geste est associé à une action sur le cube. Par exemple, quand le pouce et l'index sont proches, le code calcule le point entre les deux et tire les sommets du cube vers ce point. Quand la 2e main est ouverte et bouge, le code mesure le déplacement et l'applique comme rotation.</p>
+      <h3 class="card-title" style="color:var(--purple);" data-i18n="tech-card-2-title">Les gestes sont traduits en actions</h3>
+      <p class="card-text" data-i18n="tech-card-2-text">Mon code analyse la position des 21 points pour comprendre ce que fait votre main : poing fermé, doigts écartés, pinch (pouce + index qui se touchent), etc. Chaque geste est associé à une action sur le cube. Par exemple, quand le pouce et l'index sont proches, le code calcule le point entre les deux et tire les sommets du cube vers ce point. Quand la 2e main est ouverte et bouge, le code mesure le déplacement et l'applique comme rotation.</p>
     </div>
 
     <div style="padding:1.75rem;border:1px solid rgba(110,231,183,.12);background:var(--surface);margin-bottom:1.5rem;">
-      <h3 class="card-title" style="color:var(--green);">Le cube est un objet 3D déformable</h3>
-      <p class="card-text">Le cube est créé avec <span style="color:var(--green);font-weight:600;">Three.js</span>, une bibliothèque JavaScript pour la 3D dans le navigateur. C'est un cube découpé en environ 2000 petits triangles. Chaque sommet peut être déplacé individuellement par vos gestes, ce qui déforme la forme. Un système de ressort ramène les sommets à leur position d'origine quand vous retirez vos mains. Les fils lumineux entre vos doigts et le cube sont des lignes 3D animées avec du bruit sinusoïdal pour l'effet "énergie".</p>
+      <h3 class="card-title" style="color:var(--green);" data-i18n="tech-card-3-title">Le cube est un objet 3D déformable</h3>
+      <p class="card-text" data-i18n="tech-card-3-text">Le cube est créé avec <span style="color:var(--green);font-weight:600;">Three.js</span>, une bibliothèque JavaScript pour la 3D dans le navigateur. C'est un cube découpé en environ 2000 petits triangles. Chaque sommet peut être déplacé individuellement par vos gestes, ce qui déforme la forme. Un système de ressort ramène les sommets à leur position d'origine quand vous retirez vos mains. Les fils lumineux entre vos doigts et le cube sont des lignes 3D animées avec du bruit sinusoïdal pour l'effet "énergie".</p>
     </div>
 
     <div style="padding:1.75rem;border:1px solid rgba(96,165,250,.08);background:linear-gradient(135deg,rgba(96,165,250,.03),rgba(129,140,248,.03));margin-bottom:1.5rem;">
-      <h3 class="card-title">Les technos utilisées</h3>
+      <h3 class="card-title" data-i18n="tech-summary-title">Les technos utilisées</h3>
       <div style="display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.75rem;">
         <span class="tag">MediaPipe Hands</span><span class="tag">Three.js r128</span><span class="tag">JavaScript</span><span class="tag">WebGL</span><span class="tag">HTML5 Canvas</span><span class="tag">API getUserMedia</span>
       </div>
-      <p class="card-sub">Aucun backend, aucune IA distante, aucun framework lourd. L'ensemble fonctionne localement dans le navigateur avec du JavaScript pur et deux bibliothèques open-source. L'ensemble fonctionne en temps réel, sans serveur distant.</p>
+      <p class="card-sub" data-i18n="tech-summary-text">Aucun backend, aucune IA distante, aucun framework lourd. L'ensemble fonctionne localement dans le navigateur avec du JavaScript pur et deux bibliothèques open-source. L'ensemble fonctionne en temps réel, sans serveur distant.</p>
     </div>
   </div>
 </div></section>
@@ -739,56 +751,56 @@ p.card-sub{color:var(--text-mid);font-size:.9rem;line-height:1.75;font-weight:40
 <div class="page" id="p-contact">
 <section class="section" style="padding-top:6rem;"><div class="max-w">
   <div style="margin-bottom:3rem;"><img src="images/portrait-classe.jpg" alt="Herman Vanel" class="photo-avatar">
-  <div class="s-label">// contact</div><h2 class="s-title">Prenons <span class="hl">contact</span></h2>
-  <p style="color:var(--text-mid);font-size:1.05rem;line-height:1.8;max-width:650px;margin-top:.75rem;">Je recherche une école comme Epitech pour approfondir le développement, des missions en automatisation, ou l'opportunité d'échanger avec des professionnels partageant cette vision. N'hésitez pas à me contacter par le moyen qui vous convient.</p></div>
+  <div class="s-label" data-i18n="contact-section-label">// contact</div><h2 class="s-title"><span data-i18n="contact-section-title">Prenons </span><span class="hl" data-i18n="contact-section-hl">contact</span></h2>
+  <p style="color:var(--text-mid);font-size:1.05rem;line-height:1.8;max-width:650px;margin-top:.75rem;" data-i18n="contact-intro">Je recherche une école comme Epitech pour approfondir le développement, des missions en automatisation, ou l'opportunité d'échanger avec des professionnels partageant cette vision. N'hésitez pas à me contacter par le moyen qui vous convient.</p></div>
 
   <div class="grid-2">
     <div class="holo-card"><div class="corner c-tl"></div><div class="corner c-tr"></div><div class="corner c-bl"></div><div class="corner c-br"></div>
-      <div style="font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--green);letter-spacing:2px;text-transform:uppercase;margin-bottom:.75rem;">Email</div>
-      <h3 class="card-title"><a href="mailto:herman.vanel@gmail.com" style="color:var(--cyan);text-decoration:none;transition:color .3s;">herman.vanel@gmail.com</a></h3>
-      <p class="card-text">Le moyen le plus direct. Je réponds en général dans la journée.</p>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--green);letter-spacing:2px;text-transform:uppercase;margin-bottom:.75rem;" data-i18n="contact-email-label">Email</div>
+      <h3 class="card-title"><a href="mailto:herman.vanel@gmail.com" style="color:var(--cyan);text-decoration:none;transition:color .3s;" data-i18n="contact-email-address">herman.vanel@gmail.com</a></h3>
+      <p class="card-text" data-i18n="contact-email-text">Le moyen le plus direct. Je réponds en général dans la journée.</p>
     </div>
     <div class="holo-card"><div class="corner c-tl"></div><div class="corner c-tr"></div><div class="corner c-bl"></div><div class="corner c-br"></div>
-      <div style="font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--green);letter-spacing:2px;text-transform:uppercase;margin-bottom:.75rem;">LinkedIn</div>
-      <h3 class="card-title"><a href="#" style="color:var(--cyan);text-decoration:none;transition:color .3s;">Herman Vanel</a></h3>
-      <p class="card-text">Pour les échanges professionnels. N'hésitez pas à me contacter.</p>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--green);letter-spacing:2px;text-transform:uppercase;margin-bottom:.75rem;" data-i18n="contact-linkedin-label">LinkedIn</div>
+      <h3 class="card-title"><a href="#" style="color:var(--cyan);text-decoration:none;transition:color .3s;" data-i18n="contact-linkedin-name">Herman Vanel</a></h3>
+      <p class="card-text" data-i18n="contact-linkedin-text">Pour les échanges professionnels. N'hésitez pas à me contacter.</p>
     </div>
   </div>
 
 
   <div style="margin-top:2.5rem;padding:2rem;border:1px solid rgba(96,165,250,.15);background:linear-gradient(135deg,rgba(96,165,250,.04),rgba(129,140,248,.04));text-align:center;">
     <div class="accent-line" style="position:relative;top:-2rem;left:20%;right:20%;width:60%;margin:0 auto;"></div>
-    <p style="font-family:'Orbitron',sans-serif;font-size:.85rem;letter-spacing:2px;color:#fff;margin-bottom:.75rem;">CE QUE JE CHERCHE</p>
-    <p style="color:var(--text-mid);font-size:.95rem;line-height:1.85;max-width:600px;margin:0 auto;">Une école qui forme de véritables développeurs (Epitech est l'objectif). Des clients ou missions en automatisation IA via Async Agency. Et des personnes animées par l'envie de créer et d'innover ensemble.</p>
+    <p style="font-family:'Orbitron',sans-serif;font-size:.85rem;letter-spacing:2px;color:#fff;margin-bottom:.75rem;" data-i18n="contact-seeking-title">CE QUE JE CHERCHE</p>
+    <p style="color:var(--text-mid);font-size:.95rem;line-height:1.85;max-width:600px;margin:0 auto;" data-i18n="contact-seeking-text">Une école qui forme de véritables développeurs (Epitech est l'objectif). Des clients ou missions en automatisation IA via Async Agency. Et des personnes animées par l'envie de créer et d'innover ensemble.</p>
   </div>
 
   <!-- DOCUMENTS TÉLÉCHARGEABLES -->
   <div style="margin-top:2.5rem;">
     <div class="accent-line" style="margin-bottom:2rem;"></div>
-    <div style="margin-bottom:1.5rem;"><div class="s-label">// documents</div><h2 class="s-title">Fichiers <span class="hl">à télécharger</span></h2>
-    <p style="color:var(--text-mid);font-size:1rem;line-height:1.7;max-width:650px;margin-top:.75rem;">Retrouvez ici mes documents à destination des recruteurs, écoles et partenaires potentiels.</p></div>
+    <div style="margin-bottom:1.5rem;"><div class="s-label" data-i18n="contact-docs-label">// documents</div><h2 class="s-title"><span data-i18n="contact-docs-title">Fichiers </span><span class="hl" data-i18n="contact-docs-hl">à télécharger</span></h2>
+    <p style="color:var(--text-mid);font-size:1rem;line-height:1.7;max-width:650px;margin-top:.75rem;" data-i18n="contact-docs-desc">Retrouvez ici mes documents à destination des recruteurs, écoles et partenaires potentiels.</p></div>
 
     <div class="grid-3" id="docGrid">
       <a href="./documents/CV_Herman_Vanel.pdf" download class="holo-card" style="text-decoration:none;cursor:pointer;text-align:center;transition:all .4s;">
         <div class="corner c-tl"></div><div class="corner c-tr"></div><div class="corner c-bl"></div><div class="corner c-br"></div>
         <div style="font-size:2rem;margin-bottom:.75rem;">📄</div>
-        <h3 class="card-title" style="font-size:.85rem;">CV</h3>
-        <p style="color:var(--text-dim);font-size:.75rem;font-family:'JetBrains Mono',monospace;letter-spacing:1px;">PDF · Télécharger</p>
+        <h3 class="card-title" style="font-size:.85rem;" data-i18n="doc-cv-title">CV</h3>
+        <p style="color:var(--text-dim);font-size:.75rem;font-family:'JetBrains Mono',monospace;letter-spacing:1px;" data-i18n="doc-cv-label">PDF · Télécharger</p>
       </a>
       <a href="./documents/Lettre_Motivation_Herman_Vanel.pdf" download class="holo-card" style="text-decoration:none;cursor:pointer;text-align:center;transition:all .4s;">
         <div class="corner c-tl"></div><div class="corner c-tr"></div><div class="corner c-bl"></div><div class="corner c-br"></div>
         <div style="font-size:2rem;margin-bottom:.75rem;">✉️</div>
-        <h3 class="card-title" style="font-size:.85rem;">Lettre de motivation</h3>
-        <p style="color:var(--text-dim);font-size:.75rem;font-family:'JetBrains Mono',monospace;letter-spacing:1px;">PDF · Télécharger</p>
+        <h3 class="card-title" style="font-size:.85rem;" data-i18n="doc-letter-title">Lettre de motivation</h3>
+        <p style="color:var(--text-dim);font-size:.75rem;font-family:'JetBrains Mono',monospace;letter-spacing:1px;" data-i18n="doc-letter-label">PDF · Télécharger</p>
       </a>
       <a href="./documents/Portfolio_Herman_Vanel.pdf" download class="holo-card" style="text-decoration:none;cursor:pointer;text-align:center;transition:all .4s;">
         <div class="corner c-tl"></div><div class="corner c-tr"></div><div class="corner c-bl"></div><div class="corner c-br"></div>
         <div style="font-size:2rem;margin-bottom:.75rem;">📁</div>
-        <h3 class="card-title" style="font-size:.85rem;">Dossier de candidature</h3>
-        <p style="color:var(--text-dim);font-size:.75rem;font-family:'JetBrains Mono',monospace;letter-spacing:1px;">PDF · Télécharger</p>
+        <h3 class="card-title" style="font-size:.85rem;" data-i18n="doc-portfolio-title">Dossier de candidature</h3>
+        <p style="color:var(--text-dim);font-size:.75rem;font-family:'JetBrains Mono',monospace;letter-spacing:1px;" data-i18n="doc-portfolio-label">PDF · Télécharger</p>
       </a>
     </div>
-    <p style="color:var(--text-faint);font-size:.75rem;font-family:'JetBrains Mono',monospace;letter-spacing:1px;margin-top:1rem;text-align:center;">Placez vos fichiers dans le dossier <span style="color:var(--cyan);">./documents/</span> pour qu'ils soient accessibles au téléchargement.</p>
+    <p style="color:var(--text-faint);font-size:.75rem;font-family:'JetBrains Mono',monospace;letter-spacing:1px;margin-top:1rem;text-align:center;"><span data-i18n="doc-folder-note">Placez vos fichiers dans le dossier</span> <span style="color:var(--cyan);">./documents/</span> <span data-i18n="doc-folder-note2">pour qu'ils soient accessibles au téléchargement.</span></p>
   </div>
 
 </div></section>
@@ -1015,5 +1027,558 @@ function animateCounters(){const nums=document.querySelectorAll('.stat-num[data-
 // Trigger counters when About page is shown
 const origGo=go;go=function(id){origGo(id);if(id==='about'){setTimeout(()=>{document.querySelectorAll('.stat-num[data-target]').forEach(el=>el.textContent='0');animateCounters();},200);}};
 </script>
+
+
+// ===== LANGUAGE TRANSLATION SYSTEM =====
+const translations = {
+  "fr": {
+    "nav-accueil": "_accueil",
+    "nav-projets": "_projets",
+    "nav-about": "_à propos",
+    "nav-demo": "_demo",
+    "nav-contact": "_contact",
+    "hero-name-sub": "Herman Vanel",
+    "hero-gradient": "J'automatise tout.",
+    "hero-typing": "$ 21 ans · Nice · trading · n8n · agents IA",
+    "hero-desc": "Étudiant en BUT TC en alternance le jour, je développe des robots de trading et des systèmes d'automatisation le soir. Ce site est une vitrine de ce que je sais faire, avec du code fonctionnel et des projets concrets.",
+    "acc-sec1-label": "// aujourd'hui",
+    "acc-sec1-title": "Deux vies",
+    "acc-sec1-hl": "en parallèle",
+    "acc-sec1-card1-title": "Le jour : commerce & terrain",
+    "acc-sec1-card1-p1": "Je suis en 3e année de BUT Techniques de Commercialisation à l'IUT de Nice. Mon alternance se déroule chez PAAL, une entreprise de menuiserie aluminium à Contes, en tant qu'assistant marketing et commercial : prospection téléphonique, développement marketing, gestion des réseaux sociaux.",
+    "acc-sec1-card1-p2": "Cette expérience m'a appris à communiquer, à convaincre et à comprendre le fonctionnement d'une entreprise de l'intérieur. Ce n'est pas du code, mais c'est un socle essentiel pour entreprendre.",
+    "acc-sec1-card2-title": "Le soir : code & automatisation",
+    "acc-sec1-card2-p1": "En parallèle, je développe un Expert Advisor en MQL5 — un robot qui analyse les marchés financiers et passe des ordres de trading automatiquement sur MetaTrader 5. Je monte aussi des workflows n8n, des chaînes d'automatisation qui suppriment les tâches répétitives. Et avec un associé, on construit Async Agency, une agence d'automatisation et d'agents IA pour les entreprises.",
+    "acc-sec1-card2-p2": "Personne ne m'a demandé d'apprendre à coder. Chaque langage est venu en réponse à un besoin concret.",
+    "acc-sec2-label": "// explorer",
+    "acc-sec2-title": "La",
+    "acc-sec2-hl": "suite",
+    "acc-sec2-card1-title": "Mes projets",
+    "acc-sec2-card1-text": "Un Expert Advisor sur MetaTrader 5 (robot de trading autonome), des workflows n8n pour automatiser des processus, et Async Agency en cours de développement.",
+    "acc-sec2-card1-btn": "VOIR →",
+    "acc-sec2-card2-title": "Mon parcours",
+    "acc-sec2-card2-text": "Né en Éthiopie, 15 ans de breakdance, BAFA, BUT TC à Nice, alternance chez PAAL et développement autodidacte.",
+    "acc-sec2-card2-btn": "VOIR →",
+    "acc-sec2-card3-title": "Demo 3D",
+    "acc-sec2-card3-text": "Sculptez un cube 3D déformable avec vos mains, en direct dans le navigateur.",
+    "acc-sec2-card3-btn": "TESTER →",
+    "acc-footer-title": "ÉCHANGEONS",
+    "acc-footer-desc": "Je recherche une école (Epitech), des missions en automatisation, ou simplement l'occasion d'échanger avec des professionnels qui partagent cette vision.",
+    "proj-sec-label": "// projets",
+    "proj-sec-title": "Ce que je",
+    "proj-sec-hl": "construis",
+    "proj-intro": "Ce ne sont pas des projets scolaires. Ce sont des initiatives personnelles, développées le soir, le week-end, en dehors des cours. Certains sont opérationnels, d'autres encore en développement.",
+    "proj-card1-title": "Expert Advisor MT5",
+    "proj-card1-sub": "Robot de trading automatisé · Forex & Gold",
+    "proj-card1-text": "Je développe en MQL5 un Expert Advisor — un programme qui analyse les marchés (devises et or) et passe des ordres d'achat/vente automatiquement sur MetaTrader 5, sans intervention humaine. Je backteste mes stratégies (test sur données passées), j'optimise, et je recommence. Un projet de long terme.",
+    "proj-card1-quote": "Le trading m'a enseigné la rigueur. Quand le capital est en jeu, chaque ligne de code compte.",
+    "proj-card2-title": "Workflows n8n",
+    "proj-card2-sub": "Automatisations qui tournent 24/7",
+    "proj-card2-text": "Avec n8n (un outil d'automatisation), je crée des workflows — des chaînes d'actions qui connectent plusieurs services entre eux. Par exemple : un workflow qui capte des signaux de trading sur Telegram et les exécute sur MT5, ou qui génère automatiquement les plannings de publication sur les réseaux sociaux.",
+    "proj-card2-quote": "Toute tâche répétitive est une opportunité d'automatisation.",
+    "proj-card3-title": "Async Agency",
+    "proj-card3-sub": "Agence d'automatisation & intelligence artificielle",
+    "proj-card3-text": "Avec mon associé, on monte Async Agency. On propose des automatisations et des agents IA — des assistants intelligents capables de répondre aux clients, trier des emails ou exécuter des tâches complexes à partir d'une simple demande.",
+    "proj-card3-quote": "On développe en Python ou en no-code avec n8n, selon les besoins du client.",
+    "wf-section-label": "// en action",
+    "wf-section-title": "Workflows",
+    "wf-section-hl": "réels",
+    "wf-section-desc": "Voici des exemples concrets de workflows que j'ai construits avec n8n. Chacun répond à un vrai besoin d'entreprise.",
+    "wf-card1-label": "Rappel de RDV",
+    "wf-card1-title": "Réduire les absences aux rendez-vous",
+    "wf-card1-text": "Dès qu'un rendez-vous est créé dans Google Calendar, le workflow envoie automatiquement un rappel au client par WhatsApp, Slack ou email. Résultat : moins d'oublis, moins de no-shows.",
+    "wf-card2-label": "Agent IA Restaurant",
+    "wf-card2-title": "Réservation par chat avec une IA",
+    "wf-card2-text": "Un client écrit par chat pour réserver une table. Un agent IA (OpenAI) comprend la demande, vérifie les disponibilités dans Google Sheets, et confirme ou modifie la réservation tout seul.",
+    "wf-card3-label": "Publication auto",
+    "wf-card3-title": "Publier sur 4 réseaux en un clic",
+    "wf-card3-text": "Le workflow lit un planning dans Google Sheets, améliore le texte avec l'IA (Claude), puis publie automatiquement sur Instagram, X/Twitter, Reddit et TikTok. En cas d'erreur, une alerte Telegram prévient.",
+    "skill-section-label": "// compétences",
+    "skill-section-title": "Ce que je sais",
+    "skill-section-hl": "faire",
+    "skill-section-desc": "Cliquez sur une compétence pour découvrir un cas concret d'application. Chaque exemple est tiré de mon expérience réelle.",
+    "sk-filter-all": "Toutes",
+    "sk-filter-hard": "Hard Skills",
+    "sk-filter-soft": "Soft Skills",
+    "sk-filter-lang": "Langues",
+    "skill-python-name": "Python",
+    "skill-python-sub": "Intermédiaire",
+    "skill-python-case": "Cas pratique",
+    "skill-python-text": "J'utilise Python pour analyser les données de marché dans mon bot de trading MT5. J'ai aussi développé des agents IA en Python pour Async Agency — des programmes capables de traiter des demandes clients et d'exécuter des actions automatiquement via des APIs.",
+    "skill-js-name": "JavaScript",
+    "skill-js-sub": "Intermédiaire",
+    "skill-js-case": "Cas pratique",
+    "skill-js-text": "Ce portfolio est codé en JavaScript pur. La démo 3D (Three.js + MediaPipe) sur la page Demo est entièrement en JS vanilla. J'ai aussi construit des bots Telegram en Node.js qui relayent automatiquement des signaux de trading.",
+    "skill-mql5-name": "MQL5",
+    "skill-mql5-sub": "En apprentissage",
+    "skill-mql5-case": "Cas pratique",
+    "skill-mql5-text": "Je développe un Expert Advisor qui trade automatiquement le Forex et le XAUUSD (or) sur MetaTrader 5. Le bot analyse les données de marché, applique mes stratégies, place des ordres et gère le risque. Je backteste (test sur l'historique), j'ajuste, je recommence.",
+    "skill-n8n-name": "n8n / Automatisation",
+    "skill-n8n-sub": "Avancé",
+    "skill-n8n-case": "Cas pratique",
+    "skill-n8n-text": "J'ai créé un workflow n8n qui capte des signaux de trading sur Telegram, les filtre et les relaye vers MT5. Un autre génère automatiquement les plannings de publication pour Metricool. Chez PAAL, j'ai automatisé des tâches marketing répétitives via des webhooks (déclencheurs automatiques entre outils).",
+    "skill-api-name": "APIs REST",
+    "skill-api-sub": "Intermédiaire",
+    "skill-api-case": "Cas pratique",
+    "skill-api-text": "J'intègre les APIs (interfaces de communication entre logiciels) d'OpenAI, Telegram, MetaTrader et d'autres services dans mes workflows et bots. Pour Async Agency, je connecte les APIs de nos clients entre elles pour créer des automatisations sur mesure : CRM, messagerie, facturation.",
+    "skill-threejs-name": "Three.js / WebGL",
+    "skill-threejs-sub": "En apprentissage",
+    "skill-threejs-case": "Cas pratique",
+    "skill-threejs-text": "La démo sur la page Demo de ce site : un cube 3D déformable en temps réel contrôlé par les mains via la webcam. Géométrie déformable, système de ressort, fils d'énergie animés, particules. Tout en Three.js r128 dans le navigateur.",
+    "skill-marketing-name": "Marketing digital",
+    "skill-marketing-sub": "Pratique terrain",
+    "skill-marketing-case": "Cas pratique",
+    "skill-marketing-text": "Chez PAAL en alternance, je gère la prospection téléphonique, le développement marketing et les réseaux sociaux de l'entreprise. En BUT TC, j'ai appris les stratégies commerciales, le comportement consommateur et la gestion de projet marketing.",
+    "skill-perseverance-name": "Persévérance",
+    "skill-perseverance-sub": "Depuis toujours",
+    "skill-perseverance-case": "Cas pratique",
+    "skill-perseverance-text": "15 ans de breakdance m'ont forgé cette qualité. La maîtrise d'un mouvement demande des mois de travail. Quand mon bot de trading a échoué 50 fois, je l'ai corrigé 50 fois. Quand un workflow plante, je le débugue avant de passer à autre chose.",
+    "skill-autonomy-name": "Autonomie",
+    "skill-autonomy-sub": "Autodidacte",
+    "skill-autonomy-case": "Cas pratique",
+    "skill-autonomy-text": "Personne ne m'a demandé d'apprendre à coder. Le besoin de coder un bot de trading m'a poussé vers Python et MQL5. Les tâches à automatiser m'ont conduit vers n8n. Avec mon associé, nous avons lancé Async Agency sans attendre de formation.",
+    "skill-leadership-name": "Leadership",
+    "skill-leadership-sub": "Délégué 10 ans + prof de break",
+    "skill-leadership-case": "Cas pratique",
+    "skill-leadership-text": "Délégué de classe depuis le collège, pendant une dizaine d'années. Depuis 5 ans, j'enseigne le breakdance à des groupes d'enfants et ados à l'association La Semeuse à Nice. J'ai aussi encadré des enfants de 6 ans comme animateur au collège Nazareth.",
+    "skill-adaptability-name": "Adaptabilité",
+    "skill-adaptability-sub": "Tous les terrains",
+    "skill-adaptability-case": "Cas pratique",
+    "skill-adaptability-text": "Animation d'enfants de 6 ans le mercredi, prospection téléphonique B2B chez PAAL la semaine, bénévolat en épicerie solidaire chez Solid'Act, stage en industrie chez MEI Industries, et développement le soir. Je m'adapte au contexte et aux interlocuteurs.",
+    "skill-teamwork-name": "Travail en équipe",
+    "skill-teamwork-sub": "Associé, danse, alternance",
+    "skill-teamwork-case": "Cas pratique",
+    "skill-teamwork-text": "Async Agency est un projet collaboratif : répartition des tâches, développement conjoint, décisions partagées. En breakdance, je conçois des chorégraphies de groupe pour les spectacles. Chez PAAL, je collabore quotidiennement avec l'équipe marketing et commerciale.",
+    "skill-creativity-name": "Créativité",
+    "skill-creativity-sub": "Danse + code",
+    "skill-creativity-case": "Cas pratique",
+    "skill-creativity-text": "Le breakdance repose sur l'improvisation et la création permanente. Ce portfolio en est un bon exemple : la démo 3D interactive et le design sont entièrement faits maison. Les workflows n8n demandent aussi de la créativité pour connecter des services qui n'étaient pas conçus pour fonctionner ensemble.",
+    "skill-english-name": "Anglais",
+    "skill-english-sub": "Bon niveau (B2)",
+    "skill-english-case": "Cas pratique",
+    "skill-english-text": "Toute la documentation technique que je lis est en anglais : Three.js, MediaPipe, n8n, APIs, Stack Overflow. Je code en anglais (variables, commentaires). Les forums de trading sont aussi majoritairement anglophones.",
+    "skill-italian-name": "Italien",
+    "skill-italian-sub": "Notions (A2)",
+    "skill-italian-case": "Cas pratique",
+    "skill-italian-text": "Appris au lycée et en BUT. Nice étant proche de l'Italie, ça sert au quotidien et c'est un plus pour les relations commerciales transfrontalières, notamment chez PAAL qui travaille dans la région.",
+    "about-section1-label": "// qui je suis",
+    "about-section1-title": "Herman",
+    "about-section1-hl": "Vanel",
+    "about-bio-p1": "J'ai 21 ans. Je suis né en Éthiopie, adopté à 2 ans, et j'ai grandi dans le sud de la France. Aujourd'hui je vis à Nice.",
+    "about-bio-p2": "Le jour, je finis mon BUT Techniques de Commercialisation à l'IUT de Nice en alternance chez PAAL, une entreprise de menuiserie aluminium à Contes. Prospection, marketing digital, réseaux sociaux.",
+    "about-bio-p3": "Le soir, je développe. Un bot de trading, des workflows d'automatisation, des agents IA. Avec mon associé, nous avons lancé Async Agency. Personne ne m'a demandé de faire tout cela. Je le fais parce que je veux construire des systèmes autonomes.",
+    "orbit-python": "Python",
+    "orbit-js": "JavaScript",
+    "orbit-mql5": "MQL5",
+    "orbit-n8n": "n8n",
+    "orbit-ai": "IA",
+    "orbit-marketing": "Marketing",
+    "orbit-threejs": "Three.js",
+    "orbit-trading": "Trading",
+    "orbit-apis": "APIs",
+    "stat-breakdance": "Ans de breakdance",
+    "stat-languages": "Langages de code",
+    "stat-projects": "Projets actifs",
+    "stat-delegate": "Ans délégué de classe",
+    "about-quote": "Mon parcours n'est pas linéaire. Animation, breakdance, commerce, trading, développement. Cela peut sembler disparate, mais chaque étape m'a transmis des compétences que la suivante a mobilisées.",
+    "tl-section-label": "// parcours",
+    "tl-section-title": "D'où je",
+    "tl-section-hl": "viens",
+    "tl-item1-label": "LES RACINES · 2005",
+    "tl-item1-title": "Né en Éthiopie, adopté à 2 ans",
+    "tl-item1-text": "Né en Éthiopie, adopté à l'âge de 2 ans, j'ai grandi dans le sud de la France. Cette double culture m'a apporté une ouverture d'esprit et une capacité d'adaptation que je mobilise au quotidien.",
+    "tl-item2-label": "LA DANSE · ~2011 → AUJOURD'HUI",
+    "tl-item2-title": "15 ans de breakdance",
+    "tl-item2-text": "J'ai commencé le breakdance vers 6 ans. C'est l'engagement le plus long de ma vie. Les battles m'ont appris à gérer la pression. L'entraînement quotidien m'a inculqué la discipline. Depuis 5-6 ans, j'enseigne à des enfants et adolescents à l'association La Semeuse à Nice. J'ai également donné des cours à Menton pendant un an.",
+    "tl-item3-label": "PREMIÈRES EXPÉRIENCES · 2020-2022",
+    "tl-item3-title": "Animation, bénévolat, industrie",
+    "tl-item3-text": "Animateur d'enfants de 6 ans au collège Nazareth tous les mercredis et pendant les vacances. Bénévole à l'épicerie solidaire Solid'Act à Nice : accueil, vente, stocks, caisse. Stage d'observation chez MEI Industries, tôlerie fine à Carros. Et le BAFA en 10 mois, avec la qualification surveillant de baignade.",
+    "tl-item4-label": "FORMATION · 2022-2025",
+    "tl-item4-title": "BUT TC à l'IUT de Nice + PAAL",
+    "tl-item4-text": "Trois ans de Techniques de Commercialisation. En alternance chez PAAL à Contes : prospection téléphonique, développement marketing et gestion des réseaux sociaux. C'est au cours de cette période que j'ai découvert la programmation, en autodidacte, en dehors de mes cours. Le commerce m'a appris à convaincre. Le code m'a appris à construire.",
+    "tl-item5-label": "LE DÉCLIC · 2023",
+    "tl-item5-title": "Le trading ouvre la porte du code",
+    "tl-item5-text": "Tout a commencé par le trading. L'envie d'automatiser mes stratégies m'a conduit vers MQL5 pour développer un Expert Advisor sur MetaTrader 5. Puis Python s'est imposé pour l'analyse de données. Puis n8n pour connecter mes outils. Puis JavaScript pour créer des interfaces. Chaque problème résolu a ouvert la porte d'un nouveau langage.",
+    "tl-item6-label": "EN PARALLÈLE · 2024-2026",
+    "tl-item6-title": "Async Agency + agents IA",
+    "tl-item6-text": "Avec mon associé, nous lançons Async Agency : une agence d'automatisation et d'agents IA pour entreprises. Nous développons en Python ou en no-code avec n8n selon les besoins. En parallèle, je poursuis le trading algorithmique, les workflows, et j'ai conçu ce portfolio avec une démo 3D interactive en Three.js + MediaPipe.",
+    "tl-item7-label": "OBJECTIF · 2026-2028",
+    "tl-item7-title": "Epitech, spécialisation IA",
+    "tl-item7-text": "Mon objectif est d'intégrer Epitech pour approfondir le développement et l'intelligence artificielle. J'ai le profil d'un autodidacte déterminé, mais il me manque la structure et les compétences avancées qu'une école comme Epitech peut apporter. Ce portfolio fait partie intégrante de ma candidature.",
+    "val-section-label": "// valeurs",
+    "val-section-title": "Ce qui me",
+    "val-section-hl": "définit",
+    "val-card-1-num": "01",
+    "val-card-1-title": "Apprendre en faisant",
+    "val-card-1-text": "Je n'ai jamais suivi de formation en programmation. Face à un problème, j'ai cherché comment le résoudre et j'ai appris en faisant. Mon bot de trading, mes workflows, ce site — chaque projet est né d'un besoin concret, pas d'un cours théorique.",
+    "val-card-2-num": "02",
+    "val-card-2-title": "Prouver par l'action",
+    "val-card-2-text": "Ce site en est la preuve : la démo 3D fonctionne, le design est entièrement codé à la main, et chaque projet présenté ici est réel. Je préfère montrer ce que je sais faire plutôt que simplement le dire.",
+    "val-card-3-num": "03",
+    "val-card-3-title": "Ne rien lâcher",
+    "val-card-3-text": "15 ans de breakdance forgent le caractère. Quand mon Expert Advisor a échoué 50 fois, je l'ai corrigé 50 fois. Quand un workflow plante, je le débugue avant de passer à la suite. La persévérance n'est pas un mot — c'est une pratique quotidienne.",
+    "val-card-4-num": "04",
+    "val-card-4-title": "Transmettre",
+    "val-card-4-text": "Enseigner le breakdance à des enfants depuis 5 ans m'a appris à vulgariser des concepts, à faire preuve de patience et à m'adapter au niveau de chacun. C'est cette même approche qui m'a conduit à intégrer une section explicative dans la page Demo.",
+    "val-card-5-num": "05",
+    "val-card-5-title": "Construire pour être libre",
+    "val-card-5-text": "Mon objectif n'est pas d'occuper un poste confortable. C'est de concevoir des systèmes qui fonctionnent de manière autonome. Le trading automatisé, les workflows 24/7, les agents IA — chaque projet contribue au même objectif : l'indépendance.",
+    "val-card-6-num": "06",
+    "val-card-6-title": "Rester curieux",
+    "val-card-6-text": "Three.js pour la 3D, MediaPipe pour le hand tracking, MQL5 pour le trading — j'explore des domaines variés et je trouve toujours un moyen de les relier. La curiosité est mon principal moteur.",
+    "photo-gallery-label": "// en images",
+    "photo-gallery-title": "Quelques",
+    "photo-gallery-hl": "moments",
+    "roadmap-section-label": "// la suite",
+    "roadmap-section-title": "Où je",
+    "roadmap-section-hl": "vais",
+    "about-roadmap-p1": "Mon BUT TC se termine en 2025. L'étape suivante en 2026 : Epitech, avec une spécialisation en intelligence artificielle. J'ai la détermination et les projets — il me manque la profondeur technique qu'une école d'ingénierie logicielle peut apporter.",
+    "about-roadmap-p2": "En parallèle, je continue de développer Async Agency avec mon associé. L'objectif à 5 ans : en faire notre activité principale. Nos propres clients, nos propres produits, notre propre indépendance.",
+    "about-roadmap-p3": "Ce qui me motive, ce n'est pas un titre sur une carte de visite. C'est la liberté de choisir sur quoi je travaille, avec qui, et dans quel but.",
+    "roadmap-title": "ROADMAP",
+    "roadmap-2026": "Intégrer Epitech en spécialisation IA",
+    "roadmap-2027": "Premiers clients réguliers pour Async Agency",
+    "roadmap-2028": "Diplôme Epitech + activité freelance/entrepreneur",
+    "roadmap-2030": "Vivre de mes propres systèmes d'automatisation IA",
+    "about-freedom-quote": "Je ne cherche pas un poste.",
+    "about-freedom-highlight": "Je construis les systèmes qui me rendront libre d'en choisir un.",
+    "demo-section-label": "// demo interactive",
+    "demo-section-title": "Sculptez avec vos",
+    "demo-section-hl": "mains",
+    "demo-section-desc": "Manipulez un cube déformable en temps réel. Main 1 : poing pour compresser, pinch pour tirer, 2-3 doigts pour les ondes. Main 2 : poing fermé pour attraper et déplacer le cube, main ouverte pour le faire tourner. Des fils d'énergie relient vos doigts au cube.",
+    "demo-cut-btn": "■ Couper caméra",
+    "demo-no-hands": "Montrez vos mains pour manipuler le cube",
+    "demo-start-btn": "Lancer la caméra",
+    "demo-loading": "Chargement MediaPipe (2 mains)...",
+    "tech-section-label": "// comment ça marche",
+    "tech-section-title": "Sous le",
+    "tech-section-hl": "capot",
+    "tech-card-1-title": "La caméra voit vos mains",
+    "tech-card-1-text": "Quand vous lancez la démo, votre navigateur active la webcam et envoie les images à MediaPipe Hands, une bibliothèque open-source créée par Google. Elle détecte vos mains en temps réel et repère 21 points par main (bouts des doigts, articulations, poignet). Tout ça tourne directement dans votre navigateur, rien n'est envoyé sur un serveur.",
+    "tech-card-2-title": "Les gestes sont traduits en actions",
+    "tech-card-2-text": "Mon code analyse la position des 21 points pour comprendre ce que fait votre main : poing fermé, doigts écartés, pinch (pouce + index qui se touchent), etc. Chaque geste est associé à une action sur le cube. Par exemple, quand le pouce et l'index sont proches, le code calcule le point entre les deux et tire les sommets du cube vers ce point. Quand la 2e main est ouverte et bouge, le code mesure le déplacement et l'applique comme rotation.",
+    "tech-card-3-title": "Le cube est un objet 3D déformable",
+    "tech-card-3-text": "Le cube est créé avec Three.js, une bibliothèque JavaScript pour la 3D dans le navigateur. C'est un cube découpé en environ 2000 petits triangles. Chaque sommet peut être déplacé individuellement par vos gestes, ce qui déforme la forme. Un système de ressort ramène les sommets à leur position d'origine quand vous retirez vos mains. Les fils lumineux entre vos doigts et le cube sont des lignes 3D animées avec du bruit sinusoïdal pour l'effet \"énergie\".",
+    "tech-summary-title": "Les technos utilisées",
+    "tech-summary-text": "Aucun backend, aucune IA distante, aucun framework lourd. L'ensemble fonctionne localement dans le navigateur avec du JavaScript pur et deux bibliothèques open-source. L'ensemble fonctionne en temps réel, sans serveur distant.",
+    "contact-section-label": "// contact",
+    "contact-section-title": "Prenons",
+    "contact-section-hl": "contact",
+    "contact-intro": "Je recherche une école comme Epitech pour approfondir le développement, des missions en automatisation, ou l'opportunité d'échanger avec des professionnels partageant cette vision. N'hésitez pas à me contacter par le moyen qui vous convient.",
+    "contact-email-label": "Email",
+    "contact-email-address": "herman.vanel@gmail.com",
+    "contact-email-text": "Le moyen le plus direct. Je réponds en général dans la journée.",
+    "contact-linkedin-label": "LinkedIn",
+    "contact-linkedin-name": "Herman Vanel",
+    "contact-linkedin-text": "Pour les échanges professionnels. N'hésitez pas à me contacter.",
+    "contact-seeking-title": "CE QUE JE CHERCHE",
+    "contact-seeking-text": "Une école qui forme de véritables développeurs (Epitech est l'objectif). Des clients ou missions en automatisation IA via Async Agency. Et des personnes animées par l'envie de créer et d'innover ensemble.",
+    "contact-docs-label": "// documents",
+    "contact-docs-title": "Fichiers",
+    "contact-docs-hl": "à télécharger",
+    "contact-docs-desc": "Retrouvez ici mes documents à destination des recruteurs, écoles et partenaires potentiels.",
+    "doc-cv-title": "CV",
+    "doc-cv-label": "PDF · Télécharger",
+    "doc-letter-title": "Lettre de motivation",
+    "doc-letter-label": "PDF · Télécharger",
+    "doc-portfolio-title": "Dossier de candidature",
+    "doc-portfolio-label": "PDF · Télécharger",
+    "doc-folder-note": "Placez vos fichiers dans le dossier",
+    "doc-folder-note2": "pour qu'ils soient accessibles au téléchargement."
+  },
+  "en": {
+    "nav-accueil": "_home",
+    "nav-projets": "_projects",
+    "nav-about": "_about",
+    "nav-demo": "_demo",
+    "nav-contact": "_contact",
+    "hero-name-sub": "Herman Vanel",
+    "hero-gradient": "I automate everything.",
+    "hero-typing": "$ 21 y/o · Nice · trading · n8n · AI agents",
+    "hero-desc": "Student in a Sales Techniques degree, alternating with work during the day. I develop trading robots and automation systems at night. This site showcases what I can do, with functional code and real projects.",
+    "acc-sec1-label": "// today",
+    "acc-sec1-title": "Two lives",
+    "acc-sec1-hl": "in parallel",
+    "acc-sec1-card1-title": "Day: sales & field",
+    "acc-sec1-card1-p1": "I'm in my 3rd year of Sales Techniques at Nice IUT. My alternating work is at PAAL, an aluminum carpentry company in Contes, as marketing and sales assistant: phone prospecting, marketing development, social media management.",
+    "acc-sec1-card1-p2": "This experience taught me to communicate, convince, and understand how a business works from the inside. It's not code, but it's essential groundwork for entrepreneurship.",
+    "acc-sec1-card2-title": "Night: code & automation",
+    "acc-sec1-card2-p1": "In parallel, I develop an Expert Advisor in MQL5 — a robot that analyzes financial markets and automatically places trading orders on MetaTrader 5. I also build n8n workflows, automation chains that eliminate repetitive tasks. And with a partner, we're building Async Agency, an automation and AI agents agency for businesses.",
+    "acc-sec1-card2-p2": "Nobody asked me to learn to code. Each language came in response to a concrete need.",
+    "acc-sec2-label": "// explore",
+    "acc-sec2-title": "The",
+    "acc-sec2-hl": "next step",
+    "acc-sec2-card1-title": "My projects",
+    "acc-sec2-card1-text": "An Expert Advisor on MetaTrader 5 (autonomous trading robot), n8n workflows to automate processes, and Async Agency in development.",
+    "acc-sec2-card1-btn": "VIEW →",
+    "acc-sec2-card2-title": "My journey",
+    "acc-sec2-card2-text": "Born in Ethiopia, 15 years of breakdance, BAFA, Sales Techniques degree in Nice, alternating work at PAAL, and self-taught development.",
+    "acc-sec2-card2-btn": "VIEW →",
+    "acc-sec2-card3-title": "3D Demo",
+    "acc-sec2-card3-text": "Sculpt a deformable 3D cube with your hands, live in the browser.",
+    "acc-sec2-card3-btn": "TRY →",
+    "acc-footer-title": "LET'S CONNECT",
+    "acc-footer-desc": "I'm looking for a school (Epitech), automation missions, or simply the opportunity to chat with professionals who share this vision.",
+    "proj-sec-label": "// projects",
+    "proj-sec-title": "What I",
+    "proj-sec-hl": "build",
+    "proj-intro": "These aren't school projects. They're personal initiatives, developed at night and on weekends, outside of coursework. Some are operational, others still in development.",
+    "proj-card1-title": "Expert Advisor MT5",
+    "proj-card1-sub": "Automated trading robot · Forex & Gold",
+    "proj-card1-text": "I develop an Expert Advisor in MQL5 — a program that analyzes financial markets and automatically places buy/sell orders on MetaTrader 5, with no human intervention. I backtest my strategies (historical data testing), optimize, and start over. A long-term project.",
+    "proj-card1-quote": "Trading taught me rigor. When capital is at stake, every line of code counts.",
+    "proj-card2-title": "n8n Workflows",
+    "proj-card2-sub": "24/7 running automations",
+    "proj-card2-text": "With n8n (an automation tool), I create workflows — chains of actions that connect multiple services. For example: a workflow that captures trading signals on Telegram and executes them on MT5, or auto-generates publication schedules for social media.",
+    "proj-card2-quote": "Every repetitive task is an automation opportunity.",
+    "proj-card3-title": "Async Agency",
+    "proj-card3-sub": "Automation & AI agency",
+    "proj-card3-text": "With my partner, we're building Async Agency. We offer automations and AI agents — intelligent assistants capable of answering clients, sorting emails, or executing complex tasks from a simple request.",
+    "proj-card3-quote": "We develop in Python or no-code with n8n, depending on client needs.",
+    "wf-section-label": "// in action",
+    "wf-section-title": "Real",
+    "wf-section-hl": "workflows",
+    "wf-section-desc": "Here are concrete examples of workflows I've built with n8n. Each meets a real business need.",
+    "wf-card1-label": "Meeting reminders",
+    "wf-card1-title": "Reduce no-shows",
+    "wf-card1-text": "When a meeting is created in Google Calendar, the workflow automatically sends a reminder to the client via WhatsApp, Slack, or email. Result: fewer missed appointments.",
+    "wf-card2-label": "Restaurant AI",
+    "wf-card2-title": "Chat reservation with AI",
+    "wf-card2-text": "A customer writes in chat to book a table. An AI agent (OpenAI) understands the request, checks availability in Google Sheets, and confirms or updates the reservation automatically.",
+    "wf-card3-label": "Auto-publish",
+    "wf-card3-title": "Post to 4 networks at once",
+    "wf-card3-text": "The workflow reads a schedule from Google Sheets, improves text with AI (Claude), then auto-publishes to Instagram, X/Twitter, Reddit, and TikTok. On error, Telegram alerts.",
+    "skill-section-label": "// skills",
+    "skill-section-title": "What I",
+    "skill-section-hl": "can do",
+    "skill-section-desc": "Click a skill to discover a concrete example. Each is from my real experience.",
+    "sk-filter-all": "All",
+    "sk-filter-hard": "Hard Skills",
+    "sk-filter-soft": "Soft Skills",
+    "sk-filter-lang": "Languages",
+    "skill-python-name": "Python",
+    "skill-python-sub": "Intermediate",
+    "skill-python-case": "Real case",
+    "skill-python-text": "I use Python for market data analysis in my MT5 trading bot. I've also built AI agents in Python for Async Agency — programs that process client requests and execute actions via APIs.",
+    "skill-js-name": "JavaScript",
+    "skill-js-sub": "Intermediate",
+    "skill-js-case": "Real case",
+    "skill-js-text": "This portfolio is pure JavaScript. The 3D demo (Three.js + MediaPipe) on the Demo page is entirely vanilla JS. I've also built Telegram bots in Node.js that relay trading signals automatically.",
+    "skill-mql5-name": "MQL5",
+    "skill-mql5-sub": "Learning",
+    "skill-mql5-case": "Real case",
+    "skill-mql5-text": "I develop an Expert Advisor that auto-trades Forex and XAUUSD (gold) on MetaTrader 5. The bot analyzes market data, applies my strategies, places orders, and manages risk. I backtest, adjust, repeat.",
+    "skill-n8n-name": "n8n / Automation",
+    "skill-n8n-sub": "Advanced",
+    "skill-n8n-case": "Real case",
+    "skill-n8n-text": "I created an n8n workflow that captures trading signals on Telegram, filters them, and relays to MT5. Another auto-generates publishing schedules for Metricool. At PAAL, I automated repetitive marketing tasks via webhooks.",
+    "skill-api-name": "APIs REST",
+    "skill-api-sub": "Intermediate",
+    "skill-api-case": "Real case",
+    "skill-api-text": "I integrate APIs from OpenAI, Telegram, MetaTrader, and other services in my workflows and bots. For Async Agency, I connect client APIs to create custom automations: CRM, messaging, billing.",
+    "skill-threejs-name": "Three.js / WebGL",
+    "skill-threejs-sub": "Learning",
+    "skill-threejs-case": "Real case",
+    "skill-threejs-text": "The demo on this site's Demo page: a real-time 3D deformable cube controlled by your hands via webcam. Deformable geometry, spring system, animated energy threads, particles. All in Three.js r128 in the browser.",
+    "skill-marketing-name": "Digital marketing",
+    "skill-marketing-sub": "Field experience",
+    "skill-marketing-case": "Real case",
+    "skill-marketing-text": "At PAAL, I manage phone prospecting, marketing development, and company social media. In Business school, I learned commercial strategies, consumer behavior, and marketing project management.",
+    "skill-perseverance-name": "Perseverance",
+    "skill-perseverance-sub": "Always",
+    "skill-perseverance-case": "Real case",
+    "skill-perseverance-text": "15 years of breakdance built this quality. Mastering a move takes months. When my trading bot failed 50 times, I fixed it 50 times. When a workflow breaks, I debug it before moving on.",
+    "skill-autonomy-name": "Autonomy",
+    "skill-autonomy-sub": "Self-taught",
+    "skill-autonomy-case": "Real case",
+    "skill-autonomy-text": "Nobody asked me to learn coding. The need to code a trading bot pushed me to Python and MQL5. Automation tasks led me to n8n. With my partner, we launched Async Agency without waiting for training.",
+    "skill-leadership-name": "Leadership",
+    "skill-leadership-sub": "10 yrs class rep + dance teacher",
+    "skill-leadership-case": "Real case",
+    "skill-leadership-text": "Class representative since middle school, for about 10 years. For 5 years, I've taught breakdance to groups of kids and teens at La Semeuse association in Nice. I also mentored 6-year-olds as an animator at Nazareth school.",
+    "skill-adaptability-name": "Adaptability",
+    "skill-adaptability-sub": "All environments",
+    "skill-adaptability-case": "Real case",
+    "skill-adaptability-text": "Kids animation on Wednesdays, B2B phone prospecting at PAAL during week, volunteering at Solid'Act food pantry, internship at MEI Industries, coding at night. I adapt to context and people.",
+    "skill-teamwork-name": "Teamwork",
+    "skill-teamwork-sub": "Partner, dance, internship",
+    "skill-teamwork-case": "Real case",
+    "skill-teamwork-text": "Async Agency is collaborative: task division, joint development, shared decisions. In breakdance, I design group choreographies for performances. At PAAL, I work daily with marketing and sales teams.",
+    "skill-creativity-name": "Creativity",
+    "skill-creativity-sub": "Dance + code",
+    "skill-creativity-case": "Real case",
+    "skill-creativity-text": "Breakdance is improvisation and constant creation. This portfolio is an example: the 3D demo and design are homemade. n8n workflows also need creativity to connect services not designed to work together.",
+    "skill-english-name": "English",
+    "skill-english-sub": "Good level (B2)",
+    "skill-english-case": "Real case",
+    "skill-english-text": "All technical docs I read are in English: Three.js, MediaPipe, n8n, APIs, Stack Overflow. I code in English (variables, comments). Trading forums are also mostly English.",
+    "skill-italian-name": "Italian",
+    "skill-italian-sub": "Basics (A2)",
+    "skill-italian-case": "Real case",
+    "skill-italian-text": "Learned in high school and business school. Nice is close to Italy, so it's useful daily and helps with cross-border business, especially at PAAL.",
+    "about-section1-label": "// about me",
+    "about-section1-title": "Herman",
+    "about-section1-hl": "Vanel",
+    "about-bio-p1": "I'm 21. Born in Ethiopia, adopted at age 2, grew up in southern France. Today I live in Nice.",
+    "about-bio-p2": "Days: finishing my Sales Techniques degree at Nice IUT, alternating with work at PAAL, an aluminum carpentry company in Contes. Phone prospecting, digital marketing, social media.",
+    "about-bio-p3": "Nights: developing. Trading bot, automation workflows, AI agents. With my partner, we're building Async Agency. Nobody asked me to do this. I do it because I want to build autonomous systems.",
+    "orbit-python": "Python",
+    "orbit-js": "JavaScript",
+    "orbit-mql5": "MQL5",
+    "orbit-n8n": "n8n",
+    "orbit-ai": "AI",
+    "orbit-marketing": "Marketing",
+    "orbit-threejs": "Three.js",
+    "orbit-trading": "Trading",
+    "orbit-apis": "APIs",
+    "stat-breakdance": "Yrs of breakdance",
+    "stat-languages": "Programming languages",
+    "stat-projects": "Active projects",
+    "stat-delegate": "Yrs as class rep",
+    "about-quote": "My path isn't linear. Animation, breakdance, sales, trading, coding. Seems scattered, but each stage gave skills the next one needed.",
+    "tl-section-label": "// journey",
+    "tl-section-title": "Where I",
+    "tl-section-hl": "come from",
+    "tl-item1-label": "ROOTS · 2005",
+    "tl-item1-title": "Born in Ethiopia, adopted at 2",
+    "tl-item1-text": "Born in Ethiopia, adopted at age 2, I grew up in southern France. This dual culture gave me open-mindedness and adaptability I use daily.",
+    "tl-item2-label": "DANCE · ~2011 → TODAY",
+    "tl-item2-title": "15 years of breakdance",
+    "tl-item2-text": "Started breakdance around age 6. It's my longest commitment. Battles taught me pressure management. Daily training instilled discipline. For 5-6 years, I've taught kids and teens at La Semeuse in Nice. Also taught in Menton for a year.",
+    "tl-item3-label": "FIRST STEPS · 2020-2022",
+    "tl-item3-title": "Animation, volunteering, industry",
+    "tl-item3-text": "Animated 6-year-olds at Nazareth school every Wednesday and during breaks. Volunteered at Solid'Act food pantry in Nice: reception, sales, stock, cashier. Observed at MEI Industries, sheet metal in Carros. BAFA certification in 10 months, with lifeguard qualification.",
+    "tl-item4-label": "EDUCATION · 2022-2025",
+    "tl-item4-title": "Business degree at Nice IUT + PAAL",
+    "tl-item4-text": "Three years in Sales Techniques. Alternating at PAAL in Contes: phone prospecting, marketing development, social media management. Discovered programming self-taught, outside class. Sales taught me persuasion. Code taught me building.",
+    "tl-item5-label": "BREAKTHROUGH · 2023",
+    "tl-item5-title": "Trading opened coding's door",
+    "tl-item5-text": "Started with trading. Wanting to automate strategies led to MQL5 for MetaTrader 5 Expert Advisor. Then Python for data analysis. Then n8n to connect tools. Then JavaScript for interfaces. Each solved problem opened a new language.",
+    "tl-item6-label": "PARALLEL · 2024-2026",
+    "tl-item6-title": "Async Agency + AI agents",
+    "tl-item6-text": "Launching Async Agency with my partner: automation and AI agents for businesses. Building in Python or no-code n8n per needs. Meanwhile, continuing algo trading, workflows, built this portfolio with 3D interactive demo in Three.js + MediaPipe.",
+    "tl-item7-label": "GOAL · 2026-2028",
+    "tl-item7-title": "Epitech, AI specialization",
+    "tl-item7-text": "Goal: attend Epitech to deepen development and AI. I have determination and projects, but need the structure and advanced skills only an engineering school can provide. This portfolio is part of my application.",
+    "val-section-label": "// values",
+    "val-section-title": "What",
+    "val-section-hl": "defines me",
+    "val-card-1-num": "01",
+    "val-card-1-title": "Learn by doing",
+    "val-card-1-text": "Never took formal programming training. Facing problems, I sought solutions and learned doing. My trading bot, workflows, this site — each born from real need, not theory.",
+    "val-card-2-num": "02",
+    "val-card-2-title": "Prove through action",
+    "val-card-2-text": "This site proves it: 3D demo works, design hand-coded, every project shown is real. Rather show what I can do than say it.",
+    "val-card-3-num": "03",
+    "val-card-3-title": "Never give up",
+    "val-card-3-text": "15 years breakdance built character. When my Expert Advisor failed 50 times, I fixed it 50 times. When a workflow breaks, I debug before moving on. Perseverance isn't a word — it's daily practice.",
+    "val-card-4-num": "04",
+    "val-card-4-title": "Share knowledge",
+    "val-card-4-text": "Teaching breakdance to kids for 5 years taught me to simplify concepts, be patient, adapt to levels. This same approach led me to add explanation sections on the Demo page.",
+    "val-card-5-num": "05",
+    "val-card-5-title": "Build for freedom",
+    "val-card-5-text": "Goal isn't a comfy job title. It's designing self-running systems. Auto trading, 24/7 workflows, AI agents — each contributes to one goal: independence.",
+    "val-card-6-num": "06",
+    "val-card-6-title": "Stay curious",
+    "val-card-6-text": "Three.js for 3D, MediaPipe for hand tracking, MQL5 for trading — I explore varied areas and find ways to connect them. Curiosity drives me.",
+    "photo-gallery-label": "// gallery",
+    "photo-gallery-title": "Some",
+    "photo-gallery-hl": "moments",
+    "roadmap-section-label": "// next",
+    "roadmap-section-title": "Where I'm",
+    "roadmap-section-hl": "going",
+    "about-roadmap-p1": "My degree ends 2025. Next step 2026: Epitech, AI specialization. I have drive and projects — need the technical depth only a software engineering school offers.",
+    "about-roadmap-p2": "Meanwhile, continuing Async Agency with my partner. 5-year goal: make it our main activity. Our own clients, products, independence.",
+    "about-roadmap-p3": "What drives me isn't a title. It's freedom to choose what I work on, with whom, and why.",
+    "roadmap-title": "ROADMAP",
+    "roadmap-2026": "Get into Epitech, AI specialization",
+    "roadmap-2027": "Regular clients for Async Agency",
+    "roadmap-2028": "Epitech degree + freelance/entrepreneur",
+    "roadmap-2030": "Live off my own AI automation systems",
+    "about-freedom-quote": "I'm not seeking a job.",
+    "about-freedom-highlight": "I'm building systems that'll free me to choose one.",
+    "demo-section-label": "// interactive demo",
+    "demo-section-title": "Sculpt with your",
+    "demo-section-hl": "hands",
+    "demo-section-desc": "Manipulate a deformable cube in real-time. Hand 1: fist to compress, pinch to pull, 2-3 fingers for waves. Hand 2: closed fist to grab and move cube, open hand to rotate. Energy threads link your fingers to cube.",
+    "demo-cut-btn": "■ Stop camera",
+    "demo-no-hands": "Show your hands to sculpt the cube",
+    "demo-start-btn": "Launch camera",
+    "demo-loading": "Loading MediaPipe (2 hands)...",
+    "tech-section-label": "// how it works",
+    "tech-section-title": "Under the",
+    "tech-section-hl": "hood",
+    "tech-card-1-title": "Camera sees your hands",
+    "tech-card-1-text": "When you launch the demo, your browser activates the webcam and sends images to MediaPipe Hands, Google's open-source library. It detects your hands in real-time and maps 21 points per hand (fingertips, joints, wrist). All runs in your browser; nothing hits a server.",
+    "tech-card-2-title": "Gestures become actions",
+    "tech-card-2-text": "My code analyzes the 21 points to understand what your hand does: closed fist, spread fingers, pinch (thumb+index touching), etc. Each gesture triggers a cube action. When thumb and index are close, the code calculates the point between them and pulls cube vertices toward it. When hand 2 is open and moves, the code measures displacement and applies rotation.",
+    "tech-card-3-title": "Cube is a deformable 3D object",
+    "tech-card-3-text": "Cube is built with Three.js, a JavaScript 3D library for browsers. It's a cube divided into ~2000 small triangles. Each vertex can move individually from your gestures, warping the shape. A spring system returns vertices to origin when you release. Glowing threads between your fingers and cube are 3D animated lines with sine noise for an \"energy\" effect.",
+    "tech-summary-title": "Technologies",
+    "tech-summary-text": "No backend, no remote AI, no heavy framework. All runs locally in your browser as pure JavaScript and two open-source libraries. Runs real-time, no distant server.",
+    "contact-section-label": "// contact",
+    "contact-section-title": "Let's",
+    "contact-section-hl": "connect",
+    "contact-intro": "I'm looking for a school like Epitech to deepen development, automation missions, or the chance to chat with professionals sharing this vision. Reach out however works.",
+    "contact-email-label": "Email",
+    "contact-email-address": "herman.vanel@gmail.com",
+    "contact-email-text": "Most direct. I usually reply same day.",
+    "contact-linkedin-label": "LinkedIn",
+    "contact-linkedin-name": "Herman Vanel",
+    "contact-linkedin-text": "For professional chat. Don't hesitate.",
+    "contact-seeking-title": "WHAT I SEEK",
+    "contact-seeking-text": "A school that trains real developers (Epitech's the goal). Clients or automation missions via Async Agency. People driven by the urge to create and innovate.",
+    "contact-docs-label": "// documents",
+    "contact-docs-title": "Files to",
+    "contact-docs-hl": "download",
+    "contact-docs-desc": "My documents for recruiters, schools, potential partners.",
+    "doc-cv-title": "Resume",
+    "doc-cv-label": "PDF · Download",
+    "doc-letter-title": "Cover letter",
+    "doc-letter-label": "PDF · Download",
+    "doc-portfolio-title": "Application folder",
+    "doc-portfolio-label": "PDF · Download",
+    "doc-folder-note": "Place your files in the",
+    "doc-folder-note2": "folder to make them downloadable."
+  }
+};
+let currentLang = 'fr';
+
+function switchLang(lang) {
+  currentLang = lang;
+  
+  // Update all elements with data-i18n
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (translations[lang] && translations[lang][key]) {
+      el.textContent = translations[lang][key];
+    }
+  });
+  
+  // Update all elements with data-i18n-html
+  document.querySelectorAll('[data-i18n-html]').forEach(el => {
+    const key = el.getAttribute('data-i18n-html');
+    if (translations[lang] && translations[lang][key]) {
+      el.innerHTML = translations[lang][key];
+    }
+  });
+  
+  // Update HTML lang attribute
+  document.documentElement.lang = lang;
+  
+  // Update toggle button highlighting
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.classList.remove('active');
+    if (btn.getAttribute('data-lang') === lang) {
+      btn.classList.add('active');
+    }
+  });
+}
+
+// Initialize language on page load
+document.addEventListener('DOMContentLoaded', () => {
+  switchLang('fr');
+});
+
 </body>
 </html>
