@@ -1613,9 +1613,9 @@ function activate(){
   initThree();
   window.addEventListener('mousemove',onMouseMove);
 
-  // Double rAF ensures browser has painted before we measure positions
-  requestAnimationFrame(()=>{
-  requestAnimationFrame(()=>{
+  // Wait for DOM layout to settle before measuring positions
+  setTimeout(()=>{
+    window.scrollTo(0,0);
     ScrollTrigger.refresh();
     playHeroTimeline();
     initStats();
@@ -1624,10 +1624,9 @@ function activate(){
     initTech();
     initReveals();
     ScrollTrigger.refresh();
-    // Extra refresh after a short delay for bulletproof pin calculation
-    setTimeout(()=>ScrollTrigger.refresh(),300);
-  });
-  });
+    // Extra refresh after paint for bulletproof pin calculation
+    requestAnimationFrame(()=>ScrollTrigger.refresh());
+  },150);
 
   // Fallback: ensure content becomes visible if ScrollTrigger hasn't revealed it after 3 seconds
   // Skip hero elements — they are revealed by the breach animation
@@ -1785,7 +1784,7 @@ if(document.readyState==='loading'){
 
 <script>
 // ===== NAV =====
-function go(id){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.querySelectorAll('.nav-links a').forEach(a=>a.classList.remove('active'));document.getElementById('p-'+id).classList.add('active');document.getElementById('n-'+id).classList.add('active');window.scrollTo({top:0,behavior:'smooth'});}
+function go(id){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.querySelectorAll('.nav-links a').forEach(a=>a.classList.remove('active'));document.getElementById('p-'+id).classList.add('active');document.getElementById('n-'+id).classList.add('active');window.scrollTo(0,0);}
 
 // ===== SKILLS =====
 function toggleSk(el){el.classList.toggle('open');}
