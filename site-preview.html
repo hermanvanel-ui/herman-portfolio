@@ -1003,20 +1003,21 @@ p.card-sub{color:var(--text-mid);font-size:.9rem;line-height:1.75;font-weight:40
   background:var(--abg);color:var(--atxt);
 }
 
-/* === DOOR OPENING (SCROLL-DRIVEN 3D) === */
-.async-door-spacer{position:relative;height:200vh;z-index:50;}
-.async-door-scene{position:sticky;top:0;height:100vh;perspective:1200px;display:flex;align-items:center;justify-content:center;overflow:hidden;background:var(--abg);}
-.async-door-l,.async-door-r{position:absolute;top:0;width:50%;height:100%;backface-visibility:hidden;}
-.async-door-l{left:0;transform-origin:left center;background:linear-gradient(135deg,#0a0e1a,#111827);border-right:2px solid rgba(168,85,247,.4);}
-.async-door-r{right:0;transform-origin:right center;background:linear-gradient(225deg,#0a0e1a,#111827);border-left:2px solid rgba(168,85,247,.4);}
-.async-door-face{position:absolute;inset:0;background:linear-gradient(180deg,transparent 30%,rgba(168,85,247,.03) 50%,transparent 70%);pointer-events:none;}
-.async-door-l::after,.async-door-r::after{content:'';position:absolute;top:0;width:2px;height:100%;background:linear-gradient(180deg,transparent,rgba(168,85,247,.6),var(--a2),rgba(168,85,247,.6),transparent);box-shadow:0 0 15px rgba(168,85,247,.5),0 0 40px rgba(168,85,247,.2);opacity:0;transition:opacity .3s;}
-.async-door-l::after{right:0;}
-.async-door-r::after{left:0;}
-.async-door-glow{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:4px;height:0;background:linear-gradient(180deg,transparent,var(--a1),var(--a2),var(--a1),transparent);box-shadow:0 0 30px 10px rgba(168,85,247,.3),0 0 60px 20px rgba(6,182,212,.15);border-radius:50%;opacity:0;pointer-events:none;}
-.async-door-label{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:'Orbitron',sans-serif;font-size:clamp(1.2rem,3vw,2rem);font-weight:900;letter-spacing:8px;color:var(--a1);text-shadow:0 0 30px rgba(168,85,247,.5),0 0 60px rgba(168,85,247,.2);white-space:nowrap;pointer-events:none;opacity:0;}
-.async-door-scene.door-opening .async-door-l::after,
-.async-door-scene.door-opening .async-door-r::after{opacity:1;}
+/* === THE BREACH — Z-AXIS SCROLL IMMERSION === */
+.breach-spacer{position:relative;height:250vh;z-index:50;}
+.breach-scene{position:sticky;top:0;height:100vh;perspective:1500px;overflow:visible;z-index:50;}
+.breach-door-l,.breach-door-r{position:absolute;top:0;width:50%;height:100%;backface-visibility:hidden;z-index:10;}
+.breach-door-l{left:0;transform-origin:left center;background:linear-gradient(135deg,#080d1a 0%,#0f172a 100%);border-right:1px solid rgba(168,85,247,.25);}
+.breach-door-r{right:0;transform-origin:right center;background:linear-gradient(225deg,#080d1a 0%,#0f172a 100%);border-left:1px solid rgba(168,85,247,.25);}
+.breach-door-face{position:absolute;inset:0;background:linear-gradient(180deg,transparent 15%,rgba(168,85,247,.03) 50%,transparent 85%);pointer-events:none;}
+.breach-edge{position:absolute;top:0;width:3px;height:100%;background:linear-gradient(180deg,transparent,var(--a1),var(--a2),var(--a1),transparent);box-shadow:0 0 25px rgba(168,85,247,.6),0 0 60px rgba(6,182,212,.2);opacity:0;z-index:11;}
+.breach-edge-l{right:0;}
+.breach-edge-r{left:0;}
+.breach-glow{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:6px;height:0;background:linear-gradient(180deg,transparent,var(--a1b),var(--a2b),var(--a1b),transparent);box-shadow:0 0 40px 15px rgba(168,85,247,.4),0 0 80px 30px rgba(6,182,212,.2);border-radius:4px;opacity:0;pointer-events:none;z-index:15;}
+.breach-halo{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:0;height:0;background:radial-gradient(ellipse,rgba(168,85,247,.18) 0%,rgba(6,182,212,.08) 35%,transparent 70%);border-radius:50%;pointer-events:none;z-index:5;}
+.breach-label{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:'Orbitron',sans-serif;font-size:clamp(1.2rem,3vw,2rem);font-weight:900;letter-spacing:8px;color:var(--a1);text-shadow:0 0 30px rgba(168,85,247,.6),0 0 80px rgba(168,85,247,.3);white-space:nowrap;pointer-events:none;opacity:0;z-index:20;}
+.breach-flash{position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(168,85,247,.25),rgba(6,182,212,.12) 40%,transparent 70%);opacity:0;pointer-events:none;z-index:25;}
+#asyncMainContent{position:relative;z-index:1;margin-top:-100vh;transform-origin:center top;will-change:transform,filter;}
 
 /* Cursor spotlight */
 .async-spotlight{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9;opacity:0;transition:opacity .4s;}
@@ -1111,20 +1112,25 @@ p.card-sub{color:var(--text-mid);font-size:.9rem;line-height:1.75;font-weight:40
 .a-hidden{opacity:0;transform:translateY(40px);}
 </style>
 
-<!-- SCROLL-DRIVEN 3D DOOR -->
-<div class="async-door-spacer" id="asyncDoorSpacer">
-  <div class="async-door-scene" id="asyncDoorScene">
-    <div class="async-door-l" id="asyncDoorL">
-      <div class="async-door-face"></div>
+<!-- THE BREACH — Z-AXIS SCROLL IMMERSION -->
+<div class="breach-spacer" id="asyncBreachSpacer">
+  <div class="breach-scene" id="asyncBreachScene">
+    <div class="breach-halo" id="asyncBreachHalo"></div>
+    <div class="breach-door-l" id="asyncDoorL">
+      <div class="breach-door-face"></div>
+      <div class="breach-edge breach-edge-l" id="asyncEdgeL"></div>
     </div>
-    <div class="async-door-r" id="asyncDoorR">
-      <div class="async-door-face"></div>
+    <div class="breach-door-r" id="asyncDoorR">
+      <div class="breach-door-face"></div>
+      <div class="breach-edge breach-edge-r" id="asyncEdgeR"></div>
     </div>
-    <div class="async-door-glow" id="asyncDoorGlow"></div>
-    <div class="async-door-label" id="asyncDoorLabel">ASYNC AGENCY</div>
+    <div class="breach-glow" id="asyncBreachGlow"></div>
+    <div class="breach-label" id="asyncDoorLabel">ASYNC AGENCY</div>
+    <div class="breach-flash" id="asyncBreachFlash"></div>
   </div>
 </div>
 
+<div id="asyncMainContent">
 <!-- Cursor spotlight layer -->
 <div class="async-spotlight" id="asyncSpotlight"></div>
 <div class="async-dotbg"></div>
@@ -1272,6 +1278,7 @@ p.card-sub{color:var(--text-mid);font-size:.9rem;line-height:1.75;font-weight:40
 </div></section>
 
 <footer class="footer"><p style="color:var(--text-faint);font-size:.65rem;font-family:'JetBrains Mono',monospace;letter-spacing:1px;">© 2026 ASYNC AGENCY · HERMAN VANEL</p></footer>
+</div><!-- /asyncMainContent -->
 
 <script>
 // ===== ASYNC AGENCY — PREMIUM ENGINE =====
@@ -1380,48 +1387,65 @@ function onMouseMove(e){
   });
 }
 
-// ============ DOOR OPENING + HERO TIMELINE ============
+// ============ THE BREACH — Z-AXIS IMMERSION ============
 function playHeroTimeline(){
-  // Scroll-bound 3D door opening
-  const doorTl=gsap.timeline({
-    scrollTrigger:{
-      trigger:'#asyncDoorSpacer',
-      start:'top top',
-      end:'bottom top',
-      scrub:1,
-      pin:false,
-    }
-  });
-  gsapTriggers.push(doorTl.scrollTrigger);
+  // Initial state: content scaled down + blurred behind the doors
+  gsap.set('#asyncMainContent',{scale:0.55,filter:'blur(8px)',transformOrigin:'center top'});
 
-  doorTl
-    // Label fades in then out
-    .fromTo('#asyncDoorLabel',{opacity:0,scale:.85},{opacity:1,scale:1,duration:.2,ease:'power2.out'})
-    .to('#asyncDoorLabel',{opacity:0,scale:1.1,duration:.15},.35)
-    // Glow line appears in center
-    .fromTo('#asyncDoorGlow',{height:0,opacity:0},{height:'80%',opacity:1,duration:.3},.15)
-    // Doors swing open with 3D perspective
-    .to('#asyncDoorL',{rotateY:-85,duration:.5,ease:'power2.in'},.25)
-    .to('#asyncDoorR',{rotateY:85,duration:.5,ease:'power2.in'},.25)
-    // Toggle class for edge glow via CSS
-    .add(()=>{document.getElementById('asyncDoorScene').classList.add('door-opening')},.25)
-    // Glow fades
-    .to('#asyncDoorGlow',{opacity:0,width:200,duration:.3},.6)
-    // Finally hide entire door scene
-    .set('#asyncDoorScene',{autoAlpha:0},.95);
+  let heroRevealed=false;
 
-  const masterTl=gsap.timeline();
-
-  // --- PHASE 2: Hero content enters ---
+  // Hero content timeline — paused until breach completes
+  const masterTl=gsap.timeline({paused:true});
   masterTl
-    .to('.ah .ah-label',{opacity:1,y:0,duration:.8,ease:'expo.out'},'<.3')
-    // Letters pop in with stagger
+    .to('#asyncMainContent',{clearProps:'transform,filter,willChange',duration:.01})
+    .to('.ah .ah-label',{opacity:1,y:0,duration:.8,ease:'expo.out'},'<.1')
     .from('.ah-letter',{opacity:0,y:60,rotateX:-90,duration:1,ease:'expo.out',stagger:{amount:.4,from:'center'}},'<.1')
     .to('.ah .ah-sub',{opacity:1,y:0,duration:.8,ease:'expo.out'},'<.5')
     .to('#ahLine',{height:60,duration:.7,ease:'power2.out'},'<.2')
     .to('.ah .ah-tagline',{opacity:1,y:0,duration:.9,ease:'expo.out'},'<.3')
     .to('.ah .ah-tags',{opacity:1,y:0,duration:.6,ease:'expo.out'},'<.3')
     .to('.ah .ah-scroll',{opacity:.5,y:0,duration:.5,ease:'expo.out'},'<.3');
+
+  // Scroll-driven breach animation
+  const breachTl=gsap.timeline({
+    scrollTrigger:{
+      trigger:'#asyncBreachSpacer',
+      start:'top top',
+      end:'bottom top',
+      scrub:true,
+      pin:false,
+      onUpdate:function(self){
+        if(self.progress>0.88&&!heroRevealed){heroRevealed=true;masterTl.play();}
+      }
+    }
+  });
+  gsapTriggers.push(breachTl.scrollTrigger);
+
+  breachTl
+    // Phase 1: Label appears then fades (0 → 0.25)
+    .fromTo('#asyncDoorLabel',{opacity:0,scale:.78},{opacity:1,scale:1,duration:.13,ease:'power2.out'})
+    .to('#asyncDoorLabel',{opacity:0,scale:1.15,duration:.09},.19)
+    // Glow line grows in crack (0.04 → 0.25)
+    .fromTo('#asyncBreachGlow',{height:0,opacity:0},{height:'88%',opacity:1,duration:.2},.04)
+    // Edge glows appear (0.08 → 0.22)
+    .to('#asyncEdgeL',{opacity:1,duration:.14},.08)
+    .to('#asyncEdgeR',{opacity:1,duration:.14},.08)
+    // Phase 2: Doors swing open in 3D (0.2 → 0.65)
+    .to('#asyncDoorL',{rotateY:-105,duration:.45,ease:'power3.in'},.2)
+    .to('#asyncDoorR',{rotateY:105,duration:.45,ease:'power3.in'},.2)
+    // Halo expands — divine light behind doors (0.18 → 0.7)
+    .to('#asyncBreachHalo',{width:'220vw',height:'220vh',duration:.52,ease:'power2.out'},.18)
+    // Content zooms in from behind (0.22 → 0.78)
+    .to('#asyncMainContent',{scale:1,filter:'blur(0px)',duration:.56,ease:'power2.out'},.22)
+    // Flash pulse (0.45 → 0.7)
+    .to('#asyncBreachFlash',{opacity:.5,duration:.15},.45)
+    .to('#asyncBreachFlash',{opacity:0,duration:.18},.62)
+    // Phase 3: Cleanup — glows fade, scene hides
+    .to('#asyncBreachGlow',{opacity:0,width:'300px',duration:.18},.58)
+    .to('#asyncEdgeL',{opacity:0,duration:.1},.62)
+    .to('#asyncEdgeR',{opacity:0,duration:.1},.62)
+    .to('#asyncBreachHalo',{opacity:0,duration:.15},.72)
+    .set('#asyncBreachScene',{autoAlpha:0},.95);
 
   // Scroll hint bounce
   gsap.to('.ah-scroll',{y:8,duration:1.5,ease:'sine.inOut',yoyo:true,repeat:-1,delay:4});
@@ -1614,21 +1638,31 @@ function deactivate(){
   window.removeEventListener('mousemove',onMouseMove);
   gsapTriggers.forEach(st=>st.kill());
   gsapTriggers=[];
-  gsap.killTweensOf(document.querySelectorAll('#p-async .a-hidden, .ah-orb, .ah-scroll, .ah-content, #asyncThreeCanvas, .ah-letter, .acta-btn'));
+  gsap.killTweensOf(document.querySelectorAll('#p-async .a-hidden, .ah-orb, .ah-scroll, .ah-content, #asyncThreeCanvas, .ah-letter, .acta-btn, #asyncMainContent, #asyncBreachGlow, #asyncBreachHalo, #asyncBreachFlash, #asyncEdgeL, #asyncEdgeR'));
   // Reset spotlight
   const sp=document.getElementById('asyncSpotlight');
   if(sp) sp.style.background='none';
-  // Reset door
-  const doorScene=document.getElementById('asyncDoorScene');
+  // Reset breach
+  const breachScene=document.getElementById('asyncBreachScene');
   const doorL=document.getElementById('asyncDoorL');
   const doorR=document.getElementById('asyncDoorR');
-  const doorGlow=document.getElementById('asyncDoorGlow');
+  const breachGlow=document.getElementById('asyncBreachGlow');
+  const breachHalo=document.getElementById('asyncBreachHalo');
+  const breachFlash=document.getElementById('asyncBreachFlash');
+  const edgeL=document.getElementById('asyncEdgeL');
+  const edgeR=document.getElementById('asyncEdgeR');
   const doorLbl=document.getElementById('asyncDoorLabel');
-  if(doorScene){doorScene.classList.remove('door-opening');doorScene.style.autoAlpha='';gsap.set(doorScene,{clearProps:'autoAlpha'});}
+  const mainContent=document.getElementById('asyncMainContent');
+  if(breachScene) gsap.set(breachScene,{clearProps:'autoAlpha'});
   if(doorL) gsap.set(doorL,{rotateY:0});
   if(doorR) gsap.set(doorR,{rotateY:0});
-  if(doorGlow) gsap.set(doorGlow,{clearProps:'height,opacity,width'});
+  if(breachGlow) gsap.set(breachGlow,{clearProps:'height,opacity,width'});
+  if(breachHalo) gsap.set(breachHalo,{clearProps:'width,height,opacity'});
+  if(breachFlash) gsap.set(breachFlash,{clearProps:'opacity'});
+  if(edgeL) gsap.set(edgeL,{clearProps:'opacity'});
+  if(edgeR) gsap.set(edgeR,{clearProps:'opacity'});
   if(doorLbl) gsap.set(doorLbl,{clearProps:'opacity,scale'});
+  if(mainContent) gsap.set(mainContent,{clearProps:'transform,filter,transformOrigin,willChange'});
   // Reset letters
   document.querySelectorAll('.ah-letter').forEach(l=>{gsap.set(l,{x:0,opacity:1,rotateX:0,rotateY:0});});
   // Reset all states
