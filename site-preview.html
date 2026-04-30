@@ -1384,66 +1384,72 @@ function onMouseMove(e){
   });
 }
 
-// ============ THE BREACH — PINNED ZOOM REVEAL ============
+// ============ THE BREACH — FULLY REVERSIBLE PINNED ZOOM ============
 function playHeroTimeline(){
-  // Initial state: hero scaled down + invisible behind doors
+  // Force initial states for clean start & perfect reversibility
   gsap.set('#asyncHero',{scale:0.3,opacity:0,transformOrigin:'center center'});
+  gsap.set('#asyncBreachOverlay',{autoAlpha:1});
+  gsap.set('#asyncDoorL',{rotateY:0});
+  gsap.set('#asyncDoorR',{rotateY:0});
+  gsap.set('#asyncBreachGlow',{height:0,opacity:0,width:6});
+  gsap.set('#asyncBreachHalo',{width:0,height:0,opacity:1});
+  gsap.set('#asyncEdgeL',{opacity:0});
+  gsap.set('#asyncEdgeR',{opacity:0});
+  gsap.set('#asyncBreachFlash',{opacity:0});
+  gsap.set('#asyncDoorLabel',{opacity:0,scale:.78});
 
-  let heroRevealed=false;
-
-  // Hero text timeline — paused, fires when breach finishes
-  const masterTl=gsap.timeline({paused:true});
-  masterTl
-    .to('.ah .ah-label',{opacity:1,y:0,duration:.8,ease:'expo.out'})
-    .from('.ah-letter',{opacity:0,y:60,rotateX:-90,duration:1,ease:'expo.out',stagger:{amount:.4,from:'center'}},'<.1')
-    .to('.ah .ah-sub',{opacity:1,y:0,duration:.8,ease:'expo.out'},'<.5')
-    .to('#ahLine',{height:60,duration:.7,ease:'power2.out'},'<.2')
-    .to('.ah .ah-tagline',{opacity:1,y:0,duration:.9,ease:'expo.out'},'<.3')
-    .to('.ah .ah-tags',{opacity:1,y:0,duration:.6,ease:'expo.out'},'<.3')
-    .to('.ah .ah-scroll',{opacity:.5,y:0,duration:.5,ease:'expo.out'},'<.3');
-
-  // Scroll-driven breach — PINNED so page doesn't scroll down
+  // ONE single timeline — everything scrubbed = everything reversible
   const breachTl=gsap.timeline({
     scrollTrigger:{
       trigger:'#asyncBreachSection',
       start:'top top',
       end:'+=200%',
       pin:true,
-      scrub:true,
+      scrub:1,
       anticipatePin:1,
-      onUpdate:function(self){
-        if(self.progress>0.92&&!heroRevealed){heroRevealed=true;masterTl.play();}
-      }
     }
   });
   gsapTriggers.push(breachTl.scrollTrigger);
 
   breachTl
     // Phase 1: Label appears then fades (0 → 0.22)
-    .fromTo('#asyncDoorLabel',{opacity:0,scale:.78},{opacity:1,scale:1,duration:.12,ease:'power2.out'})
+    .fromTo('#asyncDoorLabel',{opacity:0,scale:.78},{opacity:1,scale:1,duration:.12},.0)
     .to('#asyncDoorLabel',{opacity:0,scale:1.15,duration:.08},.18)
     // Glow line grows in crack (0.03 → 0.22)
     .fromTo('#asyncBreachGlow',{height:0,opacity:0},{height:'88%',opacity:1,duration:.18},.03)
     // Edge glows appear (0.06 → 0.2)
-    .to('#asyncEdgeL',{opacity:1,duration:.12},.06)
-    .to('#asyncEdgeR',{opacity:1,duration:.12},.06)
+    .fromTo('#asyncEdgeL',{opacity:0},{opacity:1,duration:.12},.06)
+    .fromTo('#asyncEdgeR',{opacity:0},{opacity:1,duration:.12},.06)
     // Phase 2: Doors swing open (0.18 → 0.65)
     .to('#asyncDoorL',{rotateY:-105,duration:.47,ease:'power3.in'},.18)
     .to('#asyncDoorR',{rotateY:105,duration:.47,ease:'power3.in'},.18)
     // Halo — divine light behind doors (0.15 → 0.68)
-    .to('#asyncBreachHalo',{width:'200vw',height:'200vh',duration:.53,ease:'power2.out'},.15)
+    .fromTo('#asyncBreachHalo',{width:0,height:0},{width:'200vw',height:'200vh',duration:.53},.15)
     // HERO ZOOM: scale 0.3→1, opacity 0→1 (the Z-axis rush)
-    .to('#asyncHero',{opacity:1,duration:.3,ease:'power1.in'},.12)
-    .to('#asyncHero',{scale:1,duration:.65,ease:'power2.out'},.1)
-    // Flash pulse (0.4 → 0.65)
-    .to('#asyncBreachFlash',{opacity:.5,duration:.12},.4)
-    .to('#asyncBreachFlash',{opacity:0,duration:.15},.55)
-    // Phase 3: Cleanup — overlay fades, pin releases
-    .to('#asyncBreachGlow',{opacity:0,width:'300px',duration:.15},.55)
+    .to('#asyncHero',{opacity:1,duration:.3},.12)
+    .to('#asyncHero',{scale:1,duration:.65},.1)
+    // Flash pulse (0.4 → 0.6)
+    .fromTo('#asyncBreachFlash',{opacity:0},{opacity:.5,duration:.1},.4)
+    .to('#asyncBreachFlash',{opacity:0,duration:.12},.52)
+    // Phase 3: Cleanup — overlay fades (0.55 → 0.82)
+    .to('#asyncBreachGlow',{opacity:0,width:'300px',duration:.12},.55)
     .to('#asyncEdgeL',{opacity:0,duration:.08},.58)
     .to('#asyncEdgeR',{opacity:0,duration:.08},.58)
-    .to('#asyncBreachHalo',{opacity:0,duration:.12},.68)
-    .to('#asyncBreachOverlay',{autoAlpha:0,duration:.1},.82);
+    .to('#asyncBreachHalo',{opacity:0,duration:.12},.65)
+    .to('#asyncBreachOverlay',{autoAlpha:0,duration:.1},.78)
+    // Phase 4: Hero text reveals — ALL in the same scrubbed timeline
+    .fromTo('.ah .ah-label',{opacity:0,y:40},{opacity:1,y:0,duration:.06},.8)
+    .fromTo('.ah-letter',{opacity:0,y:60,rotateX:-90},{opacity:1,y:0,rotateX:0,duration:.08,stagger:{amount:.03,from:'center'}},.8)
+    .fromTo('.ah .ah-sub',{opacity:0,y:40},{opacity:1,y:0,duration:.06},.86)
+    .fromTo('#ahLine',{height:0},{height:60,duration:.05},.88)
+    .fromTo('.ah .ah-tagline',{opacity:0,y:40},{opacity:1,y:0,duration:.06},.9)
+    .fromTo('.ah .ah-tags',{opacity:0,y:40},{opacity:1,y:0,duration:.05},.93)
+    .fromTo('.ah .ah-scroll',{opacity:0,y:40},{opacity:.5,y:0,duration:.04},.96);
+
+  // Resize handler — recalculate pin positions
+  const onResize=()=>ScrollTrigger.refresh();
+  window.addEventListener('resize',onResize);
+  gsapTriggers._resizeHandler=onResize;
 
   // Scroll hint bounce
   gsap.to('.ah-scroll',{y:8,duration:1.5,ease:'sine.inOut',yoyo:true,repeat:-1,delay:4});
@@ -1607,8 +1613,9 @@ function activate(){
   initThree();
   window.addEventListener('mousemove',onMouseMove);
 
-  // Small delay so DOM is laid out and scroll is at top
-  setTimeout(()=>{
+  // Double rAF ensures browser has painted before we measure positions
+  requestAnimationFrame(()=>{
+  requestAnimationFrame(()=>{
     ScrollTrigger.refresh();
     playHeroTimeline();
     initStats();
@@ -1617,7 +1624,10 @@ function activate(){
     initTech();
     initReveals();
     ScrollTrigger.refresh();
-  },200);
+    // Extra refresh after a short delay for bulletproof pin calculation
+    setTimeout(()=>ScrollTrigger.refresh(),300);
+  });
+  });
 
   // Fallback: ensure content becomes visible if ScrollTrigger hasn't revealed it after 3 seconds
   // Skip hero elements — they are revealed by the breach animation
@@ -1636,6 +1646,8 @@ function activate(){
 function deactivate(){
   destroyThree();
   window.removeEventListener('mousemove',onMouseMove);
+  // Remove resize handler if present
+  if(gsapTriggers._resizeHandler) window.removeEventListener('resize',gsapTriggers._resizeHandler);
   gsapTriggers.forEach(st=>st.kill());
   gsapTriggers=[];
   gsap.killTweensOf(document.querySelectorAll('#p-async .a-hidden, .ah-orb, .ah-scroll, .ah-content, #asyncThreeCanvas, .ah-letter, .acta-btn, #asyncHero, #asyncBreachGlow, #asyncBreachHalo, #asyncBreachFlash, #asyncEdgeL, #asyncEdgeR'));
