@@ -997,18 +997,26 @@ p.card-sub{color:var(--text-mid);font-size:.9rem;line-height:1.75;font-weight:40
 <style>
 /* ===== ASYNC — PREMIUM PAGE (own color world) ===== */
 #p-async{position:relative;overflow-x:hidden;
-  --abg:#0a0a0f;--asurf:rgba(255,255,255,.035);
+  --abg:#0c1222;--asurf:rgba(255,255,255,.05);
   --a1:#a855f7;--a1b:#c084fc;--a2:#06b6d4;--a2b:#22d3ee;--a3:#f472b6;
-  --atxt:#e2e8f0;--atxt-m:#94a3b8;--atxt-d:#64748b;--atxt-f:#475569;
+  --atxt:#f1f5f9;--atxt-m:#b0bec5;--atxt-d:#78909c;--atxt-f:#546e7a;
   background:var(--abg);color:var(--atxt);
 }
 
-/* === DOOR OPENING === */
-.async-door{position:fixed;top:0;left:0;width:100%;height:100%;z-index:100;pointer-events:none;}
-.async-door-l,.async-door-r{position:absolute;top:0;width:50%;height:100%;background:linear-gradient(135deg,#06060a,#0d0a14);}
-.async-door-l{left:0;border-right:1px solid rgba(168,85,247,.3);}
-.async-door-r{right:0;border-left:1px solid rgba(168,85,247,.3);}
-.async-door-label{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:'Orbitron',sans-serif;font-size:clamp(1.2rem,3vw,2rem);font-weight:900;letter-spacing:8px;color:var(--a1);text-shadow:0 0 30px rgba(168,85,247,.4);z-index:101;white-space:nowrap;pointer-events:none;opacity:0;}
+/* === DOOR OPENING (SCROLL-DRIVEN 3D) === */
+.async-door-spacer{position:relative;height:200vh;z-index:50;}
+.async-door-scene{position:sticky;top:0;height:100vh;perspective:1200px;display:flex;align-items:center;justify-content:center;overflow:hidden;background:var(--abg);}
+.async-door-l,.async-door-r{position:absolute;top:0;width:50%;height:100%;backface-visibility:hidden;}
+.async-door-l{left:0;transform-origin:left center;background:linear-gradient(135deg,#0a0e1a,#111827);border-right:2px solid rgba(168,85,247,.4);}
+.async-door-r{right:0;transform-origin:right center;background:linear-gradient(225deg,#0a0e1a,#111827);border-left:2px solid rgba(168,85,247,.4);}
+.async-door-face{position:absolute;inset:0;background:linear-gradient(180deg,transparent 30%,rgba(168,85,247,.03) 50%,transparent 70%);pointer-events:none;}
+.async-door-l::after,.async-door-r::after{content:'';position:absolute;top:0;width:2px;height:100%;background:linear-gradient(180deg,transparent,rgba(168,85,247,.6),var(--a2),rgba(168,85,247,.6),transparent);box-shadow:0 0 15px rgba(168,85,247,.5),0 0 40px rgba(168,85,247,.2);opacity:0;transition:opacity .3s;}
+.async-door-l::after{right:0;}
+.async-door-r::after{left:0;}
+.async-door-glow{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:4px;height:0;background:linear-gradient(180deg,transparent,var(--a1),var(--a2),var(--a1),transparent);box-shadow:0 0 30px 10px rgba(168,85,247,.3),0 0 60px 20px rgba(6,182,212,.15);border-radius:50%;opacity:0;pointer-events:none;}
+.async-door-label{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:'Orbitron',sans-serif;font-size:clamp(1.2rem,3vw,2rem);font-weight:900;letter-spacing:8px;color:var(--a1);text-shadow:0 0 30px rgba(168,85,247,.5),0 0 60px rgba(168,85,247,.2);white-space:nowrap;pointer-events:none;opacity:0;}
+.async-door-scene.door-opening .async-door-l::after,
+.async-door-scene.door-opening .async-door-r::after{opacity:1;}
 
 /* Cursor spotlight */
 .async-spotlight{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9;opacity:0;transition:opacity .4s;}
@@ -1103,12 +1111,19 @@ p.card-sub{color:var(--text-mid);font-size:.9rem;line-height:1.75;font-weight:40
 .a-hidden{opacity:0;transform:translateY(40px);}
 </style>
 
-<!-- DOOR OPENING OVERLAY -->
-<div class="async-door" id="asyncDoor">
-  <div class="async-door-l" id="asyncDoorL"></div>
-  <div class="async-door-r" id="asyncDoorR"></div>
+<!-- SCROLL-DRIVEN 3D DOOR -->
+<div class="async-door-spacer" id="asyncDoorSpacer">
+  <div class="async-door-scene" id="asyncDoorScene">
+    <div class="async-door-l" id="asyncDoorL">
+      <div class="async-door-face"></div>
+    </div>
+    <div class="async-door-r" id="asyncDoorR">
+      <div class="async-door-face"></div>
+    </div>
+    <div class="async-door-glow" id="asyncDoorGlow"></div>
+    <div class="async-door-label" id="asyncDoorLabel">ASYNC AGENCY</div>
+  </div>
 </div>
-<div class="async-door-label" id="asyncDoorLabel">ASYNC AGENCY</div>
 
 <!-- Cursor spotlight layer -->
 <div class="async-spotlight" id="asyncSpotlight"></div>
@@ -1286,6 +1301,7 @@ function initThree(){
   const canvas=document.getElementById('asyncThreeCanvas');
   if(!canvas||typeof THREE==='undefined') return;
   const W=canvas.parentElement.offsetWidth, H=canvas.parentElement.offsetHeight;
+  if(W<10||H<10) return;
 
   threeScene=new THREE.Scene();
   threeCamera=new THREE.PerspectiveCamera(45,W/H,.1,100);
@@ -1366,21 +1382,35 @@ function onMouseMove(e){
 
 // ============ DOOR OPENING + HERO TIMELINE ============
 function playHeroTimeline(){
-  const masterTl=gsap.timeline();
+  // Scroll-bound 3D door opening
+  const doorTl=gsap.timeline({
+    scrollTrigger:{
+      trigger:'#asyncDoorSpacer',
+      start:'top top',
+      end:'bottom top',
+      scrub:1,
+      pin:false,
+    }
+  });
+  gsapTriggers.push(doorTl.scrollTrigger);
 
-  // --- PHASE 1: Door opens ---
-  masterTl
-    .set('#asyncDoor',{pointerEvents:'auto'})
-    .set('#asyncDoorLabel',{opacity:1})
-    // Label appears first
-    .from('#asyncDoorLabel',{opacity:0,scale:.8,duration:.6,ease:'expo.out'})
-    // Then doors slide open
-    .to('#asyncDoorL',{xPercent:-100,duration:1.4,ease:'expo.inOut'},'+=.3')
-    .to('#asyncDoorR',{xPercent:100,duration:1.4,ease:'expo.inOut'},'<')
-    .to('#asyncDoorLabel',{opacity:0,scale:1.3,duration:.6,ease:'expo.in'},'<.2')
-    // Cleanup door
-    .set('#asyncDoor',{display:'none'})
-    .set('#asyncDoorLabel',{display:'none'});
+  doorTl
+    // Label fades in then out
+    .fromTo('#asyncDoorLabel',{opacity:0,scale:.85},{opacity:1,scale:1,duration:.2,ease:'power2.out'})
+    .to('#asyncDoorLabel',{opacity:0,scale:1.1,duration:.15},.35)
+    // Glow line appears in center
+    .fromTo('#asyncDoorGlow',{height:0,opacity:0},{height:'80%',opacity:1,duration:.3},.15)
+    // Doors swing open with 3D perspective
+    .to('#asyncDoorL',{rotateY:-85,duration:.5,ease:'power2.in'},.25)
+    .to('#asyncDoorR',{rotateY:85,duration:.5,ease:'power2.in'},.25)
+    // Toggle class for edge glow via CSS
+    .add(()=>{document.getElementById('asyncDoorScene').classList.add('door-opening')},.25)
+    // Glow fades
+    .to('#asyncDoorGlow',{opacity:0,width:200,duration:.3},.6)
+    // Finally hide entire door scene
+    .set('#asyncDoorScene',{autoAlpha:0},.95);
+
+  const masterTl=gsap.timeline();
 
   // --- PHASE 2: Hero content enters ---
   masterTl
@@ -1566,6 +1596,17 @@ function activate(){
     initReveals();
     ScrollTrigger.refresh();
   },200);
+
+  // Fallback: ensure content becomes visible if ScrollTrigger hasn't revealed it after 3 seconds
+  setTimeout(()=>{
+    document.querySelectorAll('#p-async .a-hidden').forEach(el=>{
+      if(getComputedStyle(el).opacity==='0'){
+        el.style.opacity='1';
+        el.style.transform='translateY(0)';
+        el.style.transition='opacity .6s, transform .6s';
+      }
+    });
+  },3000);
 }
 
 function deactivate(){
@@ -1578,14 +1619,16 @@ function deactivate(){
   const sp=document.getElementById('asyncSpotlight');
   if(sp) sp.style.background='none';
   // Reset door
-  const doorEl=document.getElementById('asyncDoor');
+  const doorScene=document.getElementById('asyncDoorScene');
   const doorL=document.getElementById('asyncDoorL');
   const doorR=document.getElementById('asyncDoorR');
+  const doorGlow=document.getElementById('asyncDoorGlow');
   const doorLbl=document.getElementById('asyncDoorLabel');
-  if(doorEl){doorEl.style.display='';doorEl.style.pointerEvents='';}
-  if(doorL) gsap.set(doorL,{xPercent:0});
-  if(doorR) gsap.set(doorR,{xPercent:0});
-  if(doorLbl){doorLbl.style.display='';doorLbl.style.opacity='0';}
+  if(doorScene){doorScene.classList.remove('door-opening');doorScene.style.autoAlpha='';gsap.set(doorScene,{clearProps:'autoAlpha'});}
+  if(doorL) gsap.set(doorL,{rotateY:0});
+  if(doorR) gsap.set(doorR,{rotateY:0});
+  if(doorGlow) gsap.set(doorGlow,{clearProps:'height,opacity,width'});
+  if(doorLbl) gsap.set(doorLbl,{clearProps:'opacity,scale'});
   // Reset letters
   document.querySelectorAll('.ah-letter').forEach(l=>{gsap.set(l,{x:0,opacity:1,rotateX:0,rotateY:0});});
   // Reset all states
