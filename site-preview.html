@@ -997,19 +997,19 @@ p.card-sub{color:var(--text-mid);font-size:.9rem;line-height:1.75;font-weight:40
 <style>
 /* ===== ASYNC — PREMIUM PAGE (own color world) ===== */
 #p-async{position:relative;overflow-x:hidden;
-  --abg:#0c1222;--asurf:rgba(255,255,255,.05);
+  --abg:#0e1628;--asurf:rgba(255,255,255,.05);
   --a1:#a855f7;--a1b:#c084fc;--a2:#06b6d4;--a2b:#22d3ee;--a3:#f472b6;
   --atxt:#f1f5f9;--atxt-m:#b0bec5;--atxt-d:#78909c;--atxt-f:#546e7a;
   background:var(--abg);color:var(--atxt);
 }
 
-/* === THE BREACH — Z-AXIS SCROLL IMMERSION === */
-.breach-spacer{position:relative;height:250vh;z-index:50;}
-.breach-scene{position:sticky;top:0;height:100vh;perspective:1500px;overflow:visible;z-index:50;}
-.breach-door-l,.breach-door-r{position:absolute;top:0;width:50%;height:100%;backface-visibility:hidden;z-index:10;}
-.breach-door-l{left:0;transform-origin:left center;background:linear-gradient(135deg,#080d1a 0%,#0f172a 100%);border-right:1px solid rgba(168,85,247,.25);}
-.breach-door-r{right:0;transform-origin:right center;background:linear-gradient(225deg,#080d1a 0%,#0f172a 100%);border-left:1px solid rgba(168,85,247,.25);}
-.breach-door-face{position:absolute;inset:0;background:linear-gradient(180deg,transparent 15%,rgba(168,85,247,.03) 50%,transparent 85%);pointer-events:none;}
+/* === THE BREACH — PINNED ZOOM REVEAL === */
+#asyncBreachSection{position:relative;height:100vh;overflow:hidden;background:var(--abg);}
+.breach-overlay{position:absolute;inset:0;z-index:100;perspective:1500px;pointer-events:none;}
+.breach-door-l,.breach-door-r{position:absolute;top:0;width:50%;height:100%;backface-visibility:hidden;pointer-events:auto;}
+.breach-door-l{left:0;transform-origin:left center;background:linear-gradient(135deg,#0b1020 0%,#131d35 100%);border-right:1px solid rgba(168,85,247,.25);}
+.breach-door-r{right:0;transform-origin:right center;background:linear-gradient(225deg,#0b1020 0%,#131d35 100%);border-left:1px solid rgba(168,85,247,.25);}
+.breach-door-face{position:absolute;inset:0;background:linear-gradient(180deg,transparent 15%,rgba(168,85,247,.04) 50%,transparent 85%);pointer-events:none;}
 .breach-edge{position:absolute;top:0;width:3px;height:100%;background:linear-gradient(180deg,transparent,var(--a1),var(--a2),var(--a1),transparent);box-shadow:0 0 25px rgba(168,85,247,.6),0 0 60px rgba(6,182,212,.2);opacity:0;z-index:11;}
 .breach-edge-l{right:0;}
 .breach-edge-r{left:0;}
@@ -1017,7 +1017,6 @@ p.card-sub{color:var(--text-mid);font-size:.9rem;line-height:1.75;font-weight:40
 .breach-halo{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:0;height:0;background:radial-gradient(ellipse,rgba(168,85,247,.18) 0%,rgba(6,182,212,.08) 35%,transparent 70%);border-radius:50%;pointer-events:none;z-index:5;}
 .breach-label{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:'Orbitron',sans-serif;font-size:clamp(1.2rem,3vw,2rem);font-weight:900;letter-spacing:8px;color:var(--a1);text-shadow:0 0 30px rgba(168,85,247,.6),0 0 80px rgba(168,85,247,.3);white-space:nowrap;pointer-events:none;opacity:0;z-index:20;}
 .breach-flash{position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(168,85,247,.25),rgba(6,182,212,.12) 40%,transparent 70%);opacity:0;pointer-events:none;z-index:25;}
-#asyncMainContent{position:relative;z-index:1;margin-top:-100vh;transform-origin:center top;will-change:transform,filter;}
 
 /* Cursor spotlight */
 .async-spotlight{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9;opacity:0;transition:opacity .4s;}
@@ -1112,9 +1111,10 @@ p.card-sub{color:var(--text-mid);font-size:.9rem;line-height:1.75;font-weight:40
 .a-hidden{opacity:0;transform:translateY(40px);}
 </style>
 
-<!-- THE BREACH — Z-AXIS SCROLL IMMERSION -->
-<div class="breach-spacer" id="asyncBreachSpacer">
-  <div class="breach-scene" id="asyncBreachScene">
+<!-- THE BREACH — PINNED ZOOM REVEAL (overlay indépendant du contenu) -->
+<div id="asyncBreachSection">
+  <!-- Door overlay (absolute, indépendant) -->
+  <div class="breach-overlay" id="asyncBreachOverlay">
     <div class="breach-halo" id="asyncBreachHalo"></div>
     <div class="breach-door-l" id="asyncDoorL">
       <div class="breach-door-face"></div>
@@ -1128,39 +1128,37 @@ p.card-sub{color:var(--text-mid);font-size:.9rem;line-height:1.75;font-weight:40
     <div class="breach-label" id="asyncDoorLabel">ASYNC AGENCY</div>
     <div class="breach-flash" id="asyncBreachFlash"></div>
   </div>
+  <!-- Hero (zooms in from behind doors) -->
+  <div class="ah" id="asyncHero">
+    <canvas class="ah-3d" id="asyncThreeCanvas"></canvas>
+    <div class="ah-orb" style="width:400px;height:400px;background:rgba(168,85,247,.1);top:0;left:-10%;"></div>
+    <div class="ah-orb" style="width:300px;height:300px;background:rgba(6,182,212,.08);bottom:5%;right:-8%;"></div>
+    <div class="ah-orb" style="width:220px;height:220px;background:rgba(244,114,182,.06);top:35%;left:55%;"></div>
+    <div class="ah-content">
+      <div class="ah-label a-hidden" data-i18n="async-hero-label">// projet professionnel</div>
+      <div class="ah-logo" id="asyncLogoSplit">
+        <div class="ah-logo-row" id="asyncRow1">
+          <span class="ah-letter">A</span><span class="ah-letter">S</span><span class="ah-letter">Y</span><span class="ah-letter">N</span><span class="ah-letter">C</span>
+        </div>
+        <div class="ah-logo-row" id="asyncRow2">
+          <span class="ah-letter">A</span><span class="ah-letter">G</span><span class="ah-letter">E</span><span class="ah-letter">N</span><span class="ah-letter">C</span><span class="ah-letter">Y</span>
+        </div>
+      </div>
+      <div class="ah-sub a-hidden" data-i18n="async-hero-sub">Automatisation & Intelligence Artificielle</div>
+      <div class="ah-line" id="ahLine"></div>
+      <p class="ah-tagline a-hidden" data-i18n="async-hero-tagline">On automatise ce que les humains ne devraient plus faire à la main. Workflows, agents IA, bots conversationnels — pour que les entreprises se concentrent sur l'essentiel.</p>
+      <div class="ah-tags a-hidden">
+        <span class="tag" style="border-color:rgba(168,85,247,.4);color:var(--a1);background:rgba(168,85,247,.08);">Co-fondateur</span>
+        <span class="tag" style="border-color:rgba(6,182,212,.4);color:var(--a2);background:rgba(6,182,212,.08);">En développement</span>
+      </div>
+    </div>
+    <div class="ah-scroll a-hidden">↓ SCROLL ↓</div>
+  </div>
 </div>
 
-<div id="asyncMainContent">
 <!-- Cursor spotlight layer -->
 <div class="async-spotlight" id="asyncSpotlight"></div>
 <div class="async-dotbg"></div>
-
-<!-- ========== HERO ========== -->
-<div class="ah" id="asyncHero">
-  <canvas class="ah-3d" id="asyncThreeCanvas"></canvas>
-  <div class="ah-orb" style="width:400px;height:400px;background:rgba(168,85,247,.1);top:0;left:-10%;"></div>
-  <div class="ah-orb" style="width:300px;height:300px;background:rgba(6,182,212,.08);bottom:5%;right:-8%;"></div>
-  <div class="ah-orb" style="width:220px;height:220px;background:rgba(244,114,182,.06);top:35%;left:55%;"></div>
-  <div class="ah-content">
-    <div class="ah-label a-hidden" data-i18n="async-hero-label">// projet professionnel</div>
-    <div class="ah-logo" id="asyncLogoSplit">
-      <div class="ah-logo-row" id="asyncRow1">
-        <span class="ah-letter">A</span><span class="ah-letter">S</span><span class="ah-letter">Y</span><span class="ah-letter">N</span><span class="ah-letter">C</span>
-      </div>
-      <div class="ah-logo-row" id="asyncRow2">
-        <span class="ah-letter">A</span><span class="ah-letter">G</span><span class="ah-letter">E</span><span class="ah-letter">N</span><span class="ah-letter">C</span><span class="ah-letter">Y</span>
-      </div>
-    </div>
-    <div class="ah-sub a-hidden" data-i18n="async-hero-sub">Automatisation & Intelligence Artificielle</div>
-    <div class="ah-line" id="ahLine"></div>
-    <p class="ah-tagline a-hidden" data-i18n="async-hero-tagline">On automatise ce que les humains ne devraient plus faire à la main. Workflows, agents IA, bots conversationnels — pour que les entreprises se concentrent sur l'essentiel.</p>
-    <div class="ah-tags a-hidden">
-      <span class="tag" style="border-color:rgba(168,85,247,.4);color:var(--a1);background:rgba(168,85,247,.08);">Co-fondateur</span>
-      <span class="tag" style="border-color:rgba(6,182,212,.4);color:var(--a2);background:rgba(6,182,212,.08);">En développement</span>
-    </div>
-  </div>
-  <div class="ah-scroll a-hidden">↓ SCROLL ↓</div>
-</div>
 
 <!-- ========== STATS ========== -->
 <section style="padding:0 1.5rem;background:var(--abg);position:relative;z-index:5;"><div class="as-bar" id="asyncStats">
@@ -1278,7 +1276,6 @@ p.card-sub{color:var(--text-mid);font-size:.9rem;line-height:1.75;font-weight:40
 </div></section>
 
 <footer class="footer"><p style="color:var(--text-faint);font-size:.65rem;font-family:'JetBrains Mono',monospace;letter-spacing:1px;">© 2026 ASYNC AGENCY · HERMAN VANEL</p></footer>
-</div><!-- /asyncMainContent -->
 
 <script>
 // ===== ASYNC AGENCY — PREMIUM ENGINE =====
@@ -1387,18 +1384,17 @@ function onMouseMove(e){
   });
 }
 
-// ============ THE BREACH — Z-AXIS IMMERSION ============
+// ============ THE BREACH — PINNED ZOOM REVEAL ============
 function playHeroTimeline(){
-  // Initial state: content scaled down + blurred behind the doors
-  gsap.set('#asyncMainContent',{scale:0.55,filter:'blur(8px)',transformOrigin:'center top'});
+  // Initial state: hero scaled down + invisible behind doors
+  gsap.set('#asyncHero',{scale:0.3,opacity:0,transformOrigin:'center center'});
 
   let heroRevealed=false;
 
-  // Hero content timeline — paused until breach completes
+  // Hero text timeline — paused, fires when breach finishes
   const masterTl=gsap.timeline({paused:true});
   masterTl
-    .to('#asyncMainContent',{clearProps:'transform,filter,willChange',duration:.01})
-    .to('.ah .ah-label',{opacity:1,y:0,duration:.8,ease:'expo.out'},'<.1')
+    .to('.ah .ah-label',{opacity:1,y:0,duration:.8,ease:'expo.out'})
     .from('.ah-letter',{opacity:0,y:60,rotateX:-90,duration:1,ease:'expo.out',stagger:{amount:.4,from:'center'}},'<.1')
     .to('.ah .ah-sub',{opacity:1,y:0,duration:.8,ease:'expo.out'},'<.5')
     .to('#ahLine',{height:60,duration:.7,ease:'power2.out'},'<.2')
@@ -1406,46 +1402,48 @@ function playHeroTimeline(){
     .to('.ah .ah-tags',{opacity:1,y:0,duration:.6,ease:'expo.out'},'<.3')
     .to('.ah .ah-scroll',{opacity:.5,y:0,duration:.5,ease:'expo.out'},'<.3');
 
-  // Scroll-driven breach animation
+  // Scroll-driven breach — PINNED so page doesn't scroll down
   const breachTl=gsap.timeline({
     scrollTrigger:{
-      trigger:'#asyncBreachSpacer',
+      trigger:'#asyncBreachSection',
       start:'top top',
-      end:'bottom top',
+      end:'+=200%',
+      pin:true,
       scrub:true,
-      pin:false,
+      anticipatePin:1,
       onUpdate:function(self){
-        if(self.progress>0.88&&!heroRevealed){heroRevealed=true;masterTl.play();}
+        if(self.progress>0.92&&!heroRevealed){heroRevealed=true;masterTl.play();}
       }
     }
   });
   gsapTriggers.push(breachTl.scrollTrigger);
 
   breachTl
-    // Phase 1: Label appears then fades (0 → 0.25)
-    .fromTo('#asyncDoorLabel',{opacity:0,scale:.78},{opacity:1,scale:1,duration:.13,ease:'power2.out'})
-    .to('#asyncDoorLabel',{opacity:0,scale:1.15,duration:.09},.19)
-    // Glow line grows in crack (0.04 → 0.25)
-    .fromTo('#asyncBreachGlow',{height:0,opacity:0},{height:'88%',opacity:1,duration:.2},.04)
-    // Edge glows appear (0.08 → 0.22)
-    .to('#asyncEdgeL',{opacity:1,duration:.14},.08)
-    .to('#asyncEdgeR',{opacity:1,duration:.14},.08)
-    // Phase 2: Doors swing open in 3D (0.2 → 0.65)
-    .to('#asyncDoorL',{rotateY:-105,duration:.45,ease:'power3.in'},.2)
-    .to('#asyncDoorR',{rotateY:105,duration:.45,ease:'power3.in'},.2)
-    // Halo expands — divine light behind doors (0.18 → 0.7)
-    .to('#asyncBreachHalo',{width:'220vw',height:'220vh',duration:.52,ease:'power2.out'},.18)
-    // Content zooms in from behind (0.22 → 0.78)
-    .to('#asyncMainContent',{scale:1,filter:'blur(0px)',duration:.56,ease:'power2.out'},.22)
-    // Flash pulse (0.45 → 0.7)
-    .to('#asyncBreachFlash',{opacity:.5,duration:.15},.45)
-    .to('#asyncBreachFlash',{opacity:0,duration:.18},.62)
-    // Phase 3: Cleanup — glows fade, scene hides
-    .to('#asyncBreachGlow',{opacity:0,width:'300px',duration:.18},.58)
-    .to('#asyncEdgeL',{opacity:0,duration:.1},.62)
-    .to('#asyncEdgeR',{opacity:0,duration:.1},.62)
-    .to('#asyncBreachHalo',{opacity:0,duration:.15},.72)
-    .set('#asyncBreachScene',{autoAlpha:0},.95);
+    // Phase 1: Label appears then fades (0 → 0.22)
+    .fromTo('#asyncDoorLabel',{opacity:0,scale:.78},{opacity:1,scale:1,duration:.12,ease:'power2.out'})
+    .to('#asyncDoorLabel',{opacity:0,scale:1.15,duration:.08},.18)
+    // Glow line grows in crack (0.03 → 0.22)
+    .fromTo('#asyncBreachGlow',{height:0,opacity:0},{height:'88%',opacity:1,duration:.18},.03)
+    // Edge glows appear (0.06 → 0.2)
+    .to('#asyncEdgeL',{opacity:1,duration:.12},.06)
+    .to('#asyncEdgeR',{opacity:1,duration:.12},.06)
+    // Phase 2: Doors swing open (0.18 → 0.65)
+    .to('#asyncDoorL',{rotateY:-105,duration:.47,ease:'power3.in'},.18)
+    .to('#asyncDoorR',{rotateY:105,duration:.47,ease:'power3.in'},.18)
+    // Halo — divine light behind doors (0.15 → 0.68)
+    .to('#asyncBreachHalo',{width:'200vw',height:'200vh',duration:.53,ease:'power2.out'},.15)
+    // HERO ZOOM: scale 0.3→1, opacity 0→1 (the Z-axis rush)
+    .to('#asyncHero',{opacity:1,duration:.3,ease:'power1.in'},.12)
+    .to('#asyncHero',{scale:1,duration:.65,ease:'power2.out'},.1)
+    // Flash pulse (0.4 → 0.65)
+    .to('#asyncBreachFlash',{opacity:.5,duration:.12},.4)
+    .to('#asyncBreachFlash',{opacity:0,duration:.15},.55)
+    // Phase 3: Cleanup — overlay fades, pin releases
+    .to('#asyncBreachGlow',{opacity:0,width:'300px',duration:.15},.55)
+    .to('#asyncEdgeL',{opacity:0,duration:.08},.58)
+    .to('#asyncEdgeR',{opacity:0,duration:.08},.58)
+    .to('#asyncBreachHalo',{opacity:0,duration:.12},.68)
+    .to('#asyncBreachOverlay',{autoAlpha:0,duration:.1},.82);
 
   // Scroll hint bounce
   gsap.to('.ah-scroll',{y:8,duration:1.5,ease:'sine.inOut',yoyo:true,repeat:-1,delay:4});
@@ -1622,8 +1620,10 @@ function activate(){
   },200);
 
   // Fallback: ensure content becomes visible if ScrollTrigger hasn't revealed it after 3 seconds
+  // Skip hero elements — they are revealed by the breach animation
   setTimeout(()=>{
     document.querySelectorAll('#p-async .a-hidden').forEach(el=>{
+      if(el.closest('.ah')) return;
       if(getComputedStyle(el).opacity==='0'){
         el.style.opacity='1';
         el.style.transform='translateY(0)';
@@ -1638,12 +1638,12 @@ function deactivate(){
   window.removeEventListener('mousemove',onMouseMove);
   gsapTriggers.forEach(st=>st.kill());
   gsapTriggers=[];
-  gsap.killTweensOf(document.querySelectorAll('#p-async .a-hidden, .ah-orb, .ah-scroll, .ah-content, #asyncThreeCanvas, .ah-letter, .acta-btn, #asyncMainContent, #asyncBreachGlow, #asyncBreachHalo, #asyncBreachFlash, #asyncEdgeL, #asyncEdgeR'));
+  gsap.killTweensOf(document.querySelectorAll('#p-async .a-hidden, .ah-orb, .ah-scroll, .ah-content, #asyncThreeCanvas, .ah-letter, .acta-btn, #asyncHero, #asyncBreachGlow, #asyncBreachHalo, #asyncBreachFlash, #asyncEdgeL, #asyncEdgeR'));
   // Reset spotlight
   const sp=document.getElementById('asyncSpotlight');
   if(sp) sp.style.background='none';
   // Reset breach
-  const breachScene=document.getElementById('asyncBreachScene');
+  const breachOverlay=document.getElementById('asyncBreachOverlay');
   const doorL=document.getElementById('asyncDoorL');
   const doorR=document.getElementById('asyncDoorR');
   const breachGlow=document.getElementById('asyncBreachGlow');
@@ -1652,8 +1652,8 @@ function deactivate(){
   const edgeL=document.getElementById('asyncEdgeL');
   const edgeR=document.getElementById('asyncEdgeR');
   const doorLbl=document.getElementById('asyncDoorLabel');
-  const mainContent=document.getElementById('asyncMainContent');
-  if(breachScene) gsap.set(breachScene,{clearProps:'autoAlpha'});
+  const hero=document.getElementById('asyncHero');
+  if(breachOverlay) gsap.set(breachOverlay,{clearProps:'autoAlpha'});
   if(doorL) gsap.set(doorL,{rotateY:0});
   if(doorR) gsap.set(doorR,{rotateY:0});
   if(breachGlow) gsap.set(breachGlow,{clearProps:'height,opacity,width'});
@@ -1662,7 +1662,7 @@ function deactivate(){
   if(edgeL) gsap.set(edgeL,{clearProps:'opacity'});
   if(edgeR) gsap.set(edgeR,{clearProps:'opacity'});
   if(doorLbl) gsap.set(doorLbl,{clearProps:'opacity,scale'});
-  if(mainContent) gsap.set(mainContent,{clearProps:'transform,filter,transformOrigin,willChange'});
+  if(hero) gsap.set(hero,{clearProps:'transform,opacity,transformOrigin'});
   // Reset letters
   document.querySelectorAll('.ah-letter').forEach(l=>{gsap.set(l,{x:0,opacity:1,rotateX:0,rotateY:0});});
   // Reset all states
