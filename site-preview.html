@@ -12,8 +12,14 @@
 <script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#1a2332;--surface:rgba(255,255,255,.04);--cyan:#60a5fa;--cyan-bright:#93c5fd;--purple:#818cf8;--purple-bright:#a5b4fc;--green:#6ee7b7;--pink:#f0abfc;--text:#e2e8f0;--text-mid:#94a3b8;--text-dim:#64748b;--text-faint:#475569;}
+:root{--bg:#1a2332;--surface:rgba(255,255,255,.04);--cyan:#60a5fa;--cyan-bright:#93c5fd;--purple:#818cf8;--purple-bright:#a5b4fc;--green:#6ee7b7;--pink:#f0abfc;--text:#e2e8f0;--text-mid:#94a3b8;--text-dim:#64748b;--text-faint:#475569;
+  --ease-out-expo:cubic-bezier(0.16,1,0.3,1);
+  --ease-out-quart:cubic-bezier(0.25,1,0.5,1);
+  --ease-in-out-quart:cubic-bezier(0.76,0,0.24,1);
+  --ease-out-back:cubic-bezier(0.34,1.56,0.64,1);}
 *{margin:0;padding:0;box-sizing:border-box;}
+*:focus-visible{outline:2px solid var(--cyan);outline-offset:3px;border-radius:2px;}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;}}
 html{scroll-behavior:auto;/* Lenis handles smooth scroll */}
 body{background:var(--bg);color:var(--text);font-family:'Rajdhani',sans-serif;min-height:100vh;overflow-x:hidden;line-height:1.6;}
 a{color:inherit;text-decoration:none;}
@@ -200,9 +206,41 @@ p.card-sub{color:var(--text-mid);font-size:.9rem;line-height:1.75;font-weight:40
 .lang-btn:hover{color:var(--text);background:rgba(255,255,255,.05);}
 .lang-btn.active{color:var(--cyan);background:rgba(96,165,250,.12);text-shadow:0 0 8px rgba(96,165,250,.3);}
 .lang-separator{color:var(--text-faint);font-size:.65rem;line-height:1;}
+
+/* ===== CUSTOM CURSOR — desktop only ===== */
+@media(hover:hover){
+  body{cursor:none;}
+  input,textarea,select,[contenteditable]{cursor:text;}
+  a,button,[role="button"]{cursor:none;}
+}
+.cursor-dot{pointer-events:none;position:fixed;top:0;left:0;z-index:9999;width:6px;height:6px;border-radius:50%;background:#fff;mix-blend-mode:difference;transform:translate(-50%,-50%);}
+.cursor-outline{pointer-events:none;position:fixed;top:0;left:0;z-index:9998;width:36px;height:36px;border-radius:50%;border:1px solid rgba(255,255,255,.4);mix-blend-mode:difference;transform:translate(-50%,-50%);transition:width .3s var(--ease-out-expo),height .3s var(--ease-out-expo),opacity .3s;}
+.cursor-outline.hovering{width:56px;height:56px;border-color:var(--cyan);opacity:.8;}
+.cursor-outline.clicking{width:28px;height:28px;}
+@media(hover:none),(pointer:coarse){.cursor-dot,.cursor-outline{display:none!important;}}
+
+/* ===== ANIMATED NAV UNDERLINE ===== */
+.nav-links li a::before{content:'';position:absolute;bottom:0;left:0;width:100%;height:1px;background:var(--cyan);transform:scaleX(0);transform-origin:left;transition:transform .3s var(--ease-out-expo);}
+.nav-links li a:hover::before{transform:scaleX(1);}
+.nav-links li a.active::before{transform:scaleX(0);}
+
+/* ===== PROJ-CARD HOVER UPGRADE ===== */
+.proj-card{transition:all .4s var(--ease-out-expo);}
+.proj-card:hover{border-color:rgba(96,165,250,.25);transform:translateY(-4px);box-shadow:0 12px 40px rgba(96,165,250,.06),0 0 0 1px rgba(96,165,250,.1);}
+
+/* ===== TAGS SCALE POP ===== */
+.tag{transition:all .2s var(--ease-out-expo);}
+.tag:hover{transform:scale(1.08);border-color:rgba(96,165,250,.4);box-shadow:0 0 12px rgba(96,165,250,.1);}
+
+/* ===== HOLO-CARD GLOW BORDER ===== */
+.holo-card{overflow:visible;}
+.holo-card::before{content:'';position:absolute;inset:-1px;padding:1px;background:conic-gradient(from 0deg,transparent 40%,var(--cyan) 50%,var(--purple) 60%,transparent 70%);-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;opacity:0;transition:opacity .4s var(--ease-out-expo);pointer-events:none;border-radius:inherit;}
+.holo-card:hover::before{opacity:1;}
 </style>
 </head>
 <body>
+<div class="cursor-dot" id="cursorDot"></div>
+<div class="cursor-outline" id="cursorOutline"></div>
 <canvas id="matrixCanvas"></canvas>
 
 <!-- NAV -->
@@ -1791,6 +1829,55 @@ window.__lenisTickFn = (time) => lenis.raf(time * 1000);
 gsap.ticker.add(window.__lenisTickFn);
 window.__lenisActive = true;
 window.__lenis = lenis;
+
+// ===== CUSTOM CURSOR =====
+const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+if (!isTouch) {
+  const dot = document.getElementById('cursorDot');
+  const outline = document.getElementById('cursorOutline');
+  if (dot && outline) {
+    const dotX = gsap.quickTo(dot, 'x', { duration: 0.05 });
+    const dotY = gsap.quickTo(dot, 'y', { duration: 0.05 });
+    const olX  = gsap.quickTo(outline, 'x', { duration: 0.35, ease: 'power3.out' });
+    const olY  = gsap.quickTo(outline, 'y', { duration: 0.35, ease: 'power3.out' });
+
+    window.addEventListener('mousemove', (e) => {
+      dotX(e.clientX); dotY(e.clientY);
+      olX(e.clientX);  olY(e.clientY);
+    });
+
+    document.addEventListener('mouseover', (e) => {
+      if (e.target.closest('a, button, [role="button"], .nav-links li, .proj-card, .holo-card, .tag, .sk-card')) {
+        outline.classList.add('hovering');
+        gsap.to(dot, { scale: 0, duration: 0.2 });
+      }
+    });
+    document.addEventListener('mouseout', (e) => {
+      if (e.target.closest('a, button, [role="button"], .nav-links li, .proj-card, .holo-card, .tag, .sk-card')) {
+        outline.classList.remove('hovering');
+        gsap.to(dot, { scale: 1, duration: 0.2 });
+      }
+    });
+
+    document.addEventListener('mousedown', () => outline.classList.add('clicking'));
+    document.addEventListener('mouseup',   () => outline.classList.remove('clicking'));
+  }
+}
+
+// ===== MAGNETIC NAV LINKS =====
+if (!isTouch) {
+  document.querySelectorAll('.nav-links li a').forEach(link => {
+    link.addEventListener('mousemove', (e) => {
+      const rect = link.getBoundingClientRect();
+      const x = e.clientX - rect.left - rect.width / 2;
+      const y = e.clientY - rect.top  - rect.height / 2;
+      gsap.to(link, { x: x * 0.3, y: y * 0.3, duration: 0.3, ease: 'power3.out' });
+    });
+    link.addEventListener('mouseleave', () => {
+      gsap.to(link, { x: 0, y: 0, duration: 0.4, ease: 'elastic.out(1,0.5)' });
+    });
+  });
+}
 
 // ===== PAGE ANIMATION SYSTEM =====
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
