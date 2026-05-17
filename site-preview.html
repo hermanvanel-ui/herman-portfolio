@@ -7,11 +7,14 @@
 <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands@0.4.1675469240/hands.js" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils@0.3.1675466862/camera_utils.js" defer></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#1a2332;--surface:rgba(255,255,255,.04);--cyan:#60a5fa;--cyan-bright:#93c5fd;--purple:#818cf8;--purple-bright:#a5b4fc;--green:#6ee7b7;--pink:#f0abfc;--text:#e2e8f0;--text-mid:#94a3b8;--text-dim:#64748b;--text-faint:#475569;}
 *{margin:0;padding:0;box-sizing:border-box;}
-html{scroll-behavior:smooth;}
+html{scroll-behavior:auto;/* Lenis handles smooth scroll */}
 body{background:var(--bg);color:var(--text);font-family:'Rajdhani',sans-serif;min-height:100vh;overflow-x:hidden;line-height:1.6;}
 a{color:inherit;text-decoration:none;}
 
@@ -990,10 +993,6 @@ p.card-sub{color:var(--text-mid);font-size:.9rem;line-height:1.75;font-weight:40
 <!-- =============== ASYNC AGENCY =============== -->
 <div class="page" id="p-async">
 
-<!-- GSAP + ScrollTrigger -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-
 <style>
 /* ===== ASYNC — PREMIUM PAGE (own color world) ===== */
 #p-async{position:relative;overflow-x:hidden;
@@ -1783,8 +1782,48 @@ if(document.readyState==='loading'){
 </div>
 
 <script>
+// ===== LENIS SMOOTH SCROLL =====
+gsap.registerPlugin(ScrollTrigger);
+const lenis = new Lenis({ lerp: 0.1, smoothWheel: true });
+lenis.on('scroll', ScrollTrigger.update);
+gsap.ticker.add((time) => lenis.raf(time * 1000));
+gsap.ticker.lagSmoothing(0);
+function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+requestAnimationFrame(raf);
+
+// ===== PAGE ANIMATION SYSTEM =====
+const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const pageAnimations = {};
+let currentPageId = 'accueil';
+let activeSTs = []; // Track active ScrollTriggers per page
+
+function killPageAnimations() {
+  activeSTs.forEach(st => { try { st.kill(); } catch(e){} });
+  activeSTs = [];
+}
+
+function registerPageAnim(id, initFn) {
+  pageAnimations[id] = initFn;
+}
+
 // ===== NAV =====
-function go(id){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.querySelectorAll('.nav-links a').forEach(a=>a.classList.remove('active'));document.getElementById('p-'+id).classList.add('active');document.getElementById('n-'+id).classList.add('active');window.scrollTo(0,0);}
+function go(id){
+  killPageAnimations();
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-links a').forEach(a=>a.classList.remove('active'));
+  document.getElementById('p-'+id).classList.add('active');
+  document.getElementById('n-'+id).classList.add('active');
+  window.scrollTo(0,0);
+  lenis.scrollTo(0, {immediate: true});
+  currentPageId = id;
+  // Init page animations after a short DOM settle delay
+  setTimeout(() => {
+    ScrollTrigger.refresh();
+    if (pageAnimations[id] && !prefersReducedMotion) {
+      pageAnimations[id]();
+    }
+  }, 80);
+}
 
 // ===== SKILLS =====
 function toggleSk(el){el.classList.toggle('open');}
@@ -2000,7 +2039,7 @@ addEventListener('resize',()=>{if(ren){const r=document.getElementById('demoCont
 // ===== ANIMATED STAT COUNTERS =====
 function animateCounters(){const nums=document.querySelectorAll('.stat-num[data-target]');nums.forEach(el=>{const target=parseInt(el.dataset.target,10);if(isNaN(target))return;let current=0;const duration=1800;const step=Math.max(1,Math.floor(target/60));const interval=duration/Math.ceil(target/step);const timer=setInterval(()=>{current+=step;if(current>=target){current=target;clearInterval(timer);}el.textContent=current;},interval);});}
 // Trigger counters when About page is shown
-const origGo=go;go=function(id){origGo(id);if(id==='about'){setTimeout(()=>{document.querySelectorAll('.stat-num[data-target]').forEach(el=>el.textContent='0');animateCounters();},200);}};
+// Stat counters triggered on about page visit (integrated into page animation system)
 
 // ===== LANGUAGE TRANSLATION SYSTEM =====
 const translations = {
@@ -2830,6 +2869,386 @@ function switchLang(lang) {
 // Initialize language on page load
 document.addEventListener('DOMContentLoaded', () => {
   switchLang('fr');
+});
+
+// ===== PAGE SCROLL ANIMATIONS =====
+
+// Helper: create a ScrollTrigger and track it
+function makeST(config) {
+  const st = ScrollTrigger.create(config);
+  activeSTs.push(st);
+  return st;
+}
+
+// ==================== ACCUEIL ====================
+registerPageAnim('accueil', function() {
+  const page = document.getElementById('p-accueil');
+  if (!page) return;
+
+  // Hero content fade-in (immediate, on load)
+  const heroContent = page.querySelector('.hero-content');
+  if (heroContent) {
+    gsap.fromTo(heroContent, {opacity:0, y:30}, {opacity:1, y:0, duration:1, ease:'power3.out', delay:0.1});
+  }
+
+  // Hero parallax bg
+  const heroBg = page.querySelector('.hero-bg');
+  if (heroBg) {
+    makeST({
+      trigger: page.querySelector('.hero'),
+      scroller: window,
+      start: 'top top',
+      end: 'bottom top',
+      scrub: true,
+      onUpdate: self => {
+        gsap.set(heroBg, {yPercent: self.progress * 20});
+      }
+    });
+  }
+
+  // Section labels and titles fade up
+  page.querySelectorAll('.s-label, .s-title').forEach(el => {
+    gsap.set(el, {opacity:0, y:24});
+    makeST({
+      trigger: el,
+      scroller: window,
+      start: 'top 90%',
+      toggleActions: 'play none none none',
+      onEnter: () => gsap.to(el, {opacity:1, y:0, duration:0.7, ease:'power2.out'})
+    });
+  });
+
+  // Holo cards stagger reveal
+  const holoCards = page.querySelectorAll('.holo-card');
+  if (holoCards.length) {
+    gsap.set(holoCards, {opacity:0, y:40});
+    makeST({
+      trigger: holoCards[0].closest('.grid-2, .grid-3') || holoCards[0].parentElement,
+      scroller: window,
+      start: 'top 85%',
+      toggleActions: 'play none none none',
+      onEnter: () => gsap.to(holoCards, {opacity:1, y:0, duration:0.6, stagger:0.15, ease:'power2.out'})
+    });
+  }
+});
+
+// ==================== PROJETS ====================
+registerPageAnim('projets', function() {
+  const page = document.getElementById('p-projets');
+  if (!page) return;
+
+  // Section headers
+  page.querySelectorAll('.s-label, .s-title').forEach(el => {
+    gsap.set(el, {opacity:0, y:24});
+    makeST({
+      trigger: el,
+      scroller: window,
+      start: 'top 90%',
+      toggleActions: 'play none none none',
+      onEnter: () => gsap.to(el, {opacity:1, y:0, duration:0.7, ease:'power2.out'})
+    });
+  });
+
+  // Project cards stagger reveal
+  const projCards = page.querySelectorAll('.proj-card');
+  if (projCards.length) {
+    gsap.set(projCards, {opacity:0, y:50});
+    makeST({
+      trigger: projCards[0].closest('.grid-3') || projCards[0].parentElement,
+      scroller: window,
+      start: 'top 85%',
+      toggleActions: 'play none none none',
+      onEnter: () => gsap.to(projCards, {opacity:1, y:0, duration:0.65, stagger:0.2, ease:'power2.out'})
+    });
+  }
+
+  // Project numbers subtle parallax
+  page.querySelectorAll('.proj-num').forEach(num => {
+    makeST({
+      trigger: num.closest('.proj-card') || num.parentElement,
+      scroller: window,
+      start: 'top bottom',
+      end: 'bottom top',
+      scrub: 1,
+      onUpdate: self => {
+        gsap.set(num, {y: (self.progress - 0.5) * -30});
+      }
+    });
+  });
+
+  // Workflow holo-cards stagger
+  const wfCards = page.querySelectorAll('.holo-card');
+  if (wfCards.length) {
+    gsap.set(wfCards, {opacity:0, y:40});
+    wfCards.forEach((card, i) => {
+      makeST({
+        trigger: card,
+        scroller: window,
+        start: 'top 88%',
+        toggleActions: 'play none none none',
+        onEnter: () => gsap.to(card, {opacity:1, y:0, duration:0.6, delay: i * 0.1, ease:'power2.out'})
+      });
+    });
+  }
+
+  // Tags pop-in
+  page.querySelectorAll('.tag').forEach((tag, i) => {
+    gsap.set(tag, {opacity:0, scale:0.7});
+    makeST({
+      trigger: tag,
+      scroller: window,
+      start: 'top 95%',
+      toggleActions: 'play none none none',
+      onEnter: () => gsap.to(tag, {opacity:1, scale:1, duration:0.35, delay: (i % 5) * 0.06, ease:'back.out(1.5)'})
+    });
+  });
+});
+
+// ==================== ABOUT ====================
+registerPageAnim('about', function() {
+  const page = document.getElementById('p-about');
+  if (!page) return;
+
+  // Trigger stat counters
+  document.querySelectorAll('.stat-num[data-target]').forEach(el => el.textContent='0');
+  animateCounters();
+
+  // Section headers
+  page.querySelectorAll('.s-label, .s-title').forEach(el => {
+    gsap.set(el, {opacity:0, y:24});
+    makeST({
+      trigger: el,
+      scroller: window,
+      start: 'top 90%',
+      toggleActions: 'play none none none',
+      onEnter: () => gsap.to(el, {opacity:1, y:0, duration:0.7, ease:'power2.out'})
+    });
+  });
+
+  // Bio paragraphs — alternating left/right
+  const bioParagraphs = page.querySelectorAll('.grid-2 > div > p');
+  bioParagraphs.forEach((p, i) => {
+    const fromX = i % 2 === 0 ? -40 : 40;
+    gsap.set(p, {opacity:0, x:fromX});
+    makeST({
+      trigger: p,
+      scroller: window,
+      start: 'top 88%',
+      toggleActions: 'play none none none',
+      onEnter: () => gsap.to(p, {opacity:1, x:0, duration:0.7, ease:'power2.out'})
+    });
+  });
+
+  // Photo parallax
+  const photoAbout = page.querySelector('.photo-about');
+  if (photoAbout) {
+    makeST({
+      trigger: photoAbout,
+      scroller: window,
+      start: 'top bottom',
+      end: 'bottom top',
+      scrub: 1,
+      onUpdate: self => {
+        gsap.set(photoAbout, {y: (self.progress - 0.5) * -40});
+      }
+    });
+  }
+
+  // Stat cards
+  const statCards = page.querySelectorAll('.stat-card');
+  if (statCards.length) {
+    gsap.set(statCards, {opacity:0, y:30});
+    makeST({
+      trigger: page.querySelector('.stat-grid') || statCards[0].parentElement,
+      scroller: window,
+      start: 'top 85%',
+      toggleActions: 'play none none none',
+      onEnter: () => gsap.to(statCards, {opacity:1, y:0, duration:0.5, stagger:0.1, ease:'power2.out'})
+    });
+  }
+
+  // Value cards
+  const valCards = page.querySelectorAll('.val-card');
+  valCards.forEach((card, i) => {
+    gsap.set(card, {opacity:0, y:35});
+    makeST({
+      trigger: card,
+      scroller: window,
+      start: 'top 88%',
+      toggleActions: 'play none none none',
+      onEnter: () => gsap.to(card, {opacity:1, y:0, duration:0.55, ease:'power2.out'})
+    });
+  });
+
+  // Tags (skill orbit items fade in)
+  page.querySelectorAll('.orbit-item').forEach((item, i) => {
+    gsap.set(item, {opacity:0, scale:0.6});
+    makeST({
+      trigger: item.closest('.orbit-wrap') || item,
+      scroller: window,
+      start: 'top 88%',
+      toggleActions: 'play none none none',
+      onEnter: () => gsap.to(item, {opacity:1, scale:1, duration:0.4, delay: i*0.07, ease:'back.out(1.4)'})
+    });
+  });
+
+  // Photo gallery
+  const galleryImgs = page.querySelectorAll('.photo-gallery img');
+  galleryImgs.forEach((img, i) => {
+    gsap.set(img, {opacity:0, y:25});
+    makeST({
+      trigger: img,
+      scroller: window,
+      start: 'top 92%',
+      toggleActions: 'play none none none',
+      onEnter: () => gsap.to(img, {opacity:1, y:0, duration:0.5, delay: i*0.08, ease:'power2.out'})
+    });
+  });
+});
+
+// ==================== FORMATION ====================
+registerPageAnim('formation', function() {
+  const page = document.getElementById('p-formation');
+  if (!page) return;
+
+  // Section headers
+  page.querySelectorAll('.s-label, .s-title').forEach(el => {
+    gsap.set(el, {opacity:0, y:24});
+    makeST({
+      trigger: el,
+      scroller: window,
+      start: 'top 90%',
+      toggleActions: 'play none none none',
+      onEnter: () => gsap.to(el, {opacity:1, y:0, duration:0.7, ease:'power2.out'})
+    });
+  });
+
+  // Timeline items slide from their side
+  page.querySelectorAll('.tl-item').forEach(item => {
+    const isLeft = item.classList.contains('left');
+    const card = item.querySelector('.tl-card');
+    const dot = item.querySelector('.tl-dot');
+    if (!card) return;
+
+    gsap.set(card, {opacity:0, x: isLeft ? -60 : 60});
+    if (dot) gsap.set(dot, {scale:0});
+
+    makeST({
+      trigger: item,
+      scroller: window,
+      start: 'top 85%',
+      toggleActions: 'play none none none',
+      onEnter: () => {
+        gsap.to(card, {opacity:1, x:0, duration:0.7, ease:'power2.out'});
+        if (dot) gsap.to(dot, {scale:1, duration:0.4, delay:0.25, ease:'back.out(1.6)'});
+      }
+    });
+  });
+
+  // Holo-cards (SAE section)
+  const holoCards = page.querySelectorAll('.holo-card');
+  holoCards.forEach((card, i) => {
+    gsap.set(card, {opacity:0, y:40});
+    makeST({
+      trigger: card,
+      scroller: window,
+      start: 'top 88%',
+      toggleActions: 'play none none none',
+      onEnter: () => gsap.to(card, {opacity:1, y:0, duration:0.6, ease:'power2.out'})
+    });
+  });
+
+  // Tags stagger
+  page.querySelectorAll('.tag').forEach((tag, i) => {
+    gsap.set(tag, {opacity:0, scale:0.7});
+    makeST({
+      trigger: tag,
+      scroller: window,
+      start: 'top 95%',
+      toggleActions: 'play none none none',
+      onEnter: () => gsap.to(tag, {opacity:1, scale:1, duration:0.35, delay:(i%5)*0.06, ease:'back.out(1.5)'})
+    });
+  });
+
+  // Competence cards (grid-2 or grid-3 inside formation page)
+  page.querySelectorAll('.holo-card, .val-card').forEach((card, i) => {
+    // already handled above for holo-card, handle val-card here
+    if (card.classList.contains('val-card')) {
+      gsap.set(card, {opacity:0, y:30});
+      makeST({
+        trigger: card,
+        scroller: window,
+        start: 'top 88%',
+        toggleActions: 'play none none none',
+        onEnter: () => gsap.to(card, {opacity:1, y:0, duration:0.55, ease:'power2.out'})
+      });
+    }
+  });
+});
+
+// ==================== CONTACT ====================
+registerPageAnim('contact', function() {
+  const page = document.getElementById('p-contact');
+  if (!page) return;
+
+  // Section headers
+  page.querySelectorAll('.s-label, .s-title').forEach(el => {
+    gsap.set(el, {opacity:0, y:24});
+    makeST({
+      trigger: el,
+      scroller: window,
+      start: 'top 90%',
+      toggleActions: 'play none none none',
+      onEnter: () => gsap.to(el, {opacity:1, y:0, duration:0.7, ease:'power2.out'})
+    });
+  });
+
+  // All holo-cards and contact-style cards stagger
+  const allCards = page.querySelectorAll('.holo-card, .val-card');
+  allCards.forEach((card, i) => {
+    gsap.set(card, {opacity:0, y:40});
+    makeST({
+      trigger: card,
+      scroller: window,
+      start: 'top 88%',
+      toggleActions: 'play none none none',
+      onEnter: () => gsap.to(card, {opacity:1, y:0, duration:0.6, delay: (i%3)*0.12, ease:'power2.out'})
+    });
+  });
+
+  // Document/download cards fade in
+  page.querySelectorAll('[class*="doc-"], .grid-3 > div, .grid-2 > div').forEach((el, i) => {
+    if (!el.closest('.holo-card') && !el.classList.contains('holo-card')) {
+      gsap.set(el, {opacity:0, y:30});
+      makeST({
+        trigger: el,
+        scroller: window,
+        start: 'top 90%',
+        toggleActions: 'play none none none',
+        onEnter: () => gsap.to(el, {opacity:1, y:0, duration:0.55, delay: i*0.08, ease:'power2.out'})
+      });
+    }
+  });
+
+  // Tags pop
+  page.querySelectorAll('.tag').forEach((tag, i) => {
+    gsap.set(tag, {opacity:0, scale:0.7});
+    makeST({
+      trigger: tag,
+      scroller: window,
+      start: 'top 95%',
+      toggleActions: 'play none none none',
+      onEnter: () => gsap.to(tag, {opacity:1, scale:1, duration:0.35, delay:(i%5)*0.06, ease:'back.out(1.5)'})
+    });
+  });
+});
+
+// ===== INIT ACCUEIL ON FIRST LOAD =====
+document.addEventListener('DOMContentLoaded', () => {
+  setTimeout(() => {
+    ScrollTrigger.refresh();
+    if (!prefersReducedMotion) pageAnimations['accueil'] && pageAnimations['accueil']();
+  }, 200);
 });
 
 </script>
