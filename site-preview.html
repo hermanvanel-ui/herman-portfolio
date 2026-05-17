@@ -1144,9 +1144,38 @@ p.card-sub{color:var(--text-mid);font-size:.9rem;line-height:1.75;font-weight:40
 #p-async .section{border:none;background:var(--abg);position:relative;z-index:5;}
 #p-async .footer{border-top:1px solid rgba(168,85,247,.08);background:var(--abg);position:relative;z-index:5;}
 
+/* ---- BACK BUTTON ---- */
+.async-back{
+  position:fixed;top:80px;left:2rem;z-index:900;
+  display:flex;align-items:center;gap:.5rem;
+  padding:10px 18px;
+  border:1px solid rgba(168,85,247,.25);
+  background:rgba(14,22,40,.85);
+  backdrop-filter:blur(12px);
+  color:var(--a1);
+  font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:2px;text-transform:uppercase;
+  cursor:pointer;
+  transition:all .3s var(--ease-out-expo);
+  opacity:0;transform:translateX(-20px);
+}
+.async-back:hover{
+  border-color:rgba(168,85,247,.5);
+  background:rgba(168,85,247,.1);
+  transform:translateX(0) scale(1.03);
+  box-shadow:0 4px 20px rgba(168,85,247,.12);
+}
+.async-back svg{width:14px;height:14px;stroke:currentColor;stroke-width:2;fill:none;}
+.async-back.visible{opacity:1;transform:translateX(0);}
+
 /* ---- UTILITY ---- */
 .a-hidden{opacity:0;transform:translateY(40px);}
 </style>
+
+<!-- BACK TO PROJECTS BUTTON -->
+<div class="async-back" id="asyncBackBtn" onclick="go('projets')" data-i18n="async-back-btn">
+  <svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+  ← Retour aux projets
+</div>
 
 <!-- THE BREACH — PINNED ZOOM REVEAL (overlay indépendant du contenu) -->
 <div id="asyncBreachSection">
@@ -1483,6 +1512,22 @@ function playHeroTimeline(){
     .fromTo('.ah .ah-tags',{opacity:0,y:40},{opacity:1,y:0,duration:.05},.93)
     .fromTo('.ah .ah-scroll',{opacity:0,y:40},{opacity:.5,y:0,duration:.04},.96);
 
+  // Show back button after breach completes
+  const backBtn=document.getElementById('asyncBackBtn');
+  if(backBtn){
+    gsap.set(backBtn,{opacity:0,x:-20});
+    backBtn.classList.remove('visible');
+    gsapTriggers.push(
+      ScrollTrigger.create({
+        trigger:'#asyncBreachSection',
+        start:'top top',
+        end:'+=200%',
+        onLeave:()=>{ backBtn.classList.add('visible'); gsap.to(backBtn,{opacity:1,x:0,duration:.5,ease:'power3.out'}); },
+        onEnterBack:()=>{ gsap.to(backBtn,{opacity:0,x:-20,duration:.3}); backBtn.classList.remove('visible'); }
+      })
+    );
+  }
+
   // Resize handler — recalculate pin positions
   const onResize=()=>ScrollTrigger.refresh();
   window.addEventListener('resize',onResize);
@@ -1687,6 +1732,9 @@ function deactivate(){
   gsapTriggers.forEach(st=>st.kill());
   gsapTriggers=[];
   gsap.killTweensOf(document.querySelectorAll('#p-async .a-hidden, .ah-orb, .ah-scroll, .ah-content, #asyncThreeCanvas, .ah-letter, .acta-btn, #asyncHero, #asyncBreachGlow, #asyncBreachHalo, #asyncBreachFlash, #asyncEdgeL, #asyncEdgeR'));
+  // Reset back button
+  const backBtn=document.getElementById('asyncBackBtn');
+  if(backBtn){ backBtn.classList.remove('visible'); gsap.set(backBtn,{opacity:0,x:-20}); }
   // Reset spotlight
   const sp=document.getElementById('asyncSpotlight');
   if(sp) sp.style.background='none';
@@ -1904,20 +1952,22 @@ function go(id){
   window.scrollTo(0,0);
   // Disable Lenis on async page (conflicts with pin:true sections)
   if (id === 'async') {
-    lenis.destroy();
-    window.__lenisActive = false;
-    document.documentElement.style.scrollBehavior = 'auto';
-  } else if (!window.__lenisActive) {
-    // Re-create Lenis when leaving async page
-    window.__lenis = new Lenis({ lerp: 0.1, smoothWheel: true });
-    window.__lenis.on('scroll', ScrollTrigger.update);
-    gsap.ticker.remove(window.__lenisTickFn);
-    window.__lenisTickFn = (time) => window.__lenis.raf(time * 1000);
-    gsap.ticker.add(window.__lenisTickFn);
-    window.__lenisActive = true;
-    window.__lenis.scrollTo(0, {immediate: true});
+    if (window.__lenisActive && lenis) {
+      try { lenis.destroy(); } catch(e){}
+      gsap.ticker.remove(window.__lenisTickFn);
+      window.__lenisActive = false;
+    }
   } else {
-    window.__lenis.scrollTo(0, {immediate: true});
+    if (!window.__lenisActive) {
+      // Re-create Lenis when leaving async page
+      lenis = new Lenis({ lerp: 0.1, smoothWheel: true });
+      lenis.on('scroll', ScrollTrigger.update);
+      window.__lenisTickFn = (time) => lenis.raf(time * 1000);
+      gsap.ticker.add(window.__lenisTickFn);
+      window.__lenisActive = true;
+      window.__lenis = lenis;
+    }
+    try { lenis.scrollTo(0, {immediate: true}); } catch(e){}
   }
   currentPageId = id;
   // Init page animations after a short DOM settle delay
@@ -2422,6 +2472,7 @@ const translations = {
     "async-cta-title": "UN PROJET À AUTOMATISER ?",
     "async-cta-text": "Contactez-nous pour discuter de votre besoin. Premier échange gratuit, sans engagement.",
     "async-cta-btn": "Nous contacter →",
+    "async-back-btn": "← Retour aux projets",
     "async-stat1-label": "tâches automatisables",
     "async-stat2-label": "disponibilité",
     "async-stat3-label": "plus rapide",
@@ -2815,6 +2866,7 @@ const translations = {
     "async-cta-title": "Got a project?",
     "async-cta-text": "Tell us about your needs and we'll build you a custom automation solution.",
     "async-cta-btn": "Contact us",
+    "async-back-btn": "← Back to projects",
     "async-stat1-label": "automatable tasks",
     "async-stat2-label": "availability",
     "async-stat3-label": "faster",
@@ -3000,7 +3052,6 @@ registerPageAnim('accueil', function() {
   if (heroBg) {
     makeST({
       trigger: page.querySelector('.hero'),
-      scroller: window,
       start: 'top top',
       end: 'bottom top',
       scrub: true,
@@ -3015,7 +3066,6 @@ registerPageAnim('accueil', function() {
     gsap.set(el, {opacity:0, y:24});
     makeST({
       trigger: el,
-      scroller: window,
       start: 'top 90%',
       toggleActions: 'play none none none',
       onEnter: () => gsap.to(el, {opacity:1, y:0, duration:0.7, ease:'power2.out'})
@@ -3028,7 +3078,6 @@ registerPageAnim('accueil', function() {
     gsap.set(holoCards, {opacity:0, y:40});
     makeST({
       trigger: holoCards[0].closest('.grid-2, .grid-3') || holoCards[0].parentElement,
-      scroller: window,
       start: 'top 85%',
       toggleActions: 'play none none none',
       onEnter: () => gsap.to(holoCards, {opacity:1, y:0, duration:0.6, stagger:0.15, ease:'power2.out'})
@@ -3046,7 +3095,6 @@ registerPageAnim('projets', function() {
     gsap.set(el, {opacity:0, y:24});
     makeST({
       trigger: el,
-      scroller: window,
       start: 'top 90%',
       toggleActions: 'play none none none',
       onEnter: () => gsap.to(el, {opacity:1, y:0, duration:0.7, ease:'power2.out'})
@@ -3059,7 +3107,6 @@ registerPageAnim('projets', function() {
     gsap.set(projCards, {opacity:0, y:50});
     makeST({
       trigger: projCards[0].closest('.grid-3') || projCards[0].parentElement,
-      scroller: window,
       start: 'top 85%',
       toggleActions: 'play none none none',
       onEnter: () => gsap.to(projCards, {opacity:1, y:0, duration:0.65, stagger:0.2, ease:'power2.out'})
@@ -3070,7 +3117,6 @@ registerPageAnim('projets', function() {
   page.querySelectorAll('.proj-num').forEach(num => {
     makeST({
       trigger: num.closest('.proj-card') || num.parentElement,
-      scroller: window,
       start: 'top bottom',
       end: 'bottom top',
       scrub: 1,
@@ -3087,8 +3133,7 @@ registerPageAnim('projets', function() {
     wfCards.forEach((card, i) => {
       makeST({
         trigger: card,
-        scroller: window,
-        start: 'top 88%',
+          start: 'top 88%',
         toggleActions: 'play none none none',
         onEnter: () => gsap.to(card, {opacity:1, y:0, duration:0.6, delay: i * 0.1, ease:'power2.out'})
       });
@@ -3100,7 +3145,6 @@ registerPageAnim('projets', function() {
     gsap.set(tag, {opacity:0, scale:0.7});
     makeST({
       trigger: tag,
-      scroller: window,
       start: 'top 95%',
       toggleActions: 'play none none none',
       onEnter: () => gsap.to(tag, {opacity:1, scale:1, duration:0.35, delay: (i % 5) * 0.06, ease:'back.out(1.5)'})
@@ -3122,7 +3166,6 @@ registerPageAnim('about', function() {
     gsap.set(el, {opacity:0, y:24});
     makeST({
       trigger: el,
-      scroller: window,
       start: 'top 90%',
       toggleActions: 'play none none none',
       onEnter: () => gsap.to(el, {opacity:1, y:0, duration:0.7, ease:'power2.out'})
@@ -3136,7 +3179,6 @@ registerPageAnim('about', function() {
     gsap.set(p, {opacity:0, x:fromX});
     makeST({
       trigger: p,
-      scroller: window,
       start: 'top 88%',
       toggleActions: 'play none none none',
       onEnter: () => gsap.to(p, {opacity:1, x:0, duration:0.7, ease:'power2.out'})
@@ -3148,7 +3190,6 @@ registerPageAnim('about', function() {
   if (photoAbout) {
     makeST({
       trigger: photoAbout,
-      scroller: window,
       start: 'top bottom',
       end: 'bottom top',
       scrub: 1,
@@ -3164,7 +3205,6 @@ registerPageAnim('about', function() {
     gsap.set(statCards, {opacity:0, y:30});
     makeST({
       trigger: page.querySelector('.stat-grid') || statCards[0].parentElement,
-      scroller: window,
       start: 'top 85%',
       toggleActions: 'play none none none',
       onEnter: () => gsap.to(statCards, {opacity:1, y:0, duration:0.5, stagger:0.1, ease:'power2.out'})
@@ -3177,7 +3217,6 @@ registerPageAnim('about', function() {
     gsap.set(card, {opacity:0, y:35});
     makeST({
       trigger: card,
-      scroller: window,
       start: 'top 88%',
       toggleActions: 'play none none none',
       onEnter: () => gsap.to(card, {opacity:1, y:0, duration:0.55, ease:'power2.out'})
@@ -3189,7 +3228,6 @@ registerPageAnim('about', function() {
     gsap.set(item, {opacity:0, scale:0.6});
     makeST({
       trigger: item.closest('.orbit-wrap') || item,
-      scroller: window,
       start: 'top 88%',
       toggleActions: 'play none none none',
       onEnter: () => gsap.to(item, {opacity:1, scale:1, duration:0.4, delay: i*0.07, ease:'back.out(1.4)'})
@@ -3202,7 +3240,6 @@ registerPageAnim('about', function() {
     gsap.set(img, {opacity:0, y:25});
     makeST({
       trigger: img,
-      scroller: window,
       start: 'top 92%',
       toggleActions: 'play none none none',
       onEnter: () => gsap.to(img, {opacity:1, y:0, duration:0.5, delay: i*0.08, ease:'power2.out'})
@@ -3220,7 +3257,6 @@ registerPageAnim('formation', function() {
     gsap.set(el, {opacity:0, y:24});
     makeST({
       trigger: el,
-      scroller: window,
       start: 'top 90%',
       toggleActions: 'play none none none',
       onEnter: () => gsap.to(el, {opacity:1, y:0, duration:0.7, ease:'power2.out'})
@@ -3239,7 +3275,6 @@ registerPageAnim('formation', function() {
 
     makeST({
       trigger: item,
-      scroller: window,
       start: 'top 85%',
       toggleActions: 'play none none none',
       onEnter: () => {
@@ -3255,7 +3290,6 @@ registerPageAnim('formation', function() {
     gsap.set(card, {opacity:0, y:40});
     makeST({
       trigger: card,
-      scroller: window,
       start: 'top 88%',
       toggleActions: 'play none none none',
       onEnter: () => gsap.to(card, {opacity:1, y:0, duration:0.6, ease:'power2.out'})
@@ -3267,7 +3301,6 @@ registerPageAnim('formation', function() {
     gsap.set(tag, {opacity:0, scale:0.7});
     makeST({
       trigger: tag,
-      scroller: window,
       start: 'top 95%',
       toggleActions: 'play none none none',
       onEnter: () => gsap.to(tag, {opacity:1, scale:1, duration:0.35, delay:(i%5)*0.06, ease:'back.out(1.5)'})
@@ -3281,8 +3314,7 @@ registerPageAnim('formation', function() {
       gsap.set(card, {opacity:0, y:30});
       makeST({
         trigger: card,
-        scroller: window,
-        start: 'top 88%',
+          start: 'top 88%',
         toggleActions: 'play none none none',
         onEnter: () => gsap.to(card, {opacity:1, y:0, duration:0.55, ease:'power2.out'})
       });
@@ -3300,7 +3332,6 @@ registerPageAnim('contact', function() {
     gsap.set(el, {opacity:0, y:24});
     makeST({
       trigger: el,
-      scroller: window,
       start: 'top 90%',
       toggleActions: 'play none none none',
       onEnter: () => gsap.to(el, {opacity:1, y:0, duration:0.7, ease:'power2.out'})
@@ -3313,7 +3344,6 @@ registerPageAnim('contact', function() {
     gsap.set(card, {opacity:0, y:40});
     makeST({
       trigger: card,
-      scroller: window,
       start: 'top 88%',
       toggleActions: 'play none none none',
       onEnter: () => gsap.to(card, {opacity:1, y:0, duration:0.6, delay: (i%3)*0.12, ease:'power2.out'})
@@ -3326,8 +3356,7 @@ registerPageAnim('contact', function() {
       gsap.set(el, {opacity:0, y:30});
       makeST({
         trigger: el,
-        scroller: window,
-        start: 'top 90%',
+          start: 'top 90%',
         toggleActions: 'play none none none',
         onEnter: () => gsap.to(el, {opacity:1, y:0, duration:0.55, delay: i*0.08, ease:'power2.out'})
       });
@@ -3339,7 +3368,6 @@ registerPageAnim('contact', function() {
     gsap.set(tag, {opacity:0, scale:0.7});
     makeST({
       trigger: tag,
-      scroller: window,
       start: 'top 95%',
       toggleActions: 'play none none none',
       onEnter: () => gsap.to(tag, {opacity:1, scale:1, duration:0.35, delay:(i%5)*0.06, ease:'back.out(1.5)'})
