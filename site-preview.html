@@ -1784,12 +1784,13 @@ if(document.readyState==='loading'){
 <script>
 // ===== LENIS SMOOTH SCROLL =====
 gsap.registerPlugin(ScrollTrigger);
-const lenis = new Lenis({ lerp: 0.1, smoothWheel: true });
-lenis.on('scroll', ScrollTrigger.update);
-gsap.ticker.add((time) => lenis.raf(time * 1000));
 gsap.ticker.lagSmoothing(0);
-function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
-requestAnimationFrame(raf);
+let lenis = new Lenis({ lerp: 0.1, smoothWheel: true });
+lenis.on('scroll', ScrollTrigger.update);
+window.__lenisTickFn = (time) => lenis.raf(time * 1000);
+gsap.ticker.add(window.__lenisTickFn);
+window.__lenisActive = true;
+window.__lenis = lenis;
 
 // ===== PAGE ANIMATION SYSTEM =====
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -1814,7 +1815,23 @@ function go(id){
   document.getElementById('p-'+id).classList.add('active');
   document.getElementById('n-'+id).classList.add('active');
   window.scrollTo(0,0);
-  lenis.scrollTo(0, {immediate: true});
+  // Disable Lenis on async page (conflicts with pin:true sections)
+  if (id === 'async') {
+    lenis.destroy();
+    window.__lenisActive = false;
+    document.documentElement.style.scrollBehavior = 'auto';
+  } else if (!window.__lenisActive) {
+    // Re-create Lenis when leaving async page
+    window.__lenis = new Lenis({ lerp: 0.1, smoothWheel: true });
+    window.__lenis.on('scroll', ScrollTrigger.update);
+    gsap.ticker.remove(window.__lenisTickFn);
+    window.__lenisTickFn = (time) => window.__lenis.raf(time * 1000);
+    gsap.ticker.add(window.__lenisTickFn);
+    window.__lenisActive = true;
+    window.__lenis.scrollTo(0, {immediate: true});
+  } else {
+    window.__lenis.scrollTo(0, {immediate: true});
+  }
   currentPageId = id;
   // Init page animations after a short DOM settle delay
   setTimeout(() => {
