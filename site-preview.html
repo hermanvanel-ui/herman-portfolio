@@ -290,8 +290,8 @@ p.card-sub{color:var(--text-mid);font-size:.9rem;line-height:1.75;font-weight:40
   input,textarea,select,[contenteditable]{cursor:text;}
   a,button,[role="button"]{cursor:none;}
 }
-.cursor-dot{pointer-events:none;position:fixed;top:0;left:0;z-index:10001;width:6px;height:6px;border-radius:50%;background:#fff;mix-blend-mode:difference;transform:translate(-50%,-50%);}
-.cursor-outline{pointer-events:none;position:fixed;top:0;left:0;z-index:10000;width:36px;height:36px;border-radius:50%;border:1px solid rgba(255,255,255,.4);mix-blend-mode:difference;transform:translate(-50%,-50%);transition:width .3s var(--ease-out-expo),height .3s var(--ease-out-expo),opacity .3s;}
+.cursor-dot{pointer-events:none;position:fixed;top:0;left:0;z-index:100000;width:6px;height:6px;border-radius:50%;background:#fff;mix-blend-mode:difference;transform:translate(-50%,-50%);}
+.cursor-outline{pointer-events:none;position:fixed;top:0;left:0;z-index:100000;width:36px;height:36px;border-radius:50%;border:1px solid rgba(255,255,255,.4);mix-blend-mode:difference;transform:translate(-50%,-50%);transition:width .3s var(--ease-out-expo),height .3s var(--ease-out-expo),opacity .3s;}
 .cursor-outline.hovering{width:56px;height:56px;border-color:var(--cyan);opacity:.8;}
 .cursor-outline.clicking{width:28px;height:28px;}
 @media(hover:none),(pointer:coarse){.cursor-dot,.cursor-outline{display:none!important;}}
@@ -461,7 +461,14 @@ p.card-sub{color:var(--text-mid);font-size:.9rem;line-height:1.75;font-weight:40
     function doSkip(){
       sessionStorage.setItem('intro-played','1');
       cancelAnimationFrame(animId);
-      gsap.to(intro, {opacity:0, duration:0.4, onComplete:function(){ intro.remove(); }});
+      gsap.to(intro, {opacity:0, duration:0.4, onComplete:function(){
+        intro.remove();
+        window.scrollTo(0,0);
+        document.documentElement.scrollTop=0;
+        document.body.scrollTop=0;
+        if(window.__lenis) try{window.__lenis.scrollTo(0,{immediate:true});}catch(e){}
+        if(typeof ScrollTrigger!=='undefined') setTimeout(function(){ScrollTrigger.refresh();},100);
+      }});
     }
 
     function draw(now){
@@ -565,6 +572,13 @@ p.card-sub{color:var(--text-mid);font-size:.9rem;line-height:1.75;font-weight:40
         sessionStorage.setItem('intro-played','1');
         intro.remove();
         cancelAnimationFrame(animId);
+        // Force scroll to top after intro removal
+        window.scrollTo(0,0);
+        document.documentElement.scrollTop=0;
+        document.body.scrollTop=0;
+        if(window.__lenis) try{window.__lenis.scrollTo(0,{immediate:true});}catch(e){}
+        // Refresh ScrollTrigger positions
+        if(typeof ScrollTrigger!=='undefined') setTimeout(function(){ScrollTrigger.refresh();},100);
       }});
     }
 
@@ -2112,12 +2126,46 @@ function activate(){
   window.scrollTo(0,0);
   page.scrollTop=0;
 
-  // Reset hidden states
-  document.querySelectorAll('#p-async .a-hidden').forEach(el=>{el.style.opacity='0';el.style.transform='translateY(40px)';});
+  // Safety: kill any stale ScrollTriggers scoped here (e.g. from a fast toggle)
+  ScrollTrigger.getAll().forEach(st=>{
+    try{
+      const trig=st.trigger||st.pin;
+      if(trig && trig.closest && trig.closest('#p-async')) st.kill(true);
+    }catch(e){}
+  });
+  gsapTriggers=[];
+
+  // Remove any leftover pin-spacer wrappers
+  document.querySelectorAll('#p-async .pin-spacer').forEach(spacer=>{
+    const pinned=spacer.firstElementChild;
+    if(pinned) spacer.parentNode.insertBefore(pinned,spacer);
+    spacer.remove();
+  });
+
+  // Reset hidden states — set via inline styles for initial state
+  document.querySelectorAll('#p-async .a-hidden').forEach(el=>{
+    el.style.opacity='0';el.style.transform='translateY(40px)';el.style.transition='';
+  });
   const ahLine=document.getElementById('ahLine');
-  if(ahLine) ahLine.style.height='0';
+  if(ahLine){ahLine.style.height='0';}
   // Reset process steps explicitly
   document.querySelectorAll('.ap-step').forEach(s=>{s.style.opacity='0';s.style.transform='translateY(40px)';});
+  // Reset stats items
+  document.querySelectorAll('#asyncStats .as-item').forEach(i=>{
+    i.classList.remove('in-view');i.style.opacity='0';i.style.transform='translateY(30px)';
+  });
+  // Reset services cards
+  document.querySelectorAll('#asyncSvcGrid .asc').forEach(c=>{
+    c.classList.remove('in-view');c.style.opacity='0';c.style.transform='translateY(30px)';
+  });
+  // Reset tech items
+  document.querySelectorAll('#asyncTechGrid .at-item').forEach(i=>{
+    i.style.opacity='0';i.style.transform='translateY(20px)';
+  });
+  // Reset counters
+  document.querySelectorAll('#p-async .async-counter').forEach(el=>el.textContent='0');
+  // Reset progress fill
+  const fill=document.getElementById('asyncProgressFill');if(fill)fill.style.width='0';
 
   initThree();
   window.addEventListener('mousemove',onMouseMove);
@@ -2134,12 +2182,17 @@ function activate(){
     initReveals();
     ScrollTrigger.refresh();
     // Extra refresh after paint for bulletproof pin calculation
-    requestAnimationFrame(()=>ScrollTrigger.refresh());
-  },150);
+    requestAnimationFrame(()=>{
+      ScrollTrigger.refresh();
+      // One more after a frame for pinned sections
+      requestAnimationFrame(()=>ScrollTrigger.refresh());
+    });
+  },200);
 
   // Fallback: ensure content becomes visible if ScrollTrigger hasn't revealed it after 3 seconds
   // Skip hero elements — they are revealed by the breach animation
   setTimeout(()=>{
+    if(!page.classList.contains('active')) return; // bail if user navigated away
     document.querySelectorAll('#p-async .a-hidden').forEach(el=>{
       if(el.closest('.ah')) return;
       if(getComputedStyle(el).opacity==='0'){
@@ -2154,49 +2207,72 @@ function activate(){
 function deactivate(){
   destroyThree();
   window.removeEventListener('mousemove',onMouseMove);
-  // Remove resize handler if present
   if(gsapTriggers._resizeHandler) window.removeEventListener('resize',gsapTriggers._resizeHandler);
-  gsapTriggers.forEach(st=>st.kill());
+
+  // 1) Kill ALL ScrollTriggers scoped to #p-async
+  ScrollTrigger.getAll().forEach(st=>{
+    try{
+      const trig=st.trigger||st.pin;
+      if(trig && trig.closest && trig.closest('#p-async')) st.kill(true);
+    }catch(e){}
+  });
+  gsapTriggers.forEach(st=>{try{st.kill(true);}catch(e){}});
   gsapTriggers=[];
-  gsap.killTweensOf(document.querySelectorAll('#p-async .a-hidden, .ah-orb, .ah-scroll, .ah-content, #asyncThreeCanvas, .ah-letter, .acta-btn, #asyncHero, #asyncBreachGlow, #asyncBreachHalo, #asyncBreachFlash, #asyncEdgeL, #asyncEdgeR'));
-  // Reset back button
+
+  // 2) Remove orphaned pin-spacer wrappers
+  document.querySelectorAll('#p-async .pin-spacer').forEach(spacer=>{
+    const pinned=spacer.firstElementChild;
+    if(pinned){
+      spacer.parentNode.insertBefore(pinned,spacer);
+      gsap.set(pinned,{clearProps:'all'});
+    }
+    spacer.remove();
+  });
+
+  // 3) Kill all tweens on animated elements (use querySelectorAll, not wildcard selector)
+  const killTargets=document.querySelectorAll('#p-async .a-hidden, .ah-orb, .ah-scroll, .ah-content, #asyncThreeCanvas, .ah-letter, .acta-btn, #asyncHero, #asyncBreachOverlay, #asyncBreachGlow, #asyncBreachHalo, #asyncBreachFlash, #asyncEdgeL, #asyncEdgeR, #asyncDoorL, #asyncDoorR, #asyncDoorLabel, .ah-sub, .ah-tagline, .ah-tags, .ah-label, .ap-step, #asyncStats .as-item, #asyncSvcGrid .asc, #asyncTechGrid .at-item');
+  killTargets.forEach(el=>gsap.killTweensOf(el));
+
+  // 4) clearProps on animated elements (NOT structural containers)
+  killTargets.forEach(el=>gsap.set(el,{clearProps:'all'}));
+
+  // 5) Reset breach to initial visible/closed state
+  const bo=document.getElementById('asyncBreachOverlay');
+  if(bo){bo.style.visibility='visible';bo.style.opacity='1';}
+  const dL=document.getElementById('asyncDoorL');if(dL)dL.style.transform='rotateY(0deg)';
+  const dR=document.getElementById('asyncDoorR');if(dR)dR.style.transform='rotateY(0deg)';
+  const bg=document.getElementById('asyncBreachGlow');if(bg){bg.style.height='0';bg.style.opacity='0';}
+  const bh=document.getElementById('asyncBreachHalo');if(bh){bh.style.width='0';bh.style.height='0';}
+  const bf=document.getElementById('asyncBreachFlash');if(bf)bf.style.opacity='0';
+  const eL=document.getElementById('asyncEdgeL');if(eL)eL.style.opacity='0';
+  const eR=document.getElementById('asyncEdgeR');if(eR)eR.style.opacity='0';
+  const dl=document.getElementById('asyncDoorLabel');if(dl){dl.style.opacity='0';dl.style.transform='scale(0.78)';}
+  const hero=document.getElementById('asyncHero');if(hero){hero.style.opacity='0';hero.style.transform='scale(0.3)';hero.style.transformOrigin='center center';}
+
+  // 6) Reset back button
   const backBtn=document.getElementById('asyncBackBtn');
-  if(backBtn){ backBtn.classList.remove('visible'); gsap.set(backBtn,{opacity:0,x:-20}); }
-  // Reset spotlight
+  if(backBtn){backBtn.classList.remove('visible');gsap.set(backBtn,{opacity:0,x:-20});}
+
+  // 7) Reset spotlight
   const sp=document.getElementById('asyncSpotlight');
   if(sp) sp.style.background='none';
-  // Reset breach
-  const breachOverlay=document.getElementById('asyncBreachOverlay');
-  const doorL=document.getElementById('asyncDoorL');
-  const doorR=document.getElementById('asyncDoorR');
-  const breachGlow=document.getElementById('asyncBreachGlow');
-  const breachHalo=document.getElementById('asyncBreachHalo');
-  const breachFlash=document.getElementById('asyncBreachFlash');
-  const edgeL=document.getElementById('asyncEdgeL');
-  const edgeR=document.getElementById('asyncEdgeR');
-  const doorLbl=document.getElementById('asyncDoorLabel');
-  const hero=document.getElementById('asyncHero');
-  if(breachOverlay) gsap.set(breachOverlay,{clearProps:'autoAlpha'});
-  if(doorL) gsap.set(doorL,{rotateY:0});
-  if(doorR) gsap.set(doorR,{rotateY:0});
-  if(breachGlow) gsap.set(breachGlow,{clearProps:'height,opacity,width'});
-  if(breachHalo) gsap.set(breachHalo,{clearProps:'width,height,opacity'});
-  if(breachFlash) gsap.set(breachFlash,{clearProps:'opacity'});
-  if(edgeL) gsap.set(edgeL,{clearProps:'opacity'});
-  if(edgeR) gsap.set(edgeR,{clearProps:'opacity'});
-  if(doorLbl) gsap.set(doorLbl,{clearProps:'opacity,scale'});
-  if(hero) gsap.set(hero,{clearProps:'transform,opacity,transformOrigin'});
-  // Reset letters
-  document.querySelectorAll('.ah-letter').forEach(l=>{gsap.set(l,{x:0,opacity:1,rotateX:0,rotateY:0});});
-  // Reset all states
+
+  // 8) Reset class-based states + counters
   document.querySelectorAll('#p-async .asc').forEach(c=>c.classList.remove('in-view'));
   document.querySelectorAll('#asyncStats .as-item').forEach(i=>{i.classList.remove('in-view');i.style.opacity='';i.style.transform='';});
   document.querySelectorAll('#p-async .async-counter').forEach(el=>el.textContent='0');
-  document.querySelectorAll('.ap-step').forEach(s=>{s.style.opacity='0';s.style.transform='translateY(40px)';s.style.scale='';});
+  document.querySelectorAll('.ap-step').forEach(s=>{s.style.opacity='';s.style.transform='';s.style.scale='';});
   const fill=document.getElementById('asyncProgressFill');if(fill)fill.style.width='0';
-  // Reset sub elements
-  gsap.set('.ah-sub, .ah-tagline, .ah-tags, .ah-label, .ah-content',{clearProps:'all'});
-  gsap.set('#asyncThreeCanvas',{clearProps:'all'});
+
+  // 9) Reset .a-hidden to default (CSS will handle initial state on re-activate)
+  document.querySelectorAll('#p-async .a-hidden').forEach(el=>{el.style.opacity='';el.style.transform='';el.style.transition='';});
+
+  // 10) Reset letters
+  document.querySelectorAll('.ah-letter').forEach(l=>{gsap.set(l,{x:0,opacity:1,rotateX:0,rotateY:0,clearProps:'all'});});
+
+  // 11) Reset ahLine + sub elements
+  const ahLine=document.getElementById('ahLine');if(ahLine)ahLine.style.height='0';
+  gsap.set('.ah-sub, .ah-tagline, .ah-tags, .ah-label, .ah-content, #asyncThreeCanvas',{clearProps:'all'});
 }
 
 // ============ PAGE OBSERVER ============
@@ -3968,10 +4044,29 @@ registerPageAnim('contact', function() {
 
 // ===== INIT ACCUEIL ON FIRST LOAD =====
 document.addEventListener('DOMContentLoaded', () => {
-  setTimeout(() => {
+  function initAccueilAnims(){
     ScrollTrigger.refresh();
     if (!prefersReducedMotion) pageAnimations['accueil'] && pageAnimations['accueil']();
-  }, 200);
+  }
+  // If intro is active, wait for it to finish before playing hero animations
+  var introEl = document.getElementById('cinema-intro');
+  if(introEl){
+    // Watch for intro removal
+    var introObs = new MutationObserver(function(mutations){
+      mutations.forEach(function(m){
+        m.removedNodes.forEach(function(n){
+          if(n === introEl || n.id === 'cinema-intro'){
+            introObs.disconnect();
+            setTimeout(initAccueilAnims, 100);
+          }
+        });
+      });
+    });
+    introObs.observe(introEl.parentNode, {childList:true});
+  } else {
+    // No intro (already played), init immediately
+    setTimeout(initAccueilAnims, 200);
+  }
 });
 
 </script>
