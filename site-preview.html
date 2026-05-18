@@ -3,7 +3,26 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Herman Vanel — Portfolio</title>
+<title>Herman Vanel — Portfolio | Automatisation, IA & Développement</title>
+<meta name="description" content="Portfolio d'Herman Vanel — développeur autodidacte spécialisé en automatisation IA, trading algorithmique, agents IA et workflows n8n. Co-fondateur d'Async Agency.">
+<meta name="author" content="Herman Vanel">
+<meta name="keywords" content="Herman Vanel, portfolio, automatisation, IA, trading algorithmique, n8n, agents IA, développeur, Nice, Async Agency">
+<meta name="theme-color" content="#0a0e14">
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Herman Vanel — Automatisation, IA & Développement">
+<meta property="og:description" content="21 ans, développeur autodidacte. Trading algorithmique, agents IA, workflows n8n. Co-fondateur d'Async Agency.">
+<meta property="og:image" content="images/hero-bg-canva.png">
+<meta property="og:url" content="https://hermanvanel-ui.github.io/herman-portfolio/">
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Herman Vanel — Portfolio">
+<meta name="twitter:description" content="Automatisation, IA & Développement | Co-fondateur d'Async Agency">
+<meta name="twitter:image" content="images/hero-bg-canva.png">
+<!-- Performance -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://cdnjs.cloudflare.com">
 <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands@0.4.1675469240/hands.js" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils@0.3.1675466862/camera_utils.js" defer></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" defer></script>
@@ -37,7 +56,7 @@ a{color:inherit;text-decoration:none;}
 
 /* ===== GENERAL ===== */
 .page{display:none;padding-top:60px;}
-.page.active{display:block;}
+.page.active{display:block;opacity:1;transform:none;}
 .section{padding:5rem 1.5rem;}
 .max-w{max-width:1100px;margin:0 auto;}
 .s-label{font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:3px;text-transform:uppercase;color:var(--green);margin-bottom:.75rem;}
@@ -71,6 +90,26 @@ p.card-sub{color:var(--text-mid);font-size:.9rem;line-height:1.75;font-weight:40
 .hero-blob-2{width:450px;height:450px;bottom:15%;left:10%;background:rgba(139,92,246,.22);animation:hero-pulse 6s ease-in-out infinite;animation-delay:3s;}
 .hero-blob-3{width:300px;height:300px;top:50%;left:45%;transform:translate(-50%,-50%);background:rgba(96,165,250,.18);animation:hero-pulse 8s ease-in-out infinite;animation-delay:1.5s;}
 @keyframes hero-pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.6;transform:scale(1.15);}}
+/* ===== CINEMATIC INTRO ===== */
+#cinema-intro{position:fixed;inset:0;z-index:99999;background:#0a0e14;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;}
+#cinema-intro.exit{pointer-events:none;}
+#cinema-canvas{position:absolute;inset:0;width:100%;height:100%;}
+.cinema-bg-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;mix-blend-mode:screen;pointer-events:none;}
+.cinema-text{position:relative;z-index:2;text-align:center;pointer-events:none;}
+.cinema-hv{font-size:clamp(5rem,15vw,12rem);font-weight:900;letter-spacing:.08em;background:linear-gradient(135deg,#818cf8,#c084fc,#22d3ee);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;opacity:0;transform:scale(.6);filter:blur(20px);}
+.cinema-name{font-size:clamp(1rem,3vw,1.8rem);color:#e2e8f0;letter-spacing:.3em;text-transform:uppercase;opacity:0;margin-top:.5rem;font-family:'Space Grotesk',sans-serif;overflow:hidden;height:2.2em;white-space:nowrap;}
+.cinema-name .scramble-char{display:inline-block;opacity:.5;color:var(--cyan);transition:color .2s;}
+.cinema-name .scramble-char.resolved{opacity:1;color:#e2e8f0;}
+.cinema-sub{font-size:clamp(.8rem,2vw,1.1rem);color:var(--cyan);opacity:0;margin-top:.75rem;font-family:'Space Mono',monospace;letter-spacing:.1em;}
+.cinema-sub .cursor-blink{display:inline-block;width:2px;height:1em;background:var(--cyan);margin-left:3px;vertical-align:middle;animation:cursorBlink .6s steps(1) infinite;}
+.cinema-skip{position:absolute;bottom:2rem;right:2rem;z-index:5;color:rgba(255,255,255,.3);font-size:.75rem;letter-spacing:.15em;text-transform:uppercase;cursor:pointer;border:1px solid rgba(255,255,255,.15);padding:.5rem 1rem;border-radius:999px;transition:all .3s;}
+.cinema-skip:hover{color:rgba(255,255,255,.6);border-color:rgba(255,255,255,.3);}
+.cinema-ring{position:absolute;border-radius:50%;border:1px solid rgba(129,140,248,.15);pointer-events:none;opacity:0;}
+.cinema-ring-1{width:200px;height:200px;top:50%;left:50%;transform:translate(-50%,-50%);}
+.cinema-ring-2{width:350px;height:350px;top:50%;left:50%;transform:translate(-50%,-50%);}
+.cinema-ring-3{width:500px;height:500px;top:50%;left:50%;transform:translate(-50%,-50%);}
+@media(max-width:768px){.cinema-hv{font-size:clamp(3rem,20vw,6rem);}.cinema-ring-3{display:none;}}
+
 .hero-overlay{position:absolute;inset:0;background:linear-gradient(to bottom right,rgba(10,14,20,.4),rgba(10,14,20,.25),rgba(10,14,20,.4));}
 @media(prefers-reduced-motion:reduce){.hero-blob{animation:none;}}
 .hero-content{position:relative;z-index:10;padding:3rem;background:radial-gradient(ellipse at center,rgba(26,35,50,.7),rgba(26,35,50,.3) 50%,transparent 70%);border-radius:20px;}
@@ -274,9 +313,303 @@ p.card-sub{color:var(--text-mid);font-size:.9rem;line-height:1.75;font-weight:40
 .holo-card{overflow:visible;}
 .holo-card::before{content:'';position:absolute;inset:-1px;padding:1px;background:conic-gradient(from 0deg,transparent 40%,var(--cyan) 50%,var(--purple) 60%,transparent 70%);-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;opacity:0;transition:opacity .4s var(--ease-out-expo);pointer-events:none;border-radius:inherit;}
 .holo-card:hover::before{opacity:1;}
+
+/* ===== 3D GLOBE ===== */
+#globe-container{position:absolute;top:0;right:-5%;width:55%;height:100%;pointer-events:auto;z-index:0;opacity:0.6;cursor:grab;}
+#globe-container:active{cursor:grabbing;}
+#globe-container canvas{width:100%!important;height:100%!important;}
+.about-globe-section{position:relative;}
+@media(max-width:900px){#globe-container{display:none;}}
 </style>
 </head>
 <body>
+
+<!-- ===== CINEMATIC INTRO OVERLAY ===== -->
+<div id="cinema-intro">
+  <canvas id="cinema-canvas"></canvas>
+  <img src="images/hero-bg-canva.png" class="cinema-bg-img" alt="">
+  <div class="cinema-text">
+    <div class="cinema-hv" id="cinema-hv">HV</div>
+    <div class="cinema-name" id="cinema-name"></div>
+    <div class="cinema-sub" id="cinema-sub"></div>
+  </div>
+  <div class="cinema-ring cinema-ring-1"></div>
+  <div class="cinema-ring cinema-ring-2"></div>
+  <div class="cinema-ring cinema-ring-3"></div>
+  <div class="cinema-skip" id="cinema-skip">SKIP →</div>
+</div>
+<script>
+// ===== CINEMATIC INTRO ANIMATION (standalone v3) =====
+(function(){
+  sessionStorage.removeItem('intro-played'); // DEV: always replay
+
+  var intro = document.getElementById('cinema-intro');
+  if(!intro) return;
+  var canvas = document.getElementById('cinema-canvas');
+  if(!canvas) return;
+
+  // Immediately make intro visible
+  intro.style.display = 'flex';
+
+  function boot(){
+    if(typeof gsap === 'undefined'){
+      setTimeout(boot, 80);
+      return;
+    }
+    runIntro();
+  }
+
+  function runIntro(){
+    var ctx = canvas.getContext('2d');
+    var W = canvas.width = window.innerWidth;
+    var H = canvas.height = window.innerHeight;
+    window.addEventListener('resize', function(){
+      W = canvas.width = window.innerWidth;
+      H = canvas.height = window.innerHeight;
+    });
+
+    var NUM = 100;
+    var particles = [];
+    var phase = 'converge';
+    var animId, explodeStart;
+    var startTime = performance.now();
+
+    // Generate "HV" target positions using math (no canvas text rasterization)
+    function generateHVPoints(cx, cy, scale){
+      var pts = [];
+      // H letter: two vertical bars + horizontal bar
+      for(var y=-5; y<=5; y++){
+        pts.push({x: cx - 4*scale + (Math.random()-0.5)*2, y: cy + y*scale*0.9});
+        pts.push({x: cx - 1.5*scale + (Math.random()-0.5)*2, y: cy + y*scale*0.9});
+      }
+      for(var x=-4; x<=-1.5; x+=0.7){
+        pts.push({x: cx + x*scale, y: cy + (Math.random()-0.5)*2});
+      }
+      // V letter: two diagonal lines meeting at bottom
+      for(var t=0; t<=1; t+=0.09){
+        var lx = cx + 1*scale + t * 1.8*scale;
+        var ly = cy - 5*scale*0.9 + t * 10*scale*0.9;
+        pts.push({x: lx + (Math.random()-0.5)*2, y: ly});
+        var rx = cx + 4.6*scale - t * 1.8*scale;
+        pts.push({x: rx + (Math.random()-0.5)*2, y: ly});
+      }
+      return pts;
+    }
+
+    var scale = Math.min(W, H) * 0.028;
+    var targetPts = generateHVPoints(W/2, H/2 - 10, scale);
+    
+    // Trim or pad to NUM
+    while(targetPts.length > NUM) targetPts.pop();
+    while(targetPts.length < NUM){
+      targetPts.push({
+        x: W/2 + (Math.random()-0.5)*scale*8,
+        y: H/2 + (Math.random()-0.5)*scale*8
+      });
+    }
+
+    // Initialize particles from random edges
+    for(var i=0; i<NUM; i++){
+      var edge = Math.random();
+      var sx, sy;
+      if(edge < 0.25){ sx = Math.random()*W; sy = -30; }
+      else if(edge < 0.5){ sx = W+30; sy = Math.random()*H; }
+      else if(edge < 0.75){ sx = Math.random()*W; sy = H+30; }
+      else { sx = -30; sy = Math.random()*H; }
+
+      particles.push({
+        x: sx, y: sy,
+        tx: targetPts[i].x, ty: targetPts[i].y,
+        vx: 0, vy: 0,
+        size: 2 + Math.random()*3,
+        isCyan: Math.random() > 0.5,
+        alpha: 0.5 + Math.random()*0.5,
+        speed: 0.03 + Math.random()*0.04
+      });
+    }
+
+    function pColor(p, a){
+      return p.isCyan 
+        ? 'rgba(34,211,238,' + a + ')'
+        : 'rgba(129,140,248,' + a + ')';
+    }
+
+    function drawConnections(){
+      var maxDist = 85;
+      ctx.lineWidth = 0.5;
+      for(var i=0; i<particles.length; i++){
+        for(var j=i+1; j<particles.length; j++){
+          var dx = particles[i].x - particles[j].x;
+          var dy = particles[i].y - particles[j].y;
+          var d2 = dx*dx + dy*dy;
+          if(d2 < maxDist*maxDist){
+            var dist = Math.sqrt(d2);
+            var a = (1 - dist/maxDist) * 0.35;
+            ctx.strokeStyle = 'rgba(129,140,248,' + a + ')';
+            ctx.beginPath();
+            ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.lineTo(particles[j].x, particles[j].y);
+            ctx.stroke();
+          }
+        }
+      }
+    }
+
+    // Skip
+    var skipBtn = document.getElementById('cinema-skip');
+    if(skipBtn) skipBtn.onclick = doSkip;
+    function doSkip(){
+      sessionStorage.setItem('intro-played','1');
+      cancelAnimationFrame(animId);
+      gsap.to(intro, {opacity:0, duration:0.4, onComplete:function(){ intro.remove(); }});
+    }
+
+    function draw(now){
+      if(!intro.parentElement){ cancelAnimationFrame(animId); return; }
+      var elapsed = (now - startTime) / 1000;
+      ctx.clearRect(0, 0, W, H);
+
+      if(phase === 'converge'){
+        var progress = Math.min(elapsed / 2.2, 1);
+        var ease = 1 - Math.pow(1 - progress, 3);
+        for(var i=0; i<particles.length; i++){
+          var p = particles[i];
+          p.x += (p.tx - p.x) * p.speed * (1 + ease * 4);
+          p.y += (p.ty - p.y) * p.speed * (1 + ease * 4);
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.size * (0.3 + ease*0.7), 0, Math.PI*2);
+          ctx.fillStyle = pColor(p, p.alpha * (0.3 + ease*0.7));
+          ctx.fill();
+          // Glow
+          if(ease > 0.5){
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.size*3, 0, Math.PI*2);
+            ctx.fillStyle = pColor(p, 0.05 * ease);
+            ctx.fill();
+          }
+        }
+        drawConnections();
+        if(elapsed > 2.2){
+          phase = 'hold';
+          triggerText();
+        }
+      }
+      else if(phase === 'hold'){
+        for(var i=0; i<particles.length; i++){
+          var p = particles[i];
+          p.x = p.tx + Math.sin(now*0.001 + i*0.7) * 2.5;
+          p.y = p.ty + Math.cos(now*0.0012 + i) * 2.5;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.size, 0, Math.PI*2);
+          ctx.fillStyle = pColor(p, p.alpha);
+          ctx.fill();
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.size*3, 0, Math.PI*2);
+          ctx.fillStyle = pColor(p, 0.04);
+          ctx.fill();
+        }
+        drawConnections();
+      }
+      else if(phase === 'explode'){
+        var t = Math.min((now - explodeStart) / 1200, 1);
+        for(var i=0; i<particles.length; i++){
+          var p = particles[i];
+          p.x += p.vx * (1 + t*5);
+          p.y += p.vy * (1 + t*5);
+          var a = p.alpha * (1 - t);
+          if(a > 0.01){
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.size*(1+t*4), 0, Math.PI*2);
+            ctx.fillStyle = pColor(p, a);
+            ctx.fill();
+          }
+        }
+      }
+      animId = requestAnimationFrame(draw);
+    }
+
+    function triggerText(){
+      var hvEl = document.getElementById('cinema-hv');
+      var nameEl = document.getElementById('cinema-name');
+      var subEl = document.getElementById('cinema-sub');
+      var bgImg = intro.querySelector('.cinema-bg-img');
+      var rings = intro.querySelectorAll('.cinema-ring');
+
+      if(bgImg) gsap.to(bgImg, {opacity:0.2, duration:1, ease:'power2.out'});
+      gsap.to(rings, {opacity:1, stagger:0.12, duration:1, ease:'power2.out'});
+      gsap.to(hvEl, {opacity:1, scale:1, filter:'blur(0px)', duration:0.7, ease:'back.out(1.5)'});
+
+      setTimeout(function(){ scramble(nameEl, 'HERMAN  VANEL', 1100); }, 400);
+      setTimeout(function(){
+        gsap.set(subEl, {opacity:1});
+        typewrite(subEl, "J'automatise tout.", 45, function(){
+          setTimeout(doExplode, 600);
+        });
+      }, 1400);
+    }
+
+    function doExplode(){
+      phase = 'explode';
+      explodeStart = performance.now();
+      for(var i=0; i<particles.length; i++){
+        var p = particles[i];
+        var ang = Math.atan2(p.y - H/2, p.x - W/2) + (Math.random()-0.5)*0.7;
+        var spd = 5 + Math.random()*12;
+        p.vx = Math.cos(ang)*spd;
+        p.vy = Math.sin(ang)*spd;
+      }
+      gsap.to(intro.querySelector('.cinema-text'), {opacity:0, scale:1.15, duration:0.5, ease:'power2.in'});
+      gsap.to(intro.querySelectorAll('.cinema-ring'), {opacity:0, scale:1.6, duration:0.5});
+      gsap.to(intro.querySelector('.cinema-bg-img'), {opacity:0, duration:0.4});
+      gsap.to(intro, {opacity:0, duration:0.9, delay:0.35, ease:'power2.inOut', onComplete:function(){
+        sessionStorage.setItem('intro-played','1');
+        intro.remove();
+        cancelAnimationFrame(animId);
+      }});
+    }
+
+    function scramble(el, text, dur){
+      var pool = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#@!+*';
+      var total = Math.floor(dur/16);
+      var chars = text.split('');
+      var f = 0;
+      gsap.set(el, {opacity:1});
+      (function tick(){
+        var out = '';
+        for(var i=0; i<chars.length; i++){
+          var r = Math.floor((i/chars.length)*total*0.55)+8;
+          if(f >= r) out += '<span class="scramble-char resolved">'+chars[i]+'</span>';
+          else if(f >= r-14) out += '<span class="scramble-char">'+pool[Math.floor(Math.random()*pool.length)]+'</span>';
+          else out += '<span class="scramble-char" style="opacity:0">.</span>';
+        }
+        el.innerHTML = out;
+        f++;
+        if(f < total) requestAnimationFrame(tick);
+      })();
+    }
+
+    function typewrite(el, text, speed, cb){
+      var i = 0;
+      (function tick(){
+        if(i <= text.length){
+          el.innerHTML = text.substring(0,i)+'<span class="cursor-blink"></span>';
+          i++;
+          setTimeout(tick, speed + Math.random()*25);
+        } else {
+          el.innerHTML = text;
+          if(cb) cb();
+        }
+      })();
+    }
+
+    // GO!
+    animId = requestAnimationFrame(draw);
+  }
+
+  boot();
+})();
+</script>
+
 <div class="cursor-dot" id="cursorDot"></div>
 <div class="cursor-outline" id="cursorOutline"></div>
 <canvas id="matrixCanvas"></canvas>
@@ -358,13 +691,13 @@ p.card-sub{color:var(--text-mid);font-size:.9rem;line-height:1.75;font-weight:40
   <div style="margin-bottom:3rem;"><div class="s-label" data-i18n="acc-sec1-label">// aujourd'hui</div><h2 class="s-title"><span data-i18n="acc-sec1-title">Deux vies </span><span class="hl" data-i18n="acc-sec1-hl">en parallèle</span></h2></div>
   <div class="grid-2" style="margin-bottom:2.5rem;">
     <div class="holo-card"><div class="corner c-tl"></div><div class="corner c-tr"></div><div class="corner c-bl"></div><div class="corner c-br"></div>
-      <img src="images/paal-travail.jpg" alt="Herman au travail chez PAAL" class="photo-card">
+      <img src="images/paal-travail.jpg" alt="Herman au travail chez PAAL" class="photo-card" loading="lazy">
       <h3 class="card-title" data-i18n="acc-sec1-card1-title">Le jour : commerce & terrain</h3>
       <p class="card-text" data-i18n-html="acc-sec1-card1-p1">Je suis en 3e année de BUT Techniques de Commercialisation à l'IUT de Nice. Mon alternance se déroule chez <span style="color:var(--cyan-bright);font-weight:600;">PAAL</span>, une entreprise de menuiserie aluminium à Contes, en tant qu'assistant marketing et commercial : prospection téléphonique, développement marketing, gestion des réseaux sociaux.</p>
       <p class="card-sub" data-i18n="acc-sec1-card1-p2">Cette expérience m'a appris à communiquer, à convaincre et à comprendre le fonctionnement d'une entreprise de l'intérieur. Ce n'est pas du code, mais c'est un socle essentiel pour entreprendre.</p>
     </div>
     <div class="holo-card"><div class="corner c-tl"></div><div class="corner c-tr"></div><div class="corner c-bl"></div><div class="corner c-br"></div>
-      <img src="images/code-soir.jpg" alt="Herman en train de coder la nuit" class="photo-card">
+      <img src="images/code-soir.jpg" alt="Herman en train de coder la nuit" class="photo-card" loading="lazy">
       <h3 class="card-title" data-i18n="acc-sec1-card2-title">Le soir : code & automatisation</h3>
       <p class="card-text" data-i18n-html="acc-sec1-card2-p1">En parallèle, je développe un <span style="color:var(--purple-bright);font-weight:600;">Expert Advisor en MQL5</span> — un robot qui analyse les marchés financiers et passe des ordres de trading automatiquement sur MetaTrader 5. Je monte aussi des workflows n8n, des chaînes d'automatisation qui suppriment les tâches répétitives. Et avec un associé, on construit <span style="color:var(--purple-bright);font-weight:600;">Async Agency</span>, une agence d'automatisation et d'agents IA pour les entreprises.</p>
       <p class="card-sub" data-i18n="acc-sec1-card2-p2">Personne ne m'a demandé d'apprendre à coder. Chaque langage est venu en réponse à un besoin concret.</p>
@@ -428,7 +761,7 @@ p.card-sub{color:var(--text-mid);font-size:.9rem;line-height:1.75;font-weight:40
 
   <div class="grid-3">
     <div class="holo-card" style="padding:0;overflow:hidden;"><div class="corner c-tl"></div><div class="corner c-tr"></div><div class="corner c-bl"></div><div class="corner c-br"></div>
-      <img src="images/workflow-rappel-rdv.png" alt="Workflow rappel de rendez-vous" style="width:100%;height:180px;object-fit:cover;object-position:center;border-bottom:1px solid rgba(96,165,250,.1);">
+      <img src="images/workflow-rappel-rdv.png" alt="Workflow rappel de rendez-vous" style="width:100%;height:180px;object-fit:cover;object-position:center;border-bottom:1px solid rgba(96,165,250,.1);" loading="lazy">
       <div style="padding:1.25rem;">
         <div style="font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--green);letter-spacing:2px;text-transform:uppercase;margin-bottom:.5rem;" data-i18n="wf-card1-label">Rappel de RDV</div>
         <h3 class="card-title" style="font-size:.85rem;" data-i18n="wf-card1-title">Réduire les absences aux rendez-vous</h3>
@@ -438,7 +771,7 @@ p.card-sub{color:var(--text-mid);font-size:.9rem;line-height:1.75;font-weight:40
     </div>
 
     <div class="holo-card" style="padding:0;overflow:hidden;"><div class="corner c-tl"></div><div class="corner c-tr"></div><div class="corner c-bl"></div><div class="corner c-br"></div>
-      <img src="images/workflow-reservation.png" alt="Workflow réservation restaurant" style="width:100%;height:180px;object-fit:cover;object-position:center;border-bottom:1px solid rgba(96,165,250,.1);">
+      <img src="images/workflow-reservation.png" alt="Workflow réservation restaurant" style="width:100%;height:180px;object-fit:cover;object-position:center;border-bottom:1px solid rgba(96,165,250,.1);" loading="lazy">
       <div style="padding:1.25rem;">
         <div style="font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--purple);letter-spacing:2px;text-transform:uppercase;margin-bottom:.5rem;" data-i18n="wf-card2-label">Agent IA Restaurant</div>
         <h3 class="card-title" style="font-size:.85rem;" data-i18n="wf-card2-title">Réservation par chat avec une IA</h3>
@@ -448,7 +781,7 @@ p.card-sub{color:var(--text-mid);font-size:.9rem;line-height:1.75;font-weight:40
     </div>
 
     <div class="holo-card" style="padding:0;overflow:hidden;"><div class="corner c-tl"></div><div class="corner c-tr"></div><div class="corner c-bl"></div><div class="corner c-br"></div>
-      <img src="images/workflow-reseaux.png" alt="Workflow publication réseaux sociaux" style="width:100%;height:180px;object-fit:cover;object-position:center;border-bottom:1px solid rgba(96,165,250,.1);">
+      <img src="images/workflow-reseaux.png" alt="Workflow publication réseaux sociaux" style="width:100%;height:180px;object-fit:cover;object-position:center;border-bottom:1px solid rgba(96,165,250,.1);" loading="lazy">
       <div style="padding:1.25rem;">
         <div style="font-family:'JetBrains Mono',monospace;font-size:.6rem;color:#fb923c;letter-spacing:2px;text-transform:uppercase;margin-bottom:.5rem;" data-i18n="wf-card3-label">Publication auto</div>
         <h3 class="card-title" style="font-size:.85rem;" data-i18n="wf-card3-title">Publier sur 4 réseaux en un clic</h3>
@@ -695,7 +1028,7 @@ p.card-sub{color:var(--text-mid);font-size:.9rem;line-height:1.75;font-weight:40
 <div class="page" id="p-about">
 
 <!-- SECTION 1: Qui je suis -->
-<section class="section" style="padding-top:6rem;"><div class="max-w">
+<section class="section about-globe-section" style="padding-top:6rem;position:relative;overflow:hidden;"><div id="globe-container"></div><div class="max-w" style="position:relative;z-index:1;">
   <div style="margin-bottom:2rem;"><div class="s-label" data-i18n="about-section1-label">// qui je suis</div><h2 class="s-title"><span data-i18n="about-section1-title">Herman </span><span class="hl" data-i18n="about-section1-hl">Vanel</span></h2></div>
 
   <div class="grid-2" style="gap:2rem;align-items:start;">
@@ -705,7 +1038,7 @@ p.card-sub{color:var(--text-mid);font-size:.9rem;line-height:1.75;font-weight:40
       <p style="color:var(--text-mid);font-size:1.05rem;line-height:1.85;" data-i18n="about-bio-p3">Le soir, je développe. Un bot de trading, des workflows d'automatisation, des agents IA. Avec mon associé, nous avons lancé <span style="color:var(--purple);font-weight:600;">Async Agency</span>. Personne ne m'a demandé de faire tout cela. Je le fais parce que je veux construire des systèmes autonomes.</p>
     </div>
     <div style="display:flex;flex-direction:column;align-items:center;gap:1.5rem;">
-      <img src="images/break-freeze.jpg" alt="Herman en breakdance — freeze" class="photo-about">
+      <img src="images/break-freeze.jpg" alt="Herman en breakdance — freeze" class="photo-about" loading="lazy">
       <!-- Orbite de compétences -->
       <div class="orbit-wrap" style="margin:0;">
         <div class="orbit-center">HERMAN<br>.DEV</div>
@@ -743,11 +1076,11 @@ p.card-sub{color:var(--text-mid);font-size:.9rem;line-height:1.75;font-weight:40
   <div class="tl"><div class="tl-line"></div>
     <div class="tl-item"><div class="tl-dot"></div><div class="tl-card" style="margin-left:auto;"><span style="font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--cyan);letter-spacing:2px;" data-i18n="tl-item1-label">LES RACINES · 2005</span><h3 style="font-family:'Orbitron',sans-serif;font-size:.85rem;font-weight:600;color:#fff;margin:.4rem 0;" data-i18n="tl-item1-title">Né en Éthiopie, adopté à 2 ans</h3><p style="color:var(--text-mid);font-size:.8rem;line-height:1.7;" data-i18n="tl-item1-text">Né en Éthiopie, adopté à l'âge de 2 ans, j'ai grandi dans le sud de la France. Cette double culture m'a apporté une ouverture d'esprit et une capacité d'adaptation que je mobilise au quotidien.</p></div></div>
 
-    <div class="tl-item left"><div class="tl-dot"></div><div class="tl-card" style="margin-right:auto;"><span style="font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--cyan);letter-spacing:2px;" data-i18n="tl-item2-label">LA DANSE · ~2011 → AUJOURD'HUI</span><h3 style="font-family:'Orbitron',sans-serif;font-size:.85rem;font-weight:600;color:#fff;margin:.4rem 0;" data-i18n="tl-item2-title">15 ans de breakdance</h3><p style="color:var(--text-mid);font-size:.8rem;line-height:1.7;" data-i18n="tl-item2-text">J'ai commencé le breakdance vers 6 ans. C'est l'engagement le plus long de ma vie. Les battles m'ont appris à gérer la pression. L'entraînement quotidien m'a inculqué la discipline. Depuis 5-6 ans, j'enseigne à des enfants et adolescents à l'association La Semeuse à Nice. J'ai également donné des cours à Menton pendant un an.</p><div style="display:flex;gap:.3rem;margin-top:.6rem;"><span class="tag">Discipline</span><span class="tag">Transmission</span><span class="tag">Créativité</span><span class="tag">Gestion du stress</span></div><img src="images/break-backflip-groupe.jpg" alt="Herman en backflip devant ses élèves — La Semeuse" class="photo-tl"><div class="video-showcase" onmouseenter="var v=this.querySelector('video');v.muted=false;v.play();" onmouseleave="var v=this.querySelector('video');v.pause();v.currentTime=0;"><video src="images/break-video.mp4" loop playsinline preload="metadata" poster="images/break-freeze.jpg"></video><button class="video-mute-btn" onclick="event.stopPropagation();var v=this.parentElement.querySelector('video');v.muted=!v.muted;this.textContent=v.muted?'🔇':'🔊';">🔊</button><div class="video-label">▶ Passage break · survolez pour lire</div></div></div></div>
+    <div class="tl-item left"><div class="tl-dot"></div><div class="tl-card" style="margin-right:auto;"><span style="font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--cyan);letter-spacing:2px;" data-i18n="tl-item2-label">LA DANSE · ~2011 → AUJOURD'HUI</span><h3 style="font-family:'Orbitron',sans-serif;font-size:.85rem;font-weight:600;color:#fff;margin:.4rem 0;" data-i18n="tl-item2-title">15 ans de breakdance</h3><p style="color:var(--text-mid);font-size:.8rem;line-height:1.7;" data-i18n="tl-item2-text">J'ai commencé le breakdance vers 6 ans. C'est l'engagement le plus long de ma vie. Les battles m'ont appris à gérer la pression. L'entraînement quotidien m'a inculqué la discipline. Depuis 5-6 ans, j'enseigne à des enfants et adolescents à l'association La Semeuse à Nice. J'ai également donné des cours à Menton pendant un an.</p><div style="display:flex;gap:.3rem;margin-top:.6rem;"><span class="tag">Discipline</span><span class="tag">Transmission</span><span class="tag">Créativité</span><span class="tag">Gestion du stress</span></div><img src="images/break-backflip-groupe.jpg" alt="Herman en backflip devant ses élèves — La Semeuse" class="photo-tl" loading="lazy"><div class="video-showcase" onmouseenter="var v=this.querySelector('video');v.muted=false;v.play();" onmouseleave="var v=this.querySelector('video');v.pause();v.currentTime=0;"><video src="images/break-video.mp4" loop playsinline preload="metadata" poster="images/break-freeze.jpg"></video><button class="video-mute-btn" onclick="event.stopPropagation();var v=this.parentElement.querySelector('video');v.muted=!v.muted;this.textContent=v.muted?'🔇':'🔊';">🔊</button><div class="video-label">▶ Passage break · survolez pour lire</div></div></div></div>
 
-    <div class="tl-item"><div class="tl-dot"></div><div class="tl-card" style="margin-left:auto;"><span style="font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--cyan);letter-spacing:2px;" data-i18n="tl-item3-label">PREMIÈRES EXPÉRIENCES · 2020-2022</span><h3 style="font-family:'Orbitron',sans-serif;font-size:.85rem;font-weight:600;color:#fff;margin:.4rem 0;" data-i18n="tl-item3-title">Animation, bénévolat, industrie</h3><p style="color:var(--text-mid);font-size:.8rem;line-height:1.7;" data-i18n="tl-item3-text">Animateur d'enfants de 6 ans au collège Nazareth tous les mercredis et pendant les vacances. Bénévole à l'épicerie solidaire Solid'Act à Nice : accueil, vente, stocks, caisse. Stage d'observation chez MEI Industries, tôlerie fine à Carros. Et le BAFA en 10 mois, avec la qualification surveillant de baignade.</p><div style="display:flex;gap:.3rem;margin-top:.6rem;"><span class="tag">BAFA</span><span class="tag">Nazareth</span><span class="tag">Solid'Act</span><span class="tag">MEI Industries</span></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin-top:.75rem;"><img src="images/animation-enfants.jpg" alt="Herman animateur avec des enfants" class="photo-tl" style="height:120px;margin:0;"><img src="images/animation-plage.jpg" alt="Herman animateur sur la plage de Nice" class="photo-tl" style="height:120px;margin:0;"></div></div></div>
+    <div class="tl-item"><div class="tl-dot"></div><div class="tl-card" style="margin-left:auto;"><span style="font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--cyan);letter-spacing:2px;" data-i18n="tl-item3-label">PREMIÈRES EXPÉRIENCES · 2020-2022</span><h3 style="font-family:'Orbitron',sans-serif;font-size:.85rem;font-weight:600;color:#fff;margin:.4rem 0;" data-i18n="tl-item3-title">Animation, bénévolat, industrie</h3><p style="color:var(--text-mid);font-size:.8rem;line-height:1.7;" data-i18n="tl-item3-text">Animateur d'enfants de 6 ans au collège Nazareth tous les mercredis et pendant les vacances. Bénévole à l'épicerie solidaire Solid'Act à Nice : accueil, vente, stocks, caisse. Stage d'observation chez MEI Industries, tôlerie fine à Carros. Et le BAFA en 10 mois, avec la qualification surveillant de baignade.</p><div style="display:flex;gap:.3rem;margin-top:.6rem;"><span class="tag">BAFA</span><span class="tag">Nazareth</span><span class="tag">Solid'Act</span><span class="tag">MEI Industries</span></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin-top:.75rem;"><img src="images/animation-enfants.jpg" alt="Herman animateur avec des enfants" class="photo-tl" style="height:120px;margin:0;" loading="lazy"><img src="images/animation-plage.jpg" alt="Herman animateur sur la plage de Nice" class="photo-tl" style="height:120px;margin:0;" loading="lazy"></div></div></div>
 
-    <div class="tl-item left"><div class="tl-dot hl"></div><div class="tl-card hl" style="margin-right:auto;"><span style="font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--cyan);letter-spacing:2px;" data-i18n="tl-item4-label">FORMATION · 2023-2026</span><h3 style="font-family:'Orbitron',sans-serif;font-size:.85rem;font-weight:600;color:#fff;margin:.4rem 0;" data-i18n="tl-item4-title">BUT TC à l'IUT de Nice + PAAL</h3><p style="color:var(--text-mid);font-size:.8rem;line-height:1.7;" data-i18n="tl-item4-text">Trois ans de Techniques de Commercialisation. En alternance chez PAAL à Contes : prospection téléphonique, développement marketing et gestion des réseaux sociaux. C'est au cours de cette période que j'ai découvert la programmation, en autodidacte, en dehors de mes cours. Le commerce m'a appris à convaincre. Le code m'a appris à construire.</p><div style="display:flex;gap:.3rem;margin-top:.6rem;"><span class="tag">Marketing</span><span class="tag">Prospection B2B</span><span class="tag">Réseaux sociaux</span></div><img src="images/paal-equipe.jpg" alt="Herman avec l'équipe PAAL" class="photo-tl"></div></div>
+    <div class="tl-item left"><div class="tl-dot hl"></div><div class="tl-card hl" style="margin-right:auto;"><span style="font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--cyan);letter-spacing:2px;" data-i18n="tl-item4-label">FORMATION · 2023-2026</span><h3 style="font-family:'Orbitron',sans-serif;font-size:.85rem;font-weight:600;color:#fff;margin:.4rem 0;" data-i18n="tl-item4-title">BUT TC à l'IUT de Nice + PAAL</h3><p style="color:var(--text-mid);font-size:.8rem;line-height:1.7;" data-i18n="tl-item4-text">Trois ans de Techniques de Commercialisation. En alternance chez PAAL à Contes : prospection téléphonique, développement marketing et gestion des réseaux sociaux. C'est au cours de cette période que j'ai découvert la programmation, en autodidacte, en dehors de mes cours. Le commerce m'a appris à convaincre. Le code m'a appris à construire.</p><div style="display:flex;gap:.3rem;margin-top:.6rem;"><span class="tag">Marketing</span><span class="tag">Prospection B2B</span><span class="tag">Réseaux sociaux</span></div><img src="images/paal-equipe.jpg" alt="Herman avec l'équipe PAAL" class="photo-tl" loading="lazy"></div></div>
 
     <div class="tl-item"><div class="tl-dot hl"></div><div class="tl-card hl" style="margin-left:auto;"><span style="font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--cyan);letter-spacing:2px;" data-i18n="tl-item5-label">LE DÉCLIC · 2023</span><h3 style="font-family:'Orbitron',sans-serif;font-size:.85rem;font-weight:600;color:#fff;margin:.4rem 0;" data-i18n="tl-item5-title">Le trading ouvre la porte du code</h3><p style="color:var(--text-mid);font-size:.8rem;line-height:1.7;" data-i18n="tl-item5-text">Tout a commencé par le trading. L'envie d'automatiser mes stratégies m'a conduit vers MQL5 pour développer un Expert Advisor sur MetaTrader 5. Puis Python s'est imposé pour l'analyse de données. Puis n8n pour connecter mes outils. Puis JavaScript pour créer des interfaces. Chaque problème résolu a ouvert la porte d'un nouveau langage.</p><div style="display:flex;gap:.3rem;margin-top:.6rem;"><span class="tag">MQL5</span><span class="tag">Python</span><span class="tag">Autodidacte</span></div></div></div>
 
@@ -764,7 +1097,7 @@ p.card-sub{color:var(--text-mid);font-size:.9rem;line-height:1.75;font-weight:40
     <div class="val-card"><div class="val-num" style="color:var(--cyan);" data-i18n="val-card-1-num">01</div><h4 style="color:var(--cyan);" data-i18n="val-card-1-title">Apprendre en faisant</h4><p data-i18n="val-card-1-text">Je n'ai jamais suivi de formation en programmation. Face à un problème, j'ai cherché comment le résoudre et j'ai appris en faisant. Mon bot de trading, mes workflows, ce site — chaque projet est né d'un besoin concret, pas d'un cours théorique.</p></div>
     <div class="val-card"><div class="val-num" style="color:var(--purple);" data-i18n="val-card-2-num">02</div><h4 style="color:var(--purple);" data-i18n="val-card-2-title">Prouver par l'action</h4><p data-i18n="val-card-2-text">Ce site en est la preuve : la démo 3D fonctionne, le design est entièrement codé à la main, et chaque projet présenté ici est réel. Je préfère montrer ce que je sais faire plutôt que simplement le dire.</p></div>
     <div class="val-card"><div class="val-num" style="color:var(--green);" data-i18n="val-card-3-num">03</div><h4 style="color:var(--green);" data-i18n="val-card-3-title">Ne rien lâcher</h4><p data-i18n="val-card-3-text">15 ans de breakdance forgent le caractère. Quand mon Expert Advisor a échoué 50 fois, je l'ai corrigé 50 fois. Quand un workflow plante, je le débugue avant de passer à la suite. La persévérance n'est pas un mot — c'est une pratique quotidienne.</p></div>
-    <div class="val-card"><div class="val-num" style="color:var(--pink);" data-i18n="val-card-4-num">04</div><h4 style="color:var(--pink);" data-i18n="val-card-4-title">Transmettre</h4><p data-i18n="val-card-4-text">Enseigner le breakdance à des enfants depuis 5 ans m'a appris à vulgariser des concepts, à faire preuve de patience et à m'adapter au niveau de chacun. C'est cette même approche qui m'a conduit à intégrer une section explicative dans la page Demo.</p><img src="images/animation-micro.jpg" alt="Herman animateur avec micro" class="photo-tl" style="height:140px;margin-top:.75rem;"></div>
+    <div class="val-card"><div class="val-num" style="color:var(--pink);" data-i18n="val-card-4-num">04</div><h4 style="color:var(--pink);" data-i18n="val-card-4-title">Transmettre</h4><p data-i18n="val-card-4-text">Enseigner le breakdance à des enfants depuis 5 ans m'a appris à vulgariser des concepts, à faire preuve de patience et à m'adapter au niveau de chacun. C'est cette même approche qui m'a conduit à intégrer une section explicative dans la page Demo.</p><img src="images/animation-micro.jpg" alt="Herman animateur avec micro" class="photo-tl" style="height:140px;margin-top:.75rem;" loading="lazy"></div>
     <div class="val-card"><div class="val-num" style="color:#fbbf24;" data-i18n="val-card-5-num">05</div><h4 style="color:#fbbf24;" data-i18n="val-card-5-title">Construire pour être libre</h4><p data-i18n="val-card-5-text">Mon objectif n'est pas d'occuper un poste confortable. C'est de concevoir des systèmes qui fonctionnent de manière autonome. Le trading automatisé, les workflows 24/7, les agents IA — chaque projet contribue au même objectif : l'indépendance.</p></div>
     <div class="val-card"><div class="val-num" style="color:#fb923c;" data-i18n="val-card-6-num">06</div><h4 style="color:#fb923c;" data-i18n="val-card-6-title">Rester curieux</h4><p data-i18n="val-card-6-text">Three.js pour la 3D, MediaPipe pour le hand tracking, MQL5 pour le trading — j'explore des domaines variés et je trouve toujours un moyen de les relier. La curiosité est mon principal moteur.</p></div>
   </div>
@@ -774,12 +1107,12 @@ p.card-sub{color:var(--text-mid);font-size:.9rem;line-height:1.75;font-weight:40
 <section class="section" style="padding-top:2rem;"><div class="max-w">
   <div style="margin-bottom:2rem;"><div class="s-label" data-i18n="photo-gallery-label">// en images</div><h2 class="s-title"><span data-i18n="photo-gallery-title">Quelques </span><span class="hl" data-i18n="photo-gallery-hl">moments</span></h2></div>
   <div class="photo-gallery">
-    <img src="images/break-freeze.jpg" alt="Freeze breakdance">
-    <img src="images/break-backflip-groupe.jpg" alt="Backflip devant les élèves">
-    <img src="images/break-eleves-pose.jpg" alt="Les élèves en pose">
-    <img src="images/paal-travail.jpg" alt="Au travail chez PAAL">
-    <img src="images/paal-equipe.jpg" alt="Avec l'équipe PAAL">
-    <img src="images/animation-plage.jpg" alt="Animation sur la plage de Nice">
+    <img src="images/break-freeze.jpg" alt="Freeze breakdance" loading="lazy">
+    <img src="images/break-backflip-groupe.jpg" alt="Backflip devant les élèves" loading="lazy">
+    <img src="images/break-eleves-pose.jpg" alt="Les élèves en pose" loading="lazy">
+    <img src="images/paal-travail.jpg" alt="Au travail chez PAAL" loading="lazy">
+    <img src="images/paal-equipe.jpg" alt="Avec l'équipe PAAL" loading="lazy">
+    <img src="images/animation-plage.jpg" alt="Animation sur la plage de Nice" loading="lazy">
   </div>
 </div></section>
 
@@ -976,7 +1309,7 @@ p.card-sub{color:var(--text-mid);font-size:.9rem;line-height:1.75;font-weight:40
           <p class="card-text" data-i18n="form-paal-m4">— Veille concurrentielle sur le secteur des menuiseries aluminium</p>
         </div>
       </div>
-      <img src="images/paal-equipe.jpg" alt="Herman avec l'équipe PAAL" class="photo-tl" style="margin-top:1rem;">
+      <img src="images/paal-equipe.jpg" alt="Herman avec l'équipe PAAL" class="photo-tl" style="margin-top:1rem;" loading="lazy">
     </div>
   </div>
 </div></section>
@@ -1904,7 +2237,7 @@ if(document.readyState==='loading'){
 <!-- =============== CONTACT =============== -->
 <div class="page" id="p-contact">
 <section class="section" style="padding-top:6rem;"><div class="max-w">
-  <div style="margin-bottom:3rem;"><img src="images/portrait-classe.jpg" alt="Herman Vanel" class="photo-avatar">
+  <div style="margin-bottom:3rem;"><img src="images/portrait-classe.jpg" alt="Herman Vanel" class="photo-avatar" loading="lazy">
   <div class="s-label" data-i18n="contact-section-label">// contact</div><h2 class="s-title"><span data-i18n="contact-section-title">Prenons </span><span class="hl" data-i18n="contact-section-hl">contact</span></h2>
   <p style="color:var(--text-mid);font-size:1.05rem;line-height:1.8;max-width:650px;margin-top:.75rem;" data-i18n="contact-intro">Je recherche une école comme Epitech pour approfondir le développement, des missions en automatisation, ou l'opportunité d'échanger avec des professionnels partageant cette vision. N'hésitez pas à me contacter par le moyen qui vous convient.</p></div>
 
@@ -1935,11 +2268,13 @@ if(document.readyState==='loading'){
     <p style="color:var(--text-mid);font-size:1rem;line-height:1.7;max-width:650px;margin-top:.75rem;" data-i18n="contact-docs-desc">Retrouvez ici mes documents à destination des recruteurs, écoles et partenaires potentiels.</p></div>
 
     <div id="docGrid" style="display:flex;justify-content:center;">
-      <a href="./documents/CV_Herman_Vanel.pdf" download class="holo-card" style="text-decoration:none;cursor:pointer;text-align:center;transition:all .4s;">
+      <a href="./CV-Herman-Vanel-2026.pdf" download class="holo-card mag-btn" style="text-decoration:none;cursor:pointer;text-align:center;transition:all .4s;padding:2rem 3rem;min-width:220px;">
         <div class="corner c-tl"></div><div class="corner c-tr"></div><div class="corner c-bl"></div><div class="corner c-br"></div>
-        <div style="font-size:2rem;margin-bottom:.75rem;">📄</div>
-        <h3 class="card-title" style="font-size:.85rem;" data-i18n="doc-cv-title">CV</h3>
-        <p style="color:var(--text-dim);font-size:.75rem;font-family:'JetBrains Mono',monospace;letter-spacing:1px;" data-i18n="doc-cv-label">PDF · Télécharger</p>
+        <div style="font-size:2.5rem;margin-bottom:1rem;filter:drop-shadow(0 0 12px rgba(34,211,238,.3));">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--cyan)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><polyline points="9 15 12 18 15 15"/></svg>
+        </div>
+        <h3 class="card-title" style="font-size:.95rem;margin-bottom:.5rem;" data-i18n="doc-cv-title">Télécharger mon CV</h3>
+        <p style="color:var(--text-dim);font-size:.7rem;font-family:'JetBrains Mono',monospace;letter-spacing:1.5px;" data-i18n="doc-cv-label">PDF · 2026</p>
       </a>
 
 
@@ -2043,7 +2378,7 @@ function registerPageAnim(id, initFn) {
 
 // ===== SHARED ELEMENT MORPH TRANSITION =====
 function morphToAsync(card) {
-  if (prefersReducedMotion) { go('async'); return; }
+  if (prefersReducedMotion) { go('async', true); return; }
   
   var rect = card.getBoundingClientRect();
   
@@ -2067,7 +2402,7 @@ function morphToAsync(card) {
     ease: 'power3.inOut',
     onComplete: function() {
       // Switch page while overlay covers screen
-      go('async');
+      go('async', true);
       // Fade out overlay
       gsap.to(overlay, {
         opacity: 0,
@@ -2082,14 +2417,47 @@ function morphToAsync(card) {
   });
 }
 
-function go(id){
+function go(id, skipTransition){
+  if(window.__navigating) return;
+  var oldPage = document.querySelector('.page.active');
+  var newPage = document.getElementById('p-'+id);
+  if(!newPage) return;
+  if(newPage === oldPage) return;
+
+  window.__navigating = true;
   killPageAnimations();
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+
+  // Update nav
   document.querySelectorAll('.nav-links a').forEach(a=>a.classList.remove('active'));
-  document.getElementById('p-'+id).classList.add('active');
-  document.getElementById('n-'+id).classList.add('active');
-  window.scrollTo(0,0);
-  // Disable Lenis on async page (conflicts with pin:true sections)
+  var navEl = document.getElementById('n-'+id);
+  if(navEl) navEl.classList.add('active');
+
+  function showNew(){
+    window.scrollTo(0,0);
+    if(oldPage){ oldPage.classList.remove('active'); gsap.set(oldPage, {clearProps:'all'}); }
+    newPage.classList.add('active');
+    gsap.set(newPage, {clearProps:'all'});
+    finishNav(id);
+  }
+
+  // Skip animation for: async page (has pinned ScrollTriggers), reduced motion, no old page, explicit skip
+  if(!oldPage || prefersReducedMotion || skipTransition || id === 'async' || (oldPage && oldPage.id === 'p-async')){
+    showNew();
+    return;
+  }
+
+  // Animated transition for normal pages
+  gsap.to(oldPage, {
+    opacity:0, y:-25, duration:0.3, ease:'power2.in',
+    onComplete:function(){
+      showNew();
+      gsap.from(newPage, {opacity:0, y:25, duration:0.35, ease:'power2.out'});
+    }
+  });
+}
+
+function finishNav(id){
+  // Lenis management
   if (id === 'async') {
     if (window.__lenisActive && lenis) {
       try { lenis.destroy(); } catch(e){}
@@ -2098,7 +2466,6 @@ function go(id){
     }
   } else {
     if (!window.__lenisActive) {
-      // Re-create Lenis when leaving async page
       lenis = new Lenis({ lerp: 0.1, smoothWheel: true });
       lenis.on('scroll', ScrollTrigger.update);
       window.__lenisTickFn = (time) => lenis.raf(time * 1000);
@@ -2109,13 +2476,13 @@ function go(id){
     try { lenis.scrollTo(0, {immediate: true}); } catch(e){}
   }
   currentPageId = id;
-  // Init page animations after a short DOM settle delay
+  window.__navigating = false;
   setTimeout(() => {
     ScrollTrigger.refresh();
     if (pageAnimations[id] && !prefersReducedMotion) {
       pageAnimations[id]();
     }
-  }, 80);
+  }, 100);
 }
 
 // ===== SKILLS =====
@@ -3609,6 +3976,70 @@ document.addEventListener('DOMContentLoaded', () => {
 
 </script>
 
+<!-- ===== THREE.JS GLOBE ===== -->
+<script>
+(function(){
+  function bootGlobe(){
+    if(typeof THREE === 'undefined'){ setTimeout(bootGlobe, 100); return; }
+    var container = document.getElementById('globe-container');
+    if(!container) return;
+    var initialized = false;
+    function initGlobe(){
+      if(initialized) return;
+      initialized = true;
+      var globeSize=3.2, pointCount=160, lineThreshold=0.52;
+      var scene = new THREE.Scene();
+      var camera = new THREE.PerspectiveCamera(45, container.clientWidth/container.clientHeight, 0.1, 1000);
+      camera.position.set(0, 0, 11);
+      var renderer = new THREE.WebGLRenderer({antialias:true, alpha:true});
+      renderer.setSize(container.clientWidth, container.clientHeight);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      renderer.setClearColor(0x000000, 0);
+      container.appendChild(renderer.domElement);
+      scene.add(new THREE.AmbientLight(0xffffff, 0.5));
+      var phi = Math.PI*(3-Math.sqrt(5));
+      var points = [];
+      for(var i=0;i<pointCount;i++){
+        var y=1-(i/(pointCount-1))*2, r=Math.sqrt(1-y*y), theta=phi*i;
+        points.push(new THREE.Vector3(Math.cos(theta)*r*globeSize, y*globeSize, Math.sin(theta)*r*globeSize));
+      }
+      var group = new THREE.Group();
+      scene.add(group);
+      var pointsGeo = new THREE.BufferGeometry().setFromPoints(points);
+      group.add(new THREE.Points(pointsGeo, new THREE.PointsMaterial({size:0.08, color:0x22d3ee, transparent:true, opacity:0.9, sizeAttenuation:true})));
+      var linePos=[], threshold=globeSize*lineThreshold;
+      for(var i=0;i<points.length;i++) for(var j=i+1;j<points.length;j++) if(points[i].distanceTo(points[j])<threshold) linePos.push(points[i].x,points[i].y,points[i].z,points[j].x,points[j].y,points[j].z);
+      var linesGeo = new THREE.BufferGeometry();
+      linesGeo.setAttribute('position', new THREE.Float32BufferAttribute(linePos, 3));
+      group.add(new THREE.LineSegments(linesGeo, new THREE.LineBasicMaterial({color:0x818cf8, transparent:true, opacity:0.18})));
+      group.add(new THREE.Mesh(new THREE.SphereGeometry(globeSize*0.88,48,48), new THREE.MeshBasicMaterial({color:0x0a1628, transparent:true, opacity:0.95})));
+      var dragging=false, prev={x:0,y:0}, canvasEl=renderer.domElement;
+      canvasEl.addEventListener('mousedown',function(e){dragging=true;prev={x:e.clientX,y:e.clientY};});
+      canvasEl.addEventListener('mousemove',function(e){if(!dragging)return;group.rotation.y+=(e.clientX-prev.x)*0.005;group.rotation.x+=(e.clientY-prev.y)*0.005;prev={x:e.clientX,y:e.clientY};});
+      canvasEl.addEventListener('mouseup',function(){dragging=false;});
+      canvasEl.addEventListener('mouseleave',function(){dragging=false;});
+      canvasEl.addEventListener('touchstart',function(e){if(e.touches[0]){dragging=true;prev={x:e.touches[0].clientX,y:e.touches[0].clientY};}});
+      canvasEl.addEventListener('touchmove',function(e){if(e.touches[0]&&dragging){group.rotation.y+=(e.touches[0].clientX-prev.x)*0.005;group.rotation.x+=(e.touches[0].clientY-prev.y)*0.005;prev={x:e.touches[0].clientX,y:e.touches[0].clientY};}});
+      canvasEl.addEventListener('touchend',function(){dragging=false;});
+      canvasEl.addEventListener('wheel',function(e){e.preventDefault();camera.position.z=Math.max(4,Math.min(20,camera.position.z+e.deltaY*0.015));},{passive:false});
+      window.addEventListener('resize',function(){if(!container.clientWidth)return;camera.aspect=container.clientWidth/container.clientHeight;camera.updateProjectionMatrix();renderer.setSize(container.clientWidth,container.clientHeight);});
+      var frameId;
+      function animate(){if(!dragging)group.rotation.y+=0.002;renderer.render(scene,camera);frameId=requestAnimationFrame(animate);}
+      var obs = new IntersectionObserver(function(entries){if(entries[0].isIntersecting)animate();else cancelAnimationFrame(frameId);},{threshold:0.05});
+      obs.observe(container);
+    }
+    var observer = new MutationObserver(function(){
+      var ap = document.getElementById('p-about');
+      if(ap && ap.classList.contains('active')) initGlobe();
+    });
+    observer.observe(document.body, {subtree:true, attributes:true, attributeFilter:['class']});
+    var ap = document.getElementById('p-about');
+    if(ap && ap.classList.contains('active')) initGlobe();
+  }
+  bootGlobe();
+})();
+</script>
+
 <!-- =============== CHATBOT =============== -->
 <div id="chatbot-toggle" onclick="toggleChat()" title="Discuter avec mon assistant">
   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
@@ -3959,6 +4390,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 })();
+
+
+
 
 </script>
 
