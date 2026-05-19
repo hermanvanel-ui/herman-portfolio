@@ -1807,6 +1807,9 @@ function boot(){
 
 function setup(page){
 
+// Save pristine HTML for nuclear reset on re-entry
+const pristineHTML=page.innerHTML;
+
 // ============ THREE.JS HERO ============
 function initThree(){
   const canvas=document.getElementById('asyncThreeCanvas');
@@ -2122,56 +2125,28 @@ function initReveals(){
 
 // ============ ACTIVATE / DEACTIVATE ============
 function activate(){
-  // Scroll to top so hero is in view first
+  // Scroll to top
   window.scrollTo(0,0);
   page.scrollTop=0;
 
-  // Safety: kill any stale ScrollTriggers scoped here (e.g. from a fast toggle)
-  ScrollTrigger.getAll().forEach(st=>{
-    try{
-      const trig=st.trigger||st.pin;
-      if(trig && trig.closest && trig.closest('#p-async')) st.kill(true);
-    }catch(e){}
-  });
+  // DOM is always pristine here (either first load or after innerHTML reset)
   gsapTriggers=[];
 
-  // Remove any leftover pin-spacer wrappers
-  document.querySelectorAll('#p-async .pin-spacer').forEach(spacer=>{
-    const pinned=spacer.firstElementChild;
-    if(pinned) spacer.parentNode.insertBefore(pinned,spacer);
-    spacer.remove();
-  });
-
-  // Reset hidden states — set via inline styles for initial state
+  // Set initial hidden states on fresh DOM
   document.querySelectorAll('#p-async .a-hidden').forEach(el=>{
-    el.style.opacity='0';el.style.transform='translateY(40px)';el.style.transition='';
+    el.style.opacity='0';el.style.transform='translateY(40px)';
   });
-  const ahLine=document.getElementById('ahLine');
-  if(ahLine){ahLine.style.height='0';}
-  // Reset process steps explicitly
   document.querySelectorAll('.ap-step').forEach(s=>{s.style.opacity='0';s.style.transform='translateY(40px)';});
-  // Reset stats items
-  document.querySelectorAll('#asyncStats .as-item').forEach(i=>{
-    i.classList.remove('in-view');i.style.opacity='0';i.style.transform='translateY(30px)';
-  });
-  // Reset services cards
-  document.querySelectorAll('#asyncSvcGrid .asc').forEach(c=>{
-    c.classList.remove('in-view');c.style.opacity='0';c.style.transform='translateY(30px)';
-  });
-  // Reset tech items
-  document.querySelectorAll('#asyncTechGrid .at-item').forEach(i=>{
-    i.style.opacity='0';i.style.transform='translateY(20px)';
-  });
-  // Reset counters
-  document.querySelectorAll('#p-async .async-counter').forEach(el=>el.textContent='0');
-  // Reset progress fill
-  const fill=document.getElementById('asyncProgressFill');if(fill)fill.style.width='0';
+  document.querySelectorAll('#asyncStats .as-item').forEach(i=>{i.style.opacity='0';i.style.transform='translateY(30px)';});
+  document.querySelectorAll('#asyncSvcGrid .asc').forEach(c=>{c.style.opacity='0';c.style.transform='translateY(30px)';});
+  document.querySelectorAll('#asyncTechGrid .at-item').forEach(i=>{i.style.opacity='0';i.style.transform='translateY(20px)';});
 
   initThree();
   window.addEventListener('mousemove',onMouseMove);
 
-  // Wait for DOM layout to settle before measuring positions
+  // Wait for DOM layout then init all animations
   setTimeout(()=>{
+    if(!page.classList.contains('active')) return;
     window.scrollTo(0,0);
     ScrollTrigger.refresh();
     playHeroTimeline();
@@ -2181,23 +2156,16 @@ function activate(){
     initTech();
     initReveals();
     ScrollTrigger.refresh();
-    // Extra refresh after paint for bulletproof pin calculation
-    requestAnimationFrame(()=>{
-      ScrollTrigger.refresh();
-      // One more after a frame for pinned sections
-      requestAnimationFrame(()=>ScrollTrigger.refresh());
-    });
-  },200);
+    requestAnimationFrame(()=>ScrollTrigger.refresh());
+  },250);
 
-  // Fallback: ensure content becomes visible if ScrollTrigger hasn't revealed it after 3 seconds
-  // Skip hero elements — they are revealed by the breach animation
+  // Fallback visibility after 3s
   setTimeout(()=>{
-    if(!page.classList.contains('active')) return; // bail if user navigated away
+    if(!page.classList.contains('active')) return;
     document.querySelectorAll('#p-async .a-hidden').forEach(el=>{
       if(el.closest('.ah')) return;
       if(getComputedStyle(el).opacity==='0'){
-        el.style.opacity='1';
-        el.style.transform='translateY(0)';
+        el.style.opacity='1';el.style.transform='translateY(0)';
         el.style.transition='opacity .6s, transform .6s';
       }
     });
@@ -2205,11 +2173,12 @@ function activate(){
 }
 
 function deactivate(){
+  // 1) Destroy Three.js and event listeners
   destroyThree();
   window.removeEventListener('mousemove',onMouseMove);
   if(gsapTriggers._resizeHandler) window.removeEventListener('resize',gsapTriggers._resizeHandler);
 
-  // 1) Kill ALL ScrollTriggers scoped to #p-async
+  // 2) Kill ALL ScrollTriggers scoped to #p-async
   ScrollTrigger.getAll().forEach(st=>{
     try{
       const trig=st.trigger||st.pin;
@@ -2219,60 +2188,12 @@ function deactivate(){
   gsapTriggers.forEach(st=>{try{st.kill(true);}catch(e){}});
   gsapTriggers=[];
 
-  // 2) Remove orphaned pin-spacer wrappers
-  document.querySelectorAll('#p-async .pin-spacer').forEach(spacer=>{
-    const pinned=spacer.firstElementChild;
-    if(pinned){
-      spacer.parentNode.insertBefore(pinned,spacer);
-      gsap.set(pinned,{clearProps:'all'});
-    }
-    spacer.remove();
-  });
+  // 3) Kill all GSAP tweens targeting anything inside the page
+  const allEls=page.querySelectorAll('*');
+  allEls.forEach(el=>{try{gsap.killTweensOf(el);}catch(e){}});
 
-  // 3) Kill all tweens on animated elements (use querySelectorAll, not wildcard selector)
-  const killTargets=document.querySelectorAll('#p-async .a-hidden, .ah-orb, .ah-scroll, .ah-content, #asyncThreeCanvas, .ah-letter, .acta-btn, #asyncHero, #asyncBreachOverlay, #asyncBreachGlow, #asyncBreachHalo, #asyncBreachFlash, #asyncEdgeL, #asyncEdgeR, #asyncDoorL, #asyncDoorR, #asyncDoorLabel, .ah-sub, .ah-tagline, .ah-tags, .ah-label, .ap-step, #asyncStats .as-item, #asyncSvcGrid .asc, #asyncTechGrid .at-item');
-  killTargets.forEach(el=>gsap.killTweensOf(el));
-
-  // 4) clearProps on animated elements (NOT structural containers)
-  killTargets.forEach(el=>gsap.set(el,{clearProps:'all'}));
-
-  // 5) Reset breach to initial visible/closed state
-  const bo=document.getElementById('asyncBreachOverlay');
-  if(bo){bo.style.visibility='visible';bo.style.opacity='1';}
-  const dL=document.getElementById('asyncDoorL');if(dL)dL.style.transform='rotateY(0deg)';
-  const dR=document.getElementById('asyncDoorR');if(dR)dR.style.transform='rotateY(0deg)';
-  const bg=document.getElementById('asyncBreachGlow');if(bg){bg.style.height='0';bg.style.opacity='0';}
-  const bh=document.getElementById('asyncBreachHalo');if(bh){bh.style.width='0';bh.style.height='0';}
-  const bf=document.getElementById('asyncBreachFlash');if(bf)bf.style.opacity='0';
-  const eL=document.getElementById('asyncEdgeL');if(eL)eL.style.opacity='0';
-  const eR=document.getElementById('asyncEdgeR');if(eR)eR.style.opacity='0';
-  const dl=document.getElementById('asyncDoorLabel');if(dl){dl.style.opacity='0';dl.style.transform='scale(0.78)';}
-  const hero=document.getElementById('asyncHero');if(hero){hero.style.opacity='0';hero.style.transform='scale(0.3)';hero.style.transformOrigin='center center';}
-
-  // 6) Reset back button
-  const backBtn=document.getElementById('asyncBackBtn');
-  if(backBtn){backBtn.classList.remove('visible');gsap.set(backBtn,{opacity:0,x:-20});}
-
-  // 7) Reset spotlight
-  const sp=document.getElementById('asyncSpotlight');
-  if(sp) sp.style.background='none';
-
-  // 8) Reset class-based states + counters
-  document.querySelectorAll('#p-async .asc').forEach(c=>c.classList.remove('in-view'));
-  document.querySelectorAll('#asyncStats .as-item').forEach(i=>{i.classList.remove('in-view');i.style.opacity='';i.style.transform='';});
-  document.querySelectorAll('#p-async .async-counter').forEach(el=>el.textContent='0');
-  document.querySelectorAll('.ap-step').forEach(s=>{s.style.opacity='';s.style.transform='';s.style.scale='';});
-  const fill=document.getElementById('asyncProgressFill');if(fill)fill.style.width='0';
-
-  // 9) Reset .a-hidden to default (CSS will handle initial state on re-activate)
-  document.querySelectorAll('#p-async .a-hidden').forEach(el=>{el.style.opacity='';el.style.transform='';el.style.transition='';});
-
-  // 10) Reset letters
-  document.querySelectorAll('.ah-letter').forEach(l=>{gsap.set(l,{x:0,opacity:1,rotateX:0,rotateY:0,clearProps:'all'});});
-
-  // 11) Reset ahLine + sub elements
-  const ahLine=document.getElementById('ahLine');if(ahLine)ahLine.style.height='0';
-  gsap.set('.ah-sub, .ah-tagline, .ah-tags, .ah-label, .ah-content, #asyncThreeCanvas',{clearProps:'all'});
+  // 4) NUCLEAR RESET: restore pristine HTML (removes all pin-spacers, inline styles, DOM mutations)
+  page.innerHTML=pristineHTML;
 }
 
 // ============ PAGE OBSERVER ============
