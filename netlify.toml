@@ -1,5 +1,2 @@
 [build]
-  command = ""
   publish = "public"
-
-[[plugins]]
