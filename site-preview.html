@@ -145,12 +145,15 @@ p.card-sub{color:var(--text-mid);font-size:.9rem;line-height:1.75;font-weight:40
 @media(max-width:600px){.stats-band{grid-template-columns:repeat(2,1fr);gap:1.5rem 1rem;}}
 
 /* Bento grid projets */
-.bento-proj{display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:auto auto;gap:1.25rem;}
-.bento-proj .proj-card.bento-hero{grid-column:span 2;grid-row:span 2;display:flex;flex-direction:column;justify-content:space-between;min-height:380px;}
+.bento-proj{display:grid;grid-template-columns:repeat(2,1fr);grid-template-rows:auto auto auto;gap:1.25rem;}
+.bento-proj .proj-card.bento-hero{grid-column:span 1;display:flex;flex-direction:column;justify-content:space-between;min-height:340px;}
 .bento-proj .proj-card.bento-hero>*:not(canvas){position:relative;z-index:1;}
-.bento-proj .proj-card.bento-hero .card-title{font-size:clamp(1.8rem,3.5vw,2.6rem);}
+.bento-proj .proj-card.bento-hero .card-title{font-size:clamp(1.4rem,2.5vw,2rem);}
+.bento-proj .proj-card.bento-featured{grid-column:span 1;display:flex;flex-direction:column;justify-content:space-between;min-height:340px;position:relative;overflow:hidden;}
+.bento-proj .proj-card.bento-featured .card-title{font-size:clamp(1.4rem,2.5vw,2rem);}
 .bento-proj .proj-card.bento-side{display:flex;flex-direction:column;justify-content:space-between;}
-@media(max-width:768px){.bento-proj{grid-template-columns:1fr;}.bento-proj .proj-card.bento-hero{grid-column:span 1;grid-row:span 1;min-height:auto;}}
+.bento-badge{display:inline-flex;align-items:center;gap:.35rem;padding:4px 12px;font-family:'JetBrains Mono',monospace;font-size:.55rem;letter-spacing:1.5px;text-transform:uppercase;border-radius:3px;margin-bottom:.75rem;font-weight:600;}
+@media(max-width:768px){.bento-proj{grid-template-columns:1fr;}.bento-proj .proj-card.bento-hero,.bento-proj .proj-card.bento-featured{grid-column:span 1;min-height:auto;}}
 .hero-desc{margin-top:1.5rem;max-width:600px;margin-left:auto;margin-right:auto;font-size:clamp(.95rem,1.8vw,1.15rem);color:var(--text-mid);line-height:1.8;}
 
 
@@ -802,6 +805,7 @@ p.card-sub{color:var(--text-mid);font-size:.9rem;line-height:1.75;font-weight:40
   <p style="color:var(--text-mid);font-size:1rem;line-height:1.7;max-width:650px;margin-top:.75rem;" data-i18n="proj-intro">Ce ne sont pas des projets scolaires. Ce sont des initiatives personnelles, développées le soir, le week-end, en dehors des cours. Certains sont opérationnels, d'autres encore en développement.</p></div>
   <div class="bento-proj">
     <div class="proj-card bento-hero" style="border-color:rgba(129,140,248,.2);background:linear-gradient(135deg,rgba(129,140,248,.06),rgba(240,171,252,.04));cursor:pointer;position:relative;overflow:hidden;" onclick="morphToAsync(this)"><canvas id="bentoCanvas" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;border-radius:inherit;"></canvas><div class="proj-num" style="color:var(--purple);position:relative;z-index:1;">03</div><h3 class="card-title" data-i18n="proj-card3-title">Async Agency</h3><div style="font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--purple);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:.75rem;" data-i18n="proj-card3-sub">Agence d'automatisation & intelligence artificielle</div><p style="color:var(--text-mid);font-size:1rem;line-height:1.8;margin-bottom:1rem;" data-i18n="proj-card3-teaser">Avec mon associé, on monte Async Agency — une agence qui automatise les tâches des entreprises grâce à l'IA. Workflows, agents conversationnels, bots sur mesure...</p><div style="display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:1rem;"><span class="tag" style="border-color:rgba(129,140,248,.3);color:var(--purple);background:rgba(129,140,248,.06);">Agents IA</span><span class="tag" style="border-color:rgba(129,140,248,.3);color:var(--purple);background:rgba(129,140,248,.06);">Python</span><span class="tag" style="border-color:rgba(129,140,248,.3);color:var(--purple);background:rgba(129,140,248,.06);">n8n</span></div><div style="display:inline-flex;align-items:center;gap:.4rem;padding:6px 16px;border:1px solid rgba(129,140,248,.3);color:var(--purple);font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:1px;transition:all .3s;background:rgba(129,140,248,.06);"><span data-i18n="proj-card3-cta">Découvrir le projet</span> <span style="transition:transform .3s;">→</span></div></div>
+    <div class="proj-card bento-featured" style="border-color:rgba(143,175,137,.2);background:linear-gradient(135deg,rgba(143,175,137,.06),rgba(197,50,45,.04));cursor:pointer;" onclick="window.open('https://deploy-preview-1--lebattant.netlify.app','_blank')"><div class="bento-badge" style="background:rgba(197,50,45,.12);color:#C5322D;border:1px solid rgba(197,50,45,.2);">🏆 <span data-i18n="proj-battant-badge">PREMIER CLIENT a.SYNC</span></div><div class="proj-num" style="color:#8FAF89;">04</div><h3 class="card-title" data-i18n="proj-battant-title">Le battant</h3><div style="font-family:'JetBrains Mono',monospace;font-size:.8rem;color:#8FAF89;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:.75rem;" data-i18n="proj-battant-sub">Site vitrine · Menuiserie aluminium</div><p style="color:var(--text-mid);font-size:.9rem;line-height:1.8;margin-bottom:1rem;" data-i18n="proj-battant-text">Premier projet client de a.SYNC Agency, actuellement en cours de développement. Site multi-pages pour un fabricant de volets battants alu : intro 3D animée (volets photo-réalistes en SVG), microinteractions premium, sécurité OWASP, SEO complet. Style « Fight Night » sportif.</p><div style="display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:1rem;"><span class="tag" style="border-color:rgba(143,175,137,.3);color:#8FAF89;background:rgba(143,175,137,.06);">HTML</span><span class="tag" style="border-color:rgba(143,175,137,.3);color:#8FAF89;background:rgba(143,175,137,.06);">Tailwind</span><span class="tag" style="border-color:rgba(143,175,137,.3);color:#8FAF89;background:rgba(143,175,137,.06);">GSAP</span><span class="tag" style="border-color:rgba(143,175,137,.3);color:#8FAF89;background:rgba(143,175,137,.06);">SVG 3D</span><span class="tag" style="border-color:rgba(143,175,137,.3);color:#8FAF89;background:rgba(143,175,137,.06);">SEO</span></div><div style="display:inline-flex;align-items:center;gap:.4rem;padding:6px 16px;border:1px solid rgba(143,175,137,.3);color:#8FAF89;font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:1px;transition:all .3s;background:rgba(143,175,137,.06);"><span data-i18n="proj-battant-cta">Voir la preview →</span></div></div>
     <div class="proj-card bento-side"><div class="proj-num" style="color:#fb923c;">01</div><h3 class="card-title" data-i18n="proj-card1-title">Expert Advisor MT5</h3><div style="font-family:'JetBrains Mono',monospace;font-size:.65rem;color:#fb923c;letter-spacing:1px;text-transform:uppercase;margin-bottom:.75rem;" data-i18n="proj-card1-sub">Robot de trading automatisé · Forex & Gold</div><p style="color:var(--text-mid);font-size:.85rem;line-height:1.7;margin-bottom:.75rem;" data-i18n="proj-card1-text">Je développe en MQL5 un Expert Advisor — un programme qui analyse les marchés (devises et or) et passe des ordres d'achat/vente automatiquement sur MetaTrader 5, sans intervention humaine. Je backteste mes stratégies (test sur données passées), j'optimise, et je recommence. Un projet de long terme.</p><p style="color:var(--text-dim);font-size:.8rem;line-height:1.7;font-style:italic;margin-bottom:1rem;" data-i18n="proj-card1-quote">Le trading m'a enseigné la rigueur. Quand le capital est en jeu, chaque ligne de code compte.</p><div style="display:flex;flex-wrap:wrap;gap:.4rem;"><span class="tag" style="border-color:rgba(251,146,60,.3);color:#fb923c;background:rgba(251,146,60,.06);">MQL5</span><span class="tag" style="border-color:rgba(251,146,60,.3);color:#fb923c;background:rgba(251,146,60,.06);">Python</span><span class="tag" style="border-color:rgba(251,146,60,.3);color:#fb923c;background:rgba(251,146,60,.06);">Trading</span><span class="tag" style="border-color:rgba(251,146,60,.3);color:#fb923c;background:rgba(251,146,60,.06);">Finance</span></div></div>
     <div class="proj-card bento-side"><div class="proj-num" style="color:var(--cyan);">02</div><h3 class="card-title" data-i18n="proj-card2-title">Workflows n8n</h3><div style="font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--cyan);letter-spacing:1px;text-transform:uppercase;margin-bottom:.75rem;" data-i18n="proj-card2-sub">Automatisations qui tournent 24/7</div><p style="color:var(--text-mid);font-size:.85rem;line-height:1.7;margin-bottom:.75rem;" data-i18n="proj-card2-text">Avec n8n (un outil d'automatisation), je crée des workflows — des chaînes d'actions qui connectent plusieurs services entre eux. Par exemple : un workflow qui capte des signaux de trading sur Telegram et les exécute sur MT5, ou qui génère automatiquement les plannings de publication sur les réseaux sociaux.</p><p style="color:var(--text-dim);font-size:.8rem;line-height:1.7;font-style:italic;margin-bottom:1rem;" data-i18n="proj-card2-quote">Toute tâche répétitive est une opportunité d'automatisation.</p><div style="display:flex;flex-wrap:wrap;gap:.4rem;"><span class="tag">n8n</span><span class="tag">Automatisation</span><span class="tag">APIs</span><span class="tag">Telegram</span></div></div>
   </div>
@@ -1675,7 +1679,7 @@ p.card-sub{color:var(--text-mid);font-size:.9rem;line-height:1.75;font-weight:40
     <div class="s-label" style="color:var(--a1);" data-i18n="async-services-label">// ce qu'on fait</div>
     <h2 class="s-title"><span data-i18n="async-services-title">Nos </span><span class="hl" data-i18n="async-services-hl">services</span></h2>
   </div>
-  <div class="grid-3" id="asyncSvcGrid">
+  <div class="grid-3" id="asyncSvcGrid" style="grid-template-columns:repeat(2,1fr);">
     <div class="asc a-hidden">
       <div class="asc-glow"></div><div class="asc-bar"></div>
       <div class="asc-icon">⚡</div>
@@ -1701,6 +1705,15 @@ p.card-sub{color:var(--text-mid);font-size:.9rem;line-height:1.75;font-weight:40
       <p class="card-text" data-i18n="async-svc3-text">Des bots sur mesure pour Instagram, Telegram, WhatsApp ou votre site web. Prospection automatique, réponses instantanées, qualification de prospects.</p>
       <div style="margin-top:1.25rem;display:flex;flex-wrap:wrap;gap:.3rem;">
         <span class="tag" style="font-size:.55rem;">Telegram</span><span class="tag" style="font-size:.55rem;">Instagram</span><span class="tag" style="font-size:.55rem;">WhatsApp</span>
+      </div>
+    </div>
+    <div class="asc a-hidden">
+      <div class="asc-glow"></div><div class="asc-bar"></div>
+      <div class="asc-icon" style="background:rgba(143,175,137,.06);border-color:rgba(143,175,137,.1);">🌐</div>
+      <h3 class="card-title" style="color:#8FAF89;font-size:.9rem;" data-i18n="async-svc4-title">Création de sites web</h3>
+      <p class="card-text" data-i18n="async-svc4-text">Des sites vitrines sur mesure, modernes et performants. Animations premium, SEO optimisé, sécurité renforcée, responsive mobile-first. Notre premier client : Le battant.</p>
+      <div style="margin-top:1.25rem;display:flex;flex-wrap:wrap;gap:.3rem;">
+        <span class="tag" style="font-size:.55rem;">HTML/CSS</span><span class="tag" style="font-size:.55rem;">GSAP</span><span class="tag" style="font-size:.55rem;">Tailwind</span><span class="tag" style="font-size:.55rem;">Netlify</span>
       </div>
     </div>
   </div>
@@ -2952,6 +2965,11 @@ const translations = {
     "demo-footer-text": "Envie de tester ? Lancez la caméra ou jouez au mini-jeu !",
     "proj-card3-teaser": "Avec mon associé, on monte Async Agency — une agence qui automatise les tâches des entreprises grâce à l'IA. Workflows, agents conversationnels, bots sur mesure...",
     "proj-card3-cta": "Découvrir le projet",
+    "proj-battant-badge": "PREMIER CLIENT a.SYNC",
+    "proj-battant-title": "Le battant",
+    "proj-battant-sub": "Site vitrine · Menuiserie aluminium",
+    "proj-battant-text": "Premier projet client de a.SYNC Agency, actuellement en cours de développement. Site multi-pages pour un fabricant de volets battants alu : intro 3D animée (volets photo-réalistes en SVG), microinteractions premium, sécurité OWASP, SEO complet. Style « Fight Night » sportif.",
+    "proj-battant-cta": "Voir la preview →",
     "async-hero-label": "// projet professionnel",
     "async-hero-sub": "Automatisation & Intelligence Artificielle",
     "async-hero-tagline": "On automatise ce que les humains ne devraient plus faire à la main. Workflows, agents IA, bots conversationnels — pour que les entreprises se concentrent sur l'essentiel.",
@@ -2964,6 +2982,8 @@ const translations = {
     "async-svc2-text": "Des assistants intelligents qui comprennent le langage naturel. Ils répondent aux clients, trient les emails, qualifient les leads, ou exécutent des tâches complexes — 24h/24, sans pause café.",
     "async-svc3-title": "Bots conversationnels",
     "async-svc3-text": "Des bots sur mesure pour Instagram, Telegram, WhatsApp ou votre site web. Prospection automatique, réponses instantanées, qualification de prospects — votre premier commercial qui ne dort jamais.",
+    "async-svc4-title": "Création de sites web",
+    "async-svc4-text": "Des sites vitrines sur mesure, modernes et performants. Animations premium, SEO optimisé, sécurité renforcée, responsive mobile-first. Notre premier client : Le battant.",
     "async-vision-label": "// pourquoi on fait ça",
     "async-vision-title": "Notre ",
     "async-vision-hl": "vision",
@@ -3307,6 +3327,11 @@ const translations = {
     "demo-footer-text": "Want to try? Launch the camera or play the mini-game!",
     "proj-card3-teaser": "An automation agency I founded: AI workflows, conversational bots, smart agents. A real client-facing project.",
     "proj-card3-cta": "Discover the project →",
+    "proj-battant-badge": "FIRST a.SYNC CLIENT",
+    "proj-battant-title": "Le battant",
+    "proj-battant-sub": "Showcase website · Aluminum joinery",
+    "proj-battant-text": "First client project by a.SYNC Agency, currently in development. Multi-page site for an aluminum shutter manufacturer: animated 3D intro (photorealistic SVG shutters), premium micro-interactions, OWASP security, full SEO. 'Fight Night' sports branding.",
+    "proj-battant-cta": "View the preview →",
     "nav-async": "_async agency",
     "async-hero-label": "// async agency",
     "async-hero-sub": "Automation agency",
@@ -3320,6 +3345,8 @@ const translations = {
     "async-svc2-text": "Intelligent assistants that analyze, sort, respond and decide. Powered by GPT, Claude, or open-source models.",
     "async-svc3-title": "Conversational Bots",
     "async-svc3-text": "Customer support chatbots, lead qualification, appointment booking. Available 24/7, on your website or WhatsApp.",
+    "async-svc4-title": "Website creation",
+    "async-svc4-text": "Custom showcase websites, modern and performant. Premium animations, optimized SEO, reinforced security, mobile-first responsive. Our first client: Le battant.",
     "async-vision-label": "// vision",
     "async-vision-title": "Why",
     "async-vision-hl": "Async",
