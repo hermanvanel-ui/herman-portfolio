@@ -1,0 +1,1561 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Herman Vanel — School Showroom</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { overflow-x: hidden; background: #0a0a0f; }
+  body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; color: #fff; }
+
+  #scroll-container {
+    height: 600vh;
+    width: 100%;
+    position: relative;
+    z-index: 1;
+    pointer-events: auto;
+  }
+
+  #canvas-container {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100vh;
+    z-index: 0;
+  }
+
+  canvas { display: block; width: 100%; height: 100%; }
+
+  /* --- UI Overlays --- */
+  #intro-overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 20;
+    pointer-events: none;
+    transition: opacity 0.8s ease;
+  }
+  #intro-overlay.hidden { opacity: 0; }
+  #intro-overlay h1 {
+    font-size: clamp(1.8rem, 5vw, 3.5rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    background: linear-gradient(135deg, #818cf8 0%, #60a5fa 50%, #4ade80 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 0.5rem;
+  }
+  #intro-overlay p {
+    font-size: clamp(0.9rem, 2vw, 1.15rem);
+    color: rgba(255,255,255,0.5);
+    margin-bottom: 2rem;
+  }
+  .scroll-hint {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    animation: bounce 2s ease-in-out infinite;
+  }
+  .scroll-hint span { font-size: 0.85rem; color: rgba(255,255,255,0.35); }
+  .scroll-hint .arrow {
+    width: 24px; height: 24px;
+    border-right: 2px solid rgba(255,255,255,0.35);
+    border-bottom: 2px solid rgba(255,255,255,0.35);
+    transform: rotate(45deg);
+  }
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(10px); }
+  }
+
+  /* Project info cards */
+  .project-card {
+    position: fixed;
+    z-index: 15;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.5s ease, transform 0.5s ease;
+    transform: translateY(20px);
+  }
+  .project-card.visible {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+  .project-card.left { left: 40px; top: 50%; transform: translateY(-50%); }
+  .project-card.left.visible { transform: translateY(-50%); }
+  .project-card.right { right: 40px; top: 50%; transform: translateY(-50%); }
+  .project-card.right.visible { transform: translateY(-50%); }
+
+  .card-inner {
+    background: rgba(10, 10, 20, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 16px;
+    padding: 28px 32px;
+    max-width: 340px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  }
+  .card-inner .room-number {
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.35);
+    margin-bottom: 8px;
+  }
+  .card-inner h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+    letter-spacing: -0.01em;
+  }
+  .card-inner p {
+    font-size: 0.88rem;
+    line-height: 1.55;
+    color: rgba(255,255,255,0.6);
+    margin-bottom: 16px;
+  }
+  .card-inner a {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: gap 0.2s ease;
+    pointer-events: auto;
+  }
+  .card-inner a:hover { gap: 10px; }
+
+  /* Progress bar at bottom */
+  #progress-bar {
+    position: fixed;
+    bottom: 0; left: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #818cf8, #60a5fa, #4ade80);
+    z-index: 25;
+    transition: width 0.1s linear;
+    width: 0%;
+  }
+
+  /* Loading screen */
+  #loading {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100vh;
+    background: #0a0a0f;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    transition: opacity 0.6s ease;
+  }
+  #loading.hidden { opacity: 0; pointer-events: none; }
+  #loading span {
+    font-size: 1rem;
+    color: rgba(255,255,255,0.4);
+    animation: pulse 1.5s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 0.4; }
+    50% { opacity: 1; }
+  }
+
+  /* Room label (3D-projected) */
+  .room-door-label {
+    position: fixed;
+    z-index: 10;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.5);
+    background: rgba(0,0,0,0.5);
+    padding: 4px 10px;
+    border-radius: 4px;
+  }
+</style>
+</head>
+<body>
+
+<div id="loading"><span>Chargement du showroom...</span></div>
+
+<div id="canvas-container"></div>
+
+<div id="scroll-container"></div>
+
+<div id="intro-overlay">
+  <h1>School Showroom</h1>
+  <p>Les projets de Herman Vanel</p>
+  <div class="scroll-hint">
+    <span>Scroll pour explorer</span>
+    <div class="arrow"></div>
+  </div>
+</div>
+
+<!-- Project Cards -->
+<div class="project-card right" id="card-battant">
+  <div class="card-inner">
+    <div class="room-number">Salle 01</div>
+    <h2 style="color:#8FAF89;">Le Battant</h2>
+    <p>Site vitrine pour un menuisier aluminium. Premier vrai client de a.SYNC Agency. Design sombre et industriel.</p>
+    <a href="#" style="color:#8FAF89;">Voir le projet <span>&rarr;</span></a>
+  </div>
+</div>
+
+<div class="project-card left" id="card-async">
+  <div class="card-inner">
+    <div class="room-number">Salle 02</div>
+    <h2 style="color:#818cf8;">a.SYNC Agency</h2>
+    <p>Agence web et automatisation. Identite de marque, site vitrine, et pipeline de prospection.</p>
+    <a href="#" style="color:#818cf8;">Voir le projet <span>&rarr;</span></a>
+  </div>
+</div>
+
+<div class="project-card right" id="card-trading">
+  <div class="card-inner">
+    <div class="room-number">Salle 03</div>
+    <h2 style="color:#fb923c;">Trading Bot</h2>
+    <p>Bot de trading algorithmique. Backtesting, analyse technique, execution automatisee sur les marches crypto.</p>
+    <a href="#" style="color:#fb923c;">Voir le projet <span>&rarr;</span></a>
+  </div>
+</div>
+
+<div class="project-card left" id="card-n8n">
+  <div class="card-inner">
+    <div class="room-number">Salle 04</div>
+    <h2 style="color:#60a5fa;">Workflows n8n</h2>
+    <p>Automatisation no-code / low-code. Pipelines de donnees, integrations API, et orchestration de services.</p>
+    <a href="#" style="color:#60a5fa;">Voir le projet <span>&rarr;</span></a>
+  </div>
+</div>
+
+<div id="progress-bar"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+<script>
+(function() {
+  'use strict';
+
+  // =============================================
+  // CONFIGURATION
+  // =============================================
+  var CORRIDOR_LENGTH = 80;
+  var CORRIDOR_WIDTH = 6;
+  var CORRIDOR_HEIGHT = 4;
+  var ROOM_DEPTH = 10;
+  var ROOM_WIDTH = 10;
+  var ROOM_HEIGHT = 4;
+  var DOOR_WIDTH = 3;
+  var DOOR_HEIGHT = 3.2;
+
+  var COLORS = {
+    floor: 0x2a2a2a,
+    floorTile: 0x333333,
+    walls: 0xf5e6d0,
+    wallsDark: 0xe8d5bc,
+    ceiling: 0xf0f0f0,
+    ceilingLight: 0xffffff,
+    locker1: 0x4a6fa5,
+    locker2: 0xc0392b,
+    locker3: 0x27ae60,
+    locker4: 0xe67e22,
+    locker5: 0x8e44ad,
+    battant: { main: 0x8FAF89, accent: 0xC5322D },
+    async: { main: 0x818cf8, accent: 0xf472b6 },
+    trading: { main: 0xfb923c, accent: 0x1e293b },
+    n8n: { main: 0x60a5fa, accent: 0x4ade80 }
+  };
+
+  // Rooms config: z position along corridor, side (-1 = left, 1 = right)
+  var ROOMS = [
+    { name: 'battant', z: -12, side: -1, colors: COLORS.battant, label: 'Le Battant' },
+    { name: 'async',   z: -28, side:  1, colors: COLORS.async,   label: 'a.SYNC Agency' },
+    { name: 'trading', z: -44, side: -1, colors: COLORS.trading,  label: 'Trading Bot' },
+    { name: 'n8n',     z: -60, side:  1, colors: COLORS.n8n,      label: 'Workflows n8n' }
+  ];
+
+  // =============================================
+  // SETUP
+  // =============================================
+  var scene, camera, renderer, clock;
+  var scrollProgress = 0;
+  var targetScrollProgress = 0;
+  var cameraPath = [];
+  var lookAtPath = [];
+  var allLights = [];
+
+  function init() {
+    scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x0a0a0f);
+    scene.fog = new THREE.Fog(0x0a0a0f, 30, 70);
+
+    camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 200);
+    camera.position.set(0, 1.7, 5);
+
+    renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 0.8;
+    document.getElementById('canvas-container').appendChild(renderer.domElement);
+
+    clock = new THREE.Clock();
+
+    // Lighting
+    setupLighting();
+
+    // Build scene
+    buildCorridor();
+    buildLockers();
+    ROOMS.forEach(function(room) { buildRoom(room); });
+    buildStudentFigures();
+
+    // Camera path
+    buildCameraPath();
+
+    // Events
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onResize);
+
+    // Hide loading
+    setTimeout(function() {
+      document.getElementById('loading').classList.add('hidden');
+    }, 500);
+
+    // Start loop
+    animate();
+  }
+
+  // =============================================
+  // LIGHTING
+  // =============================================
+  function setupLighting() {
+    // Warm ambient — slightly brighter for readability
+    var ambient = new THREE.AmbientLight(0xfff0e0, 0.25);
+    scene.add(ambient);
+
+    // Hemisphere light for general fill (warm above, cool below)
+    var hemi = new THREE.HemisphereLight(0xffeedd, 0x222244, 0.3);
+    scene.add(hemi);
+
+    // Main corridor directional (moonlight feel)
+    var dirLight = new THREE.DirectionalLight(0xaabbff, 0.2);
+    dirLight.position.set(5, 10, -30);
+    scene.add(dirLight);
+  }
+
+  // =============================================
+  // MATERIALS HELPER
+  // =============================================
+  function mat(color, opts) {
+    var params = { color: color };
+    if (opts) {
+      if (opts.emissive) { params.emissive = opts.emissive; params.emissiveIntensity = opts.emissiveIntensity || 1; }
+      if (opts.roughness !== undefined) params.roughness = opts.roughness;
+      if (opts.metalness !== undefined) params.metalness = opts.metalness;
+      if (opts.transparent) { params.transparent = true; params.opacity = opts.opacity || 0.5; }
+      if (opts.side) params.side = opts.side;
+    }
+    return new THREE.MeshStandardMaterial(params);
+  }
+
+  function emissiveMat(color, intensity) {
+    return new THREE.MeshBasicMaterial({ color: color, transparent: true, opacity: intensity || 1.0 });
+  }
+
+  // =============================================
+  // POSTER TEXTURE HELPER
+  // =============================================
+  function createPosterTexture(config) {
+    var canvas = document.createElement('canvas');
+    canvas.width = config.width || 512;
+    canvas.height = config.height || 256;
+    var ctx = canvas.getContext('2d');
+
+    // Background
+    ctx.fillStyle = config.bgColor || '#1a1a2e';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    // Title
+    ctx.fillStyle = config.titleColor || '#ffffff';
+    ctx.font = 'bold ' + (config.titleSize || 40) + 'px Arial, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(config.title || '', canvas.width / 2, canvas.height * 0.35);
+
+    // Subtitle
+    if (config.subtitle) {
+      ctx.fillStyle = config.subtitleColor || '#aaaaaa';
+      ctx.font = (config.subtitleSize || 20) + 'px Arial, sans-serif';
+      ctx.fillText(config.subtitle, canvas.width / 2, canvas.height * 0.55);
+    }
+
+    // Badge
+    if (config.badge) {
+      ctx.fillStyle = config.badgeColor || '#C5322D';
+      var badgeW = ctx.measureText(config.badge).width + 20;
+      ctx.fillRect(canvas.width / 2 - badgeW / 2, canvas.height * 0.72, badgeW, 24);
+      ctx.fillStyle = '#ffffff';
+      ctx.font = 'bold 13px Arial, sans-serif';
+      ctx.fillText(config.badge, canvas.width / 2, canvas.height * 0.72 + 12);
+    }
+
+    // Custom draw function
+    if (config.drawFn) {
+      config.drawFn(ctx, canvas.width, canvas.height);
+    }
+
+    // Border
+    ctx.strokeStyle = config.titleColor || '#ffffff';
+    ctx.lineWidth = 2;
+    ctx.strokeRect(4, 4, canvas.width - 8, canvas.height - 8);
+
+    var texture = new THREE.CanvasTexture(canvas);
+    texture.needsUpdate = true;
+    return texture;
+  }
+
+  function createPosterForRoom(roomName) {
+    switch (roomName) {
+      case 'battant':
+        return createPosterTexture({
+          width: 512, height: 256,
+          bgColor: '#1a2e1a',
+          title: 'LE BATTANT',
+          titleColor: '#8FAF89',
+          titleSize: 40,
+          subtitle: 'Menuiserie Aluminium',
+          subtitleColor: '#C5322D',
+          subtitleSize: 20,
+          badge: '1er CLIENT a.SYNC',
+          badgeColor: '#C5322D',
+          drawFn: function(ctx, w, h) {
+            // Draw shutter/volet shapes
+            ctx.strokeStyle = '#8FAF89';
+            ctx.lineWidth = 2;
+            // Left shutter
+            ctx.strokeRect(60, 30, 50, 80);
+            for (var i = 0; i < 6; i++) {
+              ctx.beginPath();
+              ctx.moveTo(62, 35 + i * 12);
+              ctx.lineTo(108, 35 + i * 12);
+              ctx.stroke();
+            }
+            // Right shutter
+            ctx.strokeRect(402, 30, 50, 80);
+            for (var j = 0; j < 6; j++) {
+              ctx.beginPath();
+              ctx.moveTo(404, 35 + j * 12);
+              ctx.lineTo(450, 35 + j * 12);
+              ctx.stroke();
+            }
+            // Window frame between shutters
+            ctx.strokeStyle = '#5a7a55';
+            ctx.lineWidth = 3;
+            ctx.strokeRect(130, 20, 252, 100);
+            ctx.beginPath();
+            ctx.moveTo(256, 20);
+            ctx.lineTo(256, 120);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(130, 70);
+            ctx.lineTo(382, 70);
+            ctx.stroke();
+          }
+        });
+
+      case 'async':
+        return createPosterTexture({
+          width: 512, height: 256,
+          bgColor: '#1a1a2e',
+          title: 'a.SYNC',
+          titleColor: '#818cf8',
+          titleSize: 48,
+          subtitle: 'Agency',
+          subtitleColor: '#f472b6',
+          subtitleSize: 24,
+          drawFn: function(ctx, w, h) {
+            // Circuit/connection lines pattern
+            ctx.strokeStyle = '#818cf8';
+            ctx.lineWidth = 1.5;
+            ctx.globalAlpha = 0.4;
+            // Horizontal lines
+            var lines = [40, 80, 180, 220];
+            lines.forEach(function(y) {
+              ctx.beginPath();
+              ctx.moveTo(30, y);
+              ctx.lineTo(w - 30, y);
+              ctx.stroke();
+            });
+            // Vertical connections
+            var vLines = [80, 160, 256, 352, 432];
+            vLines.forEach(function(x) {
+              ctx.beginPath();
+              ctx.moveTo(x, 30);
+              ctx.lineTo(x, h - 30);
+              ctx.stroke();
+            });
+            // Nodes at intersections
+            ctx.globalAlpha = 0.7;
+            ctx.fillStyle = '#f472b6';
+            [[80,40],[160,80],[256,40],[352,80],[432,40],
+             [80,180],[160,220],[256,180],[352,220],[432,180]].forEach(function(p) {
+              ctx.beginPath();
+              ctx.arc(p[0], p[1], 4, 0, Math.PI * 2);
+              ctx.fill();
+            });
+            ctx.globalAlpha = 1;
+            // Tags at bottom
+            ctx.fillStyle = '#818cf8';
+            ctx.font = 'bold 16px Arial, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('IA · WEB · BOTS', w / 2, h * 0.88);
+          }
+        });
+
+      case 'trading':
+        return createPosterTexture({
+          width: 512, height: 256,
+          bgColor: '#1e293b',
+          title: 'TRADING BOT',
+          titleColor: '#fb923c',
+          titleSize: 36,
+          subtitle: 'MQL5 · MT5 · Forex & Gold',
+          subtitleColor: '#94a3b8',
+          subtitleSize: 18,
+          drawFn: function(ctx, w, h) {
+            // Draw candlestick chart
+            var candles = [
+              { o: 150, c: 120, h: 110, l: 160 },
+              { o: 125, c: 140, h: 115, l: 150 },
+              { o: 138, c: 110, h: 100, l: 145 },
+              { o: 115, c: 130, h: 108, l: 140 },
+              { o: 128, c: 100, h: 90,  l: 135 },
+              { o: 105, c: 120, h: 95,  l: 130 },
+              { o: 118, c: 90,  h: 82,  l: 125 },
+              { o: 95,  c: 115, h: 85,  l: 120 },
+              { o: 112, c: 85,  h: 78,  l: 118 },
+              { o: 88,  c: 108, h: 80,  l: 115 }
+            ];
+            var startX = 80;
+            var candleW = 28;
+            var gap = 8;
+            candles.forEach(function(c, i) {
+              var x = startX + i * (candleW + gap);
+              var bullish = c.c < c.o; // close < open = price went down = red
+              var bodyTop = Math.min(c.o, c.c);
+              var bodyBot = Math.max(c.o, c.c);
+              var color = bullish ? '#ef4444' : '#4ade80';
+              // Wick
+              ctx.strokeStyle = color;
+              ctx.lineWidth = 2;
+              ctx.beginPath();
+              ctx.moveTo(x + candleW / 2, c.h);
+              ctx.lineTo(x + candleW / 2, c.l);
+              ctx.stroke();
+              // Body
+              ctx.fillStyle = color;
+              ctx.fillRect(x, bodyTop, candleW, bodyBot - bodyTop);
+            });
+          }
+        });
+
+      case 'n8n':
+        return createPosterTexture({
+          width: 512, height: 256,
+          bgColor: '#0a1a2a',
+          title: 'WORKFLOWS',
+          titleColor: '#60a5fa',
+          titleSize: 40,
+          subtitle: 'n8n Automatisation',
+          subtitleColor: '#4ade80',
+          subtitleSize: 20,
+          drawFn: function(ctx, w, h) {
+            // Draw connected nodes
+            var nodes = [
+              { x: 80,  y: 55 },
+              { x: 180, y: 35 },
+              { x: 280, y: 55 },
+              { x: 380, y: 35 },
+              { x: 440, y: 55 }
+            ];
+            // Connection lines
+            ctx.strokeStyle = '#4ade80';
+            ctx.lineWidth = 2;
+            ctx.globalAlpha = 0.6;
+            for (var i = 0; i < nodes.length - 1; i++) {
+              ctx.beginPath();
+              ctx.moveTo(nodes[i].x, nodes[i].y);
+              ctx.lineTo(nodes[i + 1].x, nodes[i + 1].y);
+              ctx.stroke();
+            }
+            ctx.globalAlpha = 1;
+            // Node circles
+            nodes.forEach(function(n, idx) {
+              ctx.fillStyle = idx % 2 === 0 ? '#60a5fa' : '#4ade80';
+              ctx.beginPath();
+              ctx.arc(n.x, n.y, 12, 0, Math.PI * 2);
+              ctx.fill();
+              // Inner dot
+              ctx.fillStyle = '#0a1a2a';
+              ctx.beginPath();
+              ctx.arc(n.x, n.y, 5, 0, Math.PI * 2);
+              ctx.fill();
+            });
+            // Bottom row of nodes
+            var nodes2 = [
+              { x: 130, y: 200 },
+              { x: 230, y: 215 },
+              { x: 330, y: 200 },
+              { x: 410, y: 215 }
+            ];
+            ctx.strokeStyle = '#60a5fa';
+            ctx.lineWidth = 2;
+            ctx.globalAlpha = 0.4;
+            for (var j = 0; j < nodes2.length - 1; j++) {
+              ctx.beginPath();
+              ctx.moveTo(nodes2[j].x, nodes2[j].y);
+              ctx.lineTo(nodes2[j + 1].x, nodes2[j + 1].y);
+              ctx.stroke();
+            }
+            // Connect top to bottom
+            ctx.beginPath();
+            ctx.moveTo(nodes[1].x, nodes[1].y);
+            ctx.lineTo(nodes2[0].x, nodes2[0].y);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(nodes[3].x, nodes[3].y);
+            ctx.lineTo(nodes2[2].x, nodes2[2].y);
+            ctx.stroke();
+            ctx.globalAlpha = 1;
+            nodes2.forEach(function(n, idx) {
+              ctx.fillStyle = idx % 2 === 0 ? '#4ade80' : '#60a5fa';
+              ctx.beginPath();
+              ctx.arc(n.x, n.y, 10, 0, Math.PI * 2);
+              ctx.fill();
+              ctx.fillStyle = '#0a1a2a';
+              ctx.beginPath();
+              ctx.arc(n.x, n.y, 4, 0, Math.PI * 2);
+              ctx.fill();
+            });
+          }
+        });
+
+      default:
+        return null;
+    }
+  }
+
+  // =============================================
+  // CORRIDOR
+  // =============================================
+  function buildCorridor() {
+    var hw = CORRIDOR_WIDTH / 2;
+
+    // Floor — checkerboard via canvas texture (single mesh, great perf)
+    var tileCanvas = document.createElement('canvas');
+    tileCanvas.width = 128; tileCanvas.height = 128;
+    var tCtx = tileCanvas.getContext('2d');
+    var dark = '#2a2a2a', light = '#333333';
+    tCtx.fillStyle = dark; tCtx.fillRect(0, 0, 128, 128);
+    tCtx.fillStyle = light; tCtx.fillRect(0, 0, 64, 64);
+    tCtx.fillStyle = light; tCtx.fillRect(64, 64, 64, 64);
+    var floorTex = new THREE.CanvasTexture(tileCanvas);
+    floorTex.wrapS = THREE.RepeatWrapping;
+    floorTex.wrapT = THREE.RepeatWrapping;
+    floorTex.repeat.set(CORRIDOR_WIDTH, CORRIDOR_LENGTH);
+    var floorMat = new THREE.MeshStandardMaterial({ map: floorTex, roughness: 0.8 });
+    var floorGeo = new THREE.PlaneGeometry(CORRIDOR_WIDTH, CORRIDOR_LENGTH);
+    var floorMesh = new THREE.Mesh(floorGeo, floorMat);
+    floorMesh.rotation.x = -Math.PI / 2;
+    floorMesh.position.set(0, 0, -CORRIDOR_LENGTH / 2);
+    floorMesh.receiveShadow = true;
+    scene.add(floorMesh);
+
+    // Walls — left and right, with gaps for doors
+    buildCorridorWalls(-hw, -1); // left wall
+    buildCorridorWalls(hw, 1);   // right wall
+
+    // Ceiling
+    var ceilGeo = new THREE.PlaneGeometry(CORRIDOR_WIDTH, CORRIDOR_LENGTH);
+    var ceilMesh = new THREE.Mesh(ceilGeo, mat(COLORS.ceiling, { roughness: 0.9 }));
+    ceilMesh.rotation.x = Math.PI / 2;
+    ceilMesh.position.set(0, CORRIDOR_HEIGHT, -CORRIDOR_LENGTH / 2);
+    scene.add(ceilMesh);
+
+    // Ceiling strip lights
+    for (var lz = -3; lz > -CORRIDOR_LENGTH; lz -= 6) {
+      var stripGeo = new THREE.PlaneGeometry(0.3, 2.5);
+      var stripMesh = new THREE.Mesh(stripGeo, emissiveMat(0xfff8ee, 0.9));
+      stripMesh.rotation.x = Math.PI / 2;
+      stripMesh.position.set(-1, CORRIDOR_HEIGHT - 0.01, lz);
+      scene.add(stripMesh);
+
+      var stripMesh2 = new THREE.Mesh(stripGeo.clone(), emissiveMat(0xfff8ee, 0.9));
+      stripMesh2.rotation.x = Math.PI / 2;
+      stripMesh2.position.set(1, CORRIDOR_HEIGHT - 0.01, lz);
+      scene.add(stripMesh2);
+
+      // Actual light (only every other strip for perf)
+      if (Math.abs(lz) % 12 < 1) {
+        var pl = new THREE.PointLight(0xfff0dd, 0.6, 12, 2);
+        pl.position.set(0, CORRIDOR_HEIGHT - 0.3, lz);
+        scene.add(pl);
+        allLights.push(pl);
+      }
+    }
+
+    // Baseboard trim
+    var trimMat = mat(0x5c4a3a, { roughness: 0.7 });
+    var trimGeo = new THREE.BoxGeometry(0.05, 0.15, CORRIDOR_LENGTH);
+    var trimL = new THREE.Mesh(trimGeo, trimMat);
+    trimL.position.set(-hw + 0.025, 0.075, -CORRIDOR_LENGTH / 2);
+    scene.add(trimL);
+    var trimR = new THREE.Mesh(trimGeo.clone(), trimMat);
+    trimR.position.set(hw - 0.025, 0.075, -CORRIDOR_LENGTH / 2);
+    scene.add(trimR);
+  }
+
+  function buildCorridorWalls(x, normalDir) {
+    var wallMaterial = mat(COLORS.walls, { roughness: 0.85 });
+    var side = normalDir; // -1 for left wall at x=-hw, +1 for right wall at x=+hw
+
+    // rotation.y to face the corridor center:
+    // Left wall (x=-hw, side=-1): normal should point +X → rotation.y = PI/2
+    // Right wall (x=+hw, side=+1): normal should point -X → rotation.y = -PI/2
+    var rotY = side < 0 ? Math.PI / 2 : -Math.PI / 2;
+
+    // Collect door positions for this side
+    var doors = [];
+    ROOMS.forEach(function(room) {
+      if (room.side === side) {
+        doors.push({ z: room.z, width: DOOR_WIDTH, height: DOOR_HEIGHT });
+      }
+    });
+
+    // Build wall segments between doors
+    var startZ = 2;
+    var endZ = -CORRIDOR_LENGTH - 2;
+    var segments = [];
+
+    // Sort doors by z (descending, since z goes negative)
+    doors.sort(function(a, b) { return b.z - a.z; });
+
+    var prevZ = startZ;
+    doors.forEach(function(door) {
+      var doorTop = door.z + door.width / 2;
+      var doorBot = door.z - door.width / 2;
+
+      // Wall segment before this door
+      if (prevZ > doorTop + 0.01) {
+        segments.push({ from: prevZ, to: doorTop });
+      }
+
+      // Wall above door opening (lintel)
+      var lintelGeo = new THREE.PlaneGeometry(door.width, CORRIDOR_HEIGHT - door.height);
+      var lintelMesh = new THREE.Mesh(lintelGeo, wallMaterial);
+      lintelMesh.position.set(x, door.height + (CORRIDOR_HEIGHT - door.height) / 2, door.z);
+      lintelMesh.rotation.y = rotY;
+      scene.add(lintelMesh);
+
+      prevZ = doorBot;
+    });
+
+    // Final segment
+    if (prevZ > endZ + 0.01) {
+      segments.push({ from: prevZ, to: endZ });
+    }
+
+    segments.forEach(function(seg) {
+      var length = seg.from - seg.to;
+      var wallGeo = new THREE.PlaneGeometry(length, CORRIDOR_HEIGHT);
+      var wallMesh = new THREE.Mesh(wallGeo, wallMaterial);
+      wallMesh.position.set(x, CORRIDOR_HEIGHT / 2, (seg.from + seg.to) / 2);
+      wallMesh.rotation.y = rotY;
+      wallMesh.receiveShadow = true;
+      scene.add(wallMesh);
+    });
+  }
+
+  // =============================================
+  // LOCKERS
+  // =============================================
+  function buildLockers() {
+    var lockerColors = [COLORS.locker1, COLORS.locker2, COLORS.locker3, COLORS.locker4, COLORS.locker5];
+    var hw = CORRIDOR_WIDTH / 2;
+
+    // Place lockers on walls where there are no doors
+    var lockerZones = [
+      { from: 0, to: -8 },
+      { from: -16, to: -24 },
+      { from: -32, to: -40 },
+      { from: -48, to: -56 },
+      { from: -64, to: -74 }
+    ];
+
+    lockerZones.forEach(function(zone, zi) {
+      for (var z = zone.from; z > zone.to; z -= 0.65) {
+        // Left side lockers
+        var side = (zi % 2 === 0) ? -1 : 1;
+        var colorIdx = Math.floor(Math.random() * lockerColors.length);
+        var lockerMat = mat(lockerColors[colorIdx], { roughness: 0.4, metalness: 0.3 });
+
+        var lockerHeight = 1.6 + Math.random() * 0.2;
+        var lockerGeo = new THREE.BoxGeometry(0.25, lockerHeight, 0.55);
+        var locker = new THREE.Mesh(lockerGeo, lockerMat);
+        locker.position.set(side * (hw - 0.13), lockerHeight / 2, z);
+        locker.castShadow = true;
+        scene.add(locker);
+
+        // Locker handle (small box)
+        var handleGeo = new THREE.BoxGeometry(0.02, 0.08, 0.02);
+        var handleMat = mat(0x888888, { roughness: 0.2, metalness: 0.8 });
+        var handle = new THREE.Mesh(handleGeo, handleMat);
+        handle.position.set(side * (hw - 0.005), lockerHeight * 0.6, z + 0.1);
+        scene.add(handle);
+      }
+    });
+  }
+
+  // =============================================
+  // ROOMS
+  // =============================================
+  function buildRoom(room) {
+    var hw = CORRIDOR_WIDTH / 2;
+    var offsetX = room.side * (hw + ROOM_DEPTH / 2);
+    var rz = room.z;
+
+    var roomMat = mat(COLORS.wallsDark, { roughness: 0.85 });
+    var accentMat = mat(room.colors.main, { roughness: 0.7 });
+    var accentMat2 = mat(room.colors.accent, { roughness: 0.7 });
+
+    // Floor — tinted with room color
+    var floorGeo = new THREE.PlaneGeometry(ROOM_DEPTH, ROOM_WIDTH);
+    var floorColor = new THREE.Color(room.colors.main).multiplyScalar(0.15);
+    var floorMat = mat(floorColor, { roughness: 0.9 });
+    var floorMesh = new THREE.Mesh(floorGeo, floorMat);
+    floorMesh.rotation.x = -Math.PI / 2;
+    floorMesh.position.set(offsetX, 0.01, rz);
+    floorMesh.receiveShadow = true;
+    scene.add(floorMesh);
+
+    // Ceiling
+    var ceilMesh = new THREE.Mesh(floorGeo.clone(), mat(COLORS.ceiling, { roughness: 0.9 }));
+    ceilMesh.rotation.x = Math.PI / 2;
+    ceilMesh.position.set(offsetX, ROOM_HEIGHT, rz);
+    scene.add(ceilMesh);
+
+    // Rotation helpers:
+    // Back wall (perpendicular to X, width runs along Z) — face toward room center
+    // Left room (side=-1): back wall at far-left, face +X → rotY = PI/2
+    // Right room (side=1): back wall at far-right, face -X → rotY = -PI/2
+    var backRotY = room.side < 0 ? Math.PI / 2 : -Math.PI / 2;
+
+    // Back wall — tinted with project color
+    var backGeo = new THREE.PlaneGeometry(ROOM_WIDTH, ROOM_HEIGHT);
+    var backWallColor = new THREE.Color(room.colors.main).multiplyScalar(0.25);
+    var backWall = new THREE.Mesh(backGeo, mat(backWallColor, { roughness: 0.8 }));
+    backWall.position.set(offsetX + room.side * ROOM_DEPTH / 2, ROOM_HEIGHT / 2, rz);
+    backWall.rotation.y = backRotY;
+    scene.add(backWall);
+
+    // Side walls (parallel to X, width runs along X, normal along Z)
+    var sideGeo = new THREE.PlaneGeometry(ROOM_DEPTH, ROOM_HEIGHT);
+    var sideW1 = new THREE.Mesh(sideGeo, roomMat);
+    sideW1.position.set(offsetX, ROOM_HEIGHT / 2, rz + ROOM_WIDTH / 2);
+    sideW1.rotation.y = Math.PI; // face -Z (inward)
+    scene.add(sideW1);
+
+    var sideW2 = new THREE.Mesh(sideGeo.clone(), roomMat);
+    sideW2.position.set(offsetX, ROOM_HEIGHT / 2, rz - ROOM_WIDTH / 2);
+    sideW2.rotation.y = 0; // face +Z (inward)
+    scene.add(sideW2);
+
+    // Corridor-facing wall segments (around the door opening)
+    // These walls are at x = +/-hw, perpendicular to X, width along Z
+    // They should face INTO the room (away from the corridor)
+    // Left room (side=-1, cwX=-hw): face -X → rotY = -PI/2
+    // Right room (side=1, cwX=+hw): face +X → rotY = PI/2
+    var cwX = room.side > 0 ? hw : -hw;
+    var cwRotY = room.side > 0 ? Math.PI / 2 : -Math.PI / 2;
+
+    // Segments beside the door
+    var segWidth = (ROOM_WIDTH - DOOR_WIDTH) / 2;
+    if (segWidth > 0.1) {
+      var segGeo = new THREE.PlaneGeometry(segWidth, ROOM_HEIGHT);
+      var seg1 = new THREE.Mesh(segGeo, roomMat);
+      seg1.position.set(cwX, ROOM_HEIGHT / 2, rz + ROOM_WIDTH / 2 - segWidth / 2);
+      seg1.rotation.y = cwRotY;
+      scene.add(seg1);
+
+      var seg2 = new THREE.Mesh(segGeo.clone(), roomMat);
+      seg2.position.set(cwX, ROOM_HEIGHT / 2, rz - ROOM_WIDTH / 2 + segWidth / 2);
+      seg2.rotation.y = cwRotY;
+      scene.add(seg2);
+    }
+
+    // Lintel above door
+    var lintelGeo = new THREE.PlaneGeometry(DOOR_WIDTH, ROOM_HEIGHT - DOOR_HEIGHT);
+    var lintel = new THREE.Mesh(lintelGeo, roomMat);
+    lintel.position.set(cwX, DOOR_HEIGHT + (ROOM_HEIGHT - DOOR_HEIGHT) / 2, rz);
+    lintel.rotation.y = cwRotY;
+    scene.add(lintel);
+
+    // Accent stripe on back wall (upper, main color)
+    var stripeGeo = new THREE.PlaneGeometry(ROOM_WIDTH, 0.15);
+    var stripe = new THREE.Mesh(stripeGeo, mat(room.colors.main, { emissive: room.colors.main, emissiveIntensity: 0.3 }));
+    stripe.position.set(offsetX + room.side * (ROOM_DEPTH / 2 - 0.02), ROOM_HEIGHT * 0.75, rz);
+    stripe.rotation.y = backRotY;
+    scene.add(stripe);
+
+    // Second accent stripe (lower, thicker, accent color)
+    var stripe2Geo = new THREE.PlaneGeometry(ROOM_WIDTH, 0.3);
+    var stripe2 = new THREE.Mesh(stripe2Geo, mat(room.colors.accent, { emissive: room.colors.accent, emissiveIntensity: 0.25 }));
+    stripe2.position.set(offsetX + room.side * (ROOM_DEPTH / 2 - 0.02), 0.5, rz);
+    stripe2.rotation.y = backRotY;
+    scene.add(stripe2);
+
+    // Poster on back wall
+    var posterTex = createPosterForRoom(room.name);
+    if (posterTex) {
+      var posterGeo = new THREE.PlaneGeometry(4, 2);
+      var posterMat = new THREE.MeshStandardMaterial({ map: posterTex, roughness: 0.5 });
+      var posterMesh = new THREE.Mesh(posterGeo, posterMat);
+      posterMesh.position.set(offsetX + room.side * (ROOM_DEPTH / 2 - 0.05), 1.5, rz);
+      posterMesh.rotation.y = backRotY;
+      scene.add(posterMesh);
+    }
+
+    // Room light
+    var roomLight = new THREE.PointLight(room.colors.main, 1.2, 15, 2);
+    roomLight.position.set(offsetX, ROOM_HEIGHT - 0.5, rz);
+    roomLight.castShadow = true;
+    roomLight.shadow.mapSize.width = 512;
+    roomLight.shadow.mapSize.height = 512;
+    scene.add(roomLight);
+    allLights.push(roomLight);
+
+    // Light spill into corridor (key for "illuminated classroom" effect)
+    var spillLight = new THREE.PointLight(room.colors.main, 0.6, 10, 2);
+    spillLight.position.set(room.side * (hw - 0.5), 2.5, rz);
+    scene.add(spillLight);
+    allLights.push(spillLight);
+
+    // Ceiling light fixture
+    var fixGeo = new THREE.CylinderGeometry(0.4, 0.4, 0.08, 16);
+    var fixMesh = new THREE.Mesh(fixGeo, emissiveMat(room.colors.main, 0.8));
+    fixMesh.position.set(offsetX, ROOM_HEIGHT - 0.05, rz);
+    scene.add(fixMesh);
+
+    // Build room-specific furniture
+    buildRoomFurniture(room, offsetX, rz);
+  }
+
+  function buildRoomFurniture(room, cx, cz) {
+    switch (room.name) {
+      case 'battant': buildBattantRoom(room, cx, cz); break;
+      case 'async': buildAsyncRoom(room, cx, cz); break;
+      case 'trading': buildTradingRoom(room, cx, cz); break;
+      case 'n8n': buildN8nRoom(room, cx, cz); break;
+    }
+  }
+
+  // ---- LE BATTANT ROOM ----
+  function buildBattantRoom(room, cx, cz) {
+    var s = room.side;
+
+    // Desk
+    buildDesk(cx + s * 1.5, cz, room.colors.main);
+
+    // Monitor on desk
+    buildMonitor(cx + s * 1.5, 0.85, cz, room.colors.accent);
+
+    // Whiteboard on back wall
+    var wbGeo = new THREE.BoxGeometry(0.05, 1.5, 3);
+    var wb = new THREE.Mesh(wbGeo, mat(0xffffff, { roughness: 0.3 }));
+    wb.position.set(cx + s * (ROOM_DEPTH / 2 - 0.1), 2.2, cz);
+    scene.add(wb);
+
+    // Whiteboard frame
+    var frameMat = mat(0x444444, { roughness: 0.5, metalness: 0.3 });
+    var frameTop = new THREE.Mesh(new THREE.BoxGeometry(0.07, 0.05, 3.1), frameMat);
+    frameTop.position.set(cx + s * (ROOM_DEPTH / 2 - 0.1), 2.95, cz);
+    scene.add(frameTop);
+    var frameBot = new THREE.Mesh(new THREE.BoxGeometry(0.07, 0.05, 3.1), frameMat);
+    frameBot.position.set(cx + s * (ROOM_DEPTH / 2 - 0.1), 1.45, cz);
+    scene.add(frameBot);
+
+    // Small "PREMIER CLIENT a.SYNC" plaque
+    var plaqueGeo = new THREE.BoxGeometry(0.02, 0.3, 1.2);
+    var plaque = new THREE.Mesh(plaqueGeo, mat(room.colors.accent, { emissive: room.colors.accent, emissiveIntensity: 0.2 }));
+    plaque.position.set(cx + s * (ROOM_DEPTH / 2 - 0.15), 1.0, cz);
+    scene.add(plaque);
+
+    // Chair
+    buildChair(cx + s * 0.5, cz, 0x444444);
+
+    // Window frames (decorative rectangles on side wall)
+    buildWindowFrame(cx, cz - ROOM_WIDTH / 2 + 0.05, room.colors.main, 'z');
+  }
+
+  // ---- ASYNC AGENCY ROOM ----
+  function buildAsyncRoom(room, cx, cz) {
+    var s = room.side;
+
+    // Meeting-style desk arrangement (U-shape)
+    buildDesk(cx + s * 1, cz - 2, room.colors.main);
+    buildDesk(cx + s * 1, cz + 2, room.colors.main);
+    buildDesk(cx + s * 3, cz, room.colors.main);
+
+    // Monitors
+    buildMonitor(cx + s * 1, 0.85, cz - 2, room.colors.accent);
+    buildMonitor(cx + s * 1, 0.85, cz + 2, room.colors.accent);
+    buildMonitor(cx + s * 3, 0.85, cz, room.colors.accent);
+
+    // Chairs around tables
+    buildChair(cx + s * 0, cz - 2, 0x555555);
+    buildChair(cx + s * 0, cz + 2, 0x555555);
+    buildChair(cx + s * 2, cz, 0x555555);
+
+    // Logo accent wall
+    var logoWall = new THREE.Mesh(
+      new THREE.PlaneGeometry(ROOM_WIDTH * 0.8, ROOM_HEIGHT * 0.6),
+      mat(0x1a1a2e, { roughness: 0.9 })
+    );
+    logoWall.position.set(cx + s * (ROOM_DEPTH / 2 - 0.05), ROOM_HEIGHT * 0.55, cz);
+    logoWall.rotation.y = s < 0 ? Math.PI / 2 : -Math.PI / 2;
+    scene.add(logoWall);
+
+    // Abstract logo shapes
+    var triGeo = new THREE.ConeGeometry(0.4, 0.7, 3);
+    var tri = new THREE.Mesh(triGeo, mat(room.colors.main, { emissive: room.colors.main, emissiveIntensity: 0.5 }));
+    tri.position.set(cx + s * (ROOM_DEPTH / 2 - 0.2), 2.5, cz);
+    tri.rotation.z = Math.PI;
+    scene.add(tri);
+  }
+
+  // ---- TRADING BOT ROOM ----
+  function buildTradingRoom(room, cx, cz) {
+    var s = room.side;
+
+    // Multiple screens in an arc
+    for (var i = -1; i <= 1; i++) {
+      var screenZ = cz + i * 2.5;
+
+      // Desk
+      buildDesk(cx + s * 2, screenZ, room.colors.accent);
+
+      // Large monitor
+      var monGeo = new THREE.BoxGeometry(0.05, 1.0, 1.6);
+      var monMesh = new THREE.Mesh(monGeo, mat(0x111111, { roughness: 0.2 }));
+      monMesh.position.set(cx + s * 2.5, 1.4, screenZ);
+      scene.add(monMesh);
+
+      // Screen face with "chart"
+      var screenGeo = new THREE.PlaneGeometry(1.5, 0.9);
+      var screenMesh = new THREE.Mesh(screenGeo, mat(room.colors.accent, { emissive: room.colors.accent, emissiveIntensity: 0.4 }));
+      screenMesh.position.set(cx + s * 2.47, 1.4, screenZ);
+      screenMesh.rotation.y = s < 0 ? Math.PI / 2 : -Math.PI / 2;
+      scene.add(screenMesh);
+
+      // Chart lines (simple boxes as candlesticks)
+      for (var c = 0; c < 8; c++) {
+        var barHeight = 0.1 + Math.random() * 0.5;
+        var isGreen = Math.random() > 0.4;
+        var barGeo = new THREE.BoxGeometry(0.02, barHeight, 0.12);
+        var barMesh = new THREE.Mesh(barGeo, mat(isGreen ? 0x4ade80 : 0xef4444, {
+          emissive: isGreen ? 0x4ade80 : 0xef4444,
+          emissiveIntensity: 0.6
+        }));
+        barMesh.position.set(
+          cx + s * 2.44,
+          1.1 + barHeight / 2,
+          screenZ - 0.55 + c * 0.15
+        );
+        scene.add(barMesh);
+      }
+    }
+
+    // Chair
+    buildChair(cx + s * 0.8, cz, 0x444444);
+
+    // Secondary accent light (warm orange glow)
+    var orangeLight = new THREE.PointLight(0xff6600, 0.5, 8, 2);
+    orangeLight.position.set(cx + s * 1, 1, cz);
+    scene.add(orangeLight);
+  }
+
+  // ---- N8N ROOM ----
+  function buildN8nRoom(room, cx, cz) {
+    var s = room.side;
+
+    // Central table
+    buildDesk(cx + s * 1.5, cz, room.colors.main);
+
+    // Connected nodes on the wall — representing n8n workflow
+    var nodePositions = [
+      { y: 2.8, z: cz - 2.5 },
+      { y: 2.2, z: cz - 1.0 },
+      { y: 2.8, z: cz + 0.5 },
+      { y: 2.2, z: cz + 2.0 },
+      { y: 2.8, z: cz + 3.5 }
+    ];
+
+    var nodeColor = room.colors.main;
+    var connColor = room.colors.accent;
+
+    nodePositions.forEach(function(np, idx) {
+      // Node box
+      var nodeGeo = new THREE.BoxGeometry(0.15, 0.5, 0.5);
+      var nodeMesh = new THREE.Mesh(nodeGeo, mat(nodeColor, {
+        emissive: nodeColor,
+        emissiveIntensity: 0.4
+      }));
+      nodeMesh.position.set(cx + s * (ROOM_DEPTH / 2 - 0.2), np.y, np.z);
+      scene.add(nodeMesh);
+
+      // Connector line to next node
+      if (idx < nodePositions.length - 1) {
+        var next = nodePositions[idx + 1];
+        var lineLen = Math.sqrt(Math.pow(next.y - np.y, 2) + Math.pow(next.z - np.z, 2));
+        var lineGeo = new THREE.BoxGeometry(0.04, 0.04, lineLen);
+        var lineMesh = new THREE.Mesh(lineGeo, mat(connColor, {
+          emissive: connColor,
+          emissiveIntensity: 0.3
+        }));
+        lineMesh.position.set(
+          cx + s * (ROOM_DEPTH / 2 - 0.2),
+          (np.y + next.y) / 2,
+          (np.z + next.z) / 2
+        );
+        var angle = Math.atan2(next.y - np.y, next.z - np.z);
+        lineMesh.rotation.x = -angle;
+        scene.add(lineMesh);
+      }
+    });
+
+    // Desk monitor
+    buildMonitor(cx + s * 1.5, 0.85, cz, room.colors.accent);
+    buildChair(cx + s * 0.3, cz, 0x555555);
+
+    // Small server rack
+    var rackGeo = new THREE.BoxGeometry(0.6, 1.8, 0.4);
+    var rack = new THREE.Mesh(rackGeo, mat(0x2a2a2a, { roughness: 0.3, metalness: 0.5 }));
+    rack.position.set(cx + s * (ROOM_DEPTH / 2 - 0.5), 0.9, cz + 3.5);
+    scene.add(rack);
+
+    // Blinking LEDs on rack
+    for (var l = 0; l < 6; l++) {
+      var ledGeo = new THREE.BoxGeometry(0.03, 0.03, 0.03);
+      var ledMesh = new THREE.Mesh(ledGeo, emissiveMat(l % 2 === 0 ? 0x4ade80 : 0x60a5fa, 1.0));
+      ledMesh.position.set(
+        cx + s * (ROOM_DEPTH / 2 - 0.19),
+        0.4 + l * 0.25,
+        cz + 3.5
+      );
+      scene.add(ledMesh);
+    }
+  }
+
+  // =============================================
+  // FURNITURE HELPERS
+  // =============================================
+  function buildDesk(x, z, accentColor) {
+    var deskMat = mat(0x8B6914, { roughness: 0.6 });
+
+    // Table top
+    var topGeo = new THREE.BoxGeometry(1.2, 0.06, 0.7);
+    var top = new THREE.Mesh(topGeo, deskMat);
+    top.position.set(x, 0.8, z);
+    top.castShadow = true;
+    scene.add(top);
+
+    // Legs
+    var legGeo = new THREE.CylinderGeometry(0.03, 0.03, 0.8, 6);
+    var legMat = mat(0x666666, { roughness: 0.3, metalness: 0.5 });
+    var offsets = [[-0.5, -0.28], [0.5, -0.28], [-0.5, 0.28], [0.5, 0.28]];
+    offsets.forEach(function(o) {
+      var leg = new THREE.Mesh(legGeo, legMat);
+      leg.position.set(x + o[0], 0.4, z + o[1]);
+      scene.add(leg);
+    });
+  }
+
+  function buildChair(x, z, color) {
+    var chairMat = mat(color, { roughness: 0.5 });
+
+    // Seat
+    var seatGeo = new THREE.BoxGeometry(0.5, 0.06, 0.5);
+    var seat = new THREE.Mesh(seatGeo, chairMat);
+    seat.position.set(x, 0.5, z);
+    scene.add(seat);
+
+    // Back rest
+    var backGeo = new THREE.BoxGeometry(0.5, 0.6, 0.06);
+    var back = new THREE.Mesh(backGeo, chairMat);
+    back.position.set(x, 0.8, z - 0.22);
+    scene.add(back);
+
+    // Legs
+    var legGeo = new THREE.CylinderGeometry(0.02, 0.02, 0.5, 6);
+    var legMat = mat(0x444444, { metalness: 0.5 });
+    [[-0.2, -0.2], [0.2, -0.2], [-0.2, 0.2], [0.2, 0.2]].forEach(function(o) {
+      var leg = new THREE.Mesh(legGeo, legMat);
+      leg.position.set(x + o[0], 0.25, z + o[1]);
+      scene.add(leg);
+    });
+  }
+
+  function buildMonitor(x, baseY, z, screenColor) {
+    // Monitor body
+    var monGeo = new THREE.BoxGeometry(0.04, 0.45, 0.65);
+    var mon = new THREE.Mesh(monGeo, mat(0x222222, { roughness: 0.2 }));
+    mon.position.set(x, baseY + 0.3, z);
+    scene.add(mon);
+
+    // Screen
+    var screenGeo = new THREE.PlaneGeometry(0.6, 0.4);
+    var screen = new THREE.Mesh(screenGeo, mat(screenColor, {
+      emissive: screenColor,
+      emissiveIntensity: 0.5
+    }));
+    screen.position.set(x - 0.025, baseY + 0.3, z);
+    screen.rotation.y = Math.PI / 2;
+    scene.add(screen);
+
+    var screen2 = new THREE.Mesh(screenGeo.clone(), mat(screenColor, {
+      emissive: screenColor,
+      emissiveIntensity: 0.5
+    }));
+    screen2.position.set(x + 0.025, baseY + 0.3, z);
+    screen2.rotation.y = -Math.PI / 2;
+    scene.add(screen2);
+
+    // Stand
+    var standGeo = new THREE.CylinderGeometry(0.02, 0.04, 0.15, 6);
+    var stand = new THREE.Mesh(standGeo, mat(0x333333, { metalness: 0.5 }));
+    stand.position.set(x, baseY + 0.05, z);
+    scene.add(stand);
+
+    // Base
+    var baseGeo = new THREE.CylinderGeometry(0.12, 0.12, 0.02, 12);
+    var baseMesh = new THREE.Mesh(baseGeo, mat(0x333333, { metalness: 0.5 }));
+    baseMesh.position.set(x, baseY, z);
+    scene.add(baseMesh);
+  }
+
+  function buildWindowFrame(cx, z, color, axis) {
+    var frameMat = mat(0x555555, { roughness: 0.3, metalness: 0.4 });
+    var glassMat = mat(0x0a1025, { transparent: true, opacity: 0.4 });
+
+    var group = new THREE.Group();
+
+    // Glass pane
+    var paneGeo = new THREE.PlaneGeometry(1.4, 1.1);
+    var pane = new THREE.Mesh(paneGeo, glassMat);
+    group.add(pane);
+
+    // Frame (four thin boxes)
+    var fh = new THREE.BoxGeometry(1.5, 0.06, 0.04);
+    var fv = new THREE.BoxGeometry(0.06, 1.2, 0.04);
+    group.add(new THREE.Mesh(fh, frameMat)); // top
+    group.children[group.children.length - 1].position.y = 0.57;
+    group.add(new THREE.Mesh(fh.clone(), frameMat)); // bottom
+    group.children[group.children.length - 1].position.y = -0.57;
+    group.add(new THREE.Mesh(fv, frameMat)); // left
+    group.children[group.children.length - 1].position.x = -0.72;
+    group.add(new THREE.Mesh(fv.clone(), frameMat)); // right
+    group.children[group.children.length - 1].position.x = 0.72;
+
+    // Cross bar
+    var cross = new THREE.Mesh(new THREE.BoxGeometry(1.5, 0.03, 0.04), frameMat);
+    group.add(cross);
+
+    group.position.set(cx, 2.2, z);
+    // Rotate to sit flat on the side wall (which runs along X at this Z)
+    // No rotation needed if the wall faces +Z, the window just sits in the XY plane
+    scene.add(group);
+  }
+
+  // =============================================
+  // STUDENT FIGURES
+  // =============================================
+  function buildStudentFigures() {
+    var skinColors = [0xf4c994, 0xd4a373, 0x8d6e63, 0xffcc99, 0xc68642];
+    var shirtColors = [0x3b82f6, 0xef4444, 0x22c55e, 0xf59e0b, 0x8b5cf6, 0xec4899, 0x14b8a6, 0xf97316];
+
+    var figurePositions = [
+      // Corridor figures
+      { x: -1.5, z: -2, ry: 0 },
+      { x: 1.2, z: -6, ry: Math.PI * 0.3 },
+      { x: -0.8, z: -18, ry: Math.PI * 0.7 },
+      { x: 1.5, z: -22, ry: Math.PI },
+      { x: -1.0, z: -35, ry: Math.PI * 0.5 },
+      { x: 0.5, z: -50, ry: Math.PI * 1.3 },
+      { x: -1.8, z: -55, ry: Math.PI * 0.2 },
+      { x: 1.0, z: -65, ry: Math.PI * 0.8 },
+      // In rooms
+      { x: ROOMS[0].side * (CORRIDOR_WIDTH / 2 + 2), z: ROOMS[0].z + 1, ry: Math.PI * 0.5 },
+      { x: ROOMS[1].side * (CORRIDOR_WIDTH / 2 + 3), z: ROOMS[1].z - 1, ry: Math.PI * 1.2 },
+      { x: ROOMS[1].side * (CORRIDOR_WIDTH / 2 + 1.5), z: ROOMS[1].z + 2, ry: Math.PI * 0.8 },
+      { x: ROOMS[2].side * (CORRIDOR_WIDTH / 2 + 2), z: ROOMS[2].z, ry: Math.PI * 0.3 },
+      { x: ROOMS[3].side * (CORRIDOR_WIDTH / 2 + 2.5), z: ROOMS[3].z + 1.5, ry: Math.PI * 1.5 },
+      { x: ROOMS[3].side * (CORRIDOR_WIDTH / 2 + 1), z: ROOMS[3].z - 2, ry: Math.PI * 0.6 }
+    ];
+
+    figurePositions.forEach(function(pos, i) {
+      var skinColor = skinColors[i % skinColors.length];
+      var shirtColor = shirtColors[i % shirtColors.length];
+      buildFigure(pos.x, pos.z, pos.ry, skinColor, shirtColor);
+    });
+  }
+
+  function buildFigure(x, z, rotY, skinColor, shirtColor) {
+    var group = new THREE.Group();
+
+    // Body (cylinder)
+    var bodyGeo = new THREE.CylinderGeometry(0.18, 0.22, 0.8, 8);
+    var body = new THREE.Mesh(bodyGeo, mat(shirtColor, { roughness: 0.7 }));
+    body.position.y = 0.7;
+    group.add(body);
+
+    // Head (sphere)
+    var headGeo = new THREE.SphereGeometry(0.16, 8, 8);
+    var head = new THREE.Mesh(headGeo, mat(skinColor, { roughness: 0.8 }));
+    head.position.y = 1.25;
+    group.add(head);
+
+    // Hair (slightly larger sphere cap)
+    var hairGeo = new THREE.SphereGeometry(0.17, 8, 4, 0, Math.PI * 2, 0, Math.PI * 0.6);
+    var hairColors = [0x2c1810, 0x1a1a1a, 0x8B4513, 0x654321, 0xDAA520];
+    var hairMesh = new THREE.Mesh(hairGeo, mat(hairColors[Math.floor(Math.random() * hairColors.length)], { roughness: 0.9 }));
+    hairMesh.position.y = 1.3;
+    group.add(hairMesh);
+
+    // Legs (two thin cylinders)
+    var legGeo = new THREE.CylinderGeometry(0.06, 0.06, 0.5, 6);
+    var legMat = mat(0x2a2a3a, { roughness: 0.7 });
+    var legL = new THREE.Mesh(legGeo, legMat);
+    legL.position.set(-0.08, 0.25, 0);
+    group.add(legL);
+    var legR = new THREE.Mesh(legGeo.clone(), legMat);
+    legR.position.set(0.08, 0.25, 0);
+    group.add(legR);
+
+    // Arms (thin cylinders, slightly angled)
+    var armGeo = new THREE.CylinderGeometry(0.04, 0.04, 0.5, 6);
+    var armMat = mat(shirtColor, { roughness: 0.7 });
+    var armL = new THREE.Mesh(armGeo, armMat);
+    armL.position.set(-0.25, 0.75, 0);
+    armL.rotation.z = 0.2;
+    group.add(armL);
+    var armR = new THREE.Mesh(armGeo.clone(), armMat);
+    armR.position.set(0.25, 0.75, 0);
+    armR.rotation.z = -0.2;
+    group.add(armR);
+
+    // Shoes
+    var shoeGeo = new THREE.BoxGeometry(0.1, 0.06, 0.15);
+    var shoeMat = mat(0x222222, { roughness: 0.5 });
+    var shoeL = new THREE.Mesh(shoeGeo, shoeMat);
+    shoeL.position.set(-0.08, 0.03, 0.03);
+    group.add(shoeL);
+    var shoeR = new THREE.Mesh(shoeGeo.clone(), shoeMat);
+    shoeR.position.set(0.08, 0.03, 0.03);
+    group.add(shoeR);
+
+    group.position.set(x, 0, z);
+    group.rotation.y = rotY;
+    group.castShadow = true;
+    scene.add(group);
+  }
+
+  // =============================================
+  // CAMERA PATH
+  // =============================================
+  function buildCameraPath() {
+    // Camera path: position + lookAt pairs
+    // We define key waypoints and interpolate between them
+    var hw = CORRIDOR_WIDTH / 2;
+
+    // Format: [camX, camY, camZ, lookX, lookY, lookZ]
+    var waypoints = [
+      // Start: entrance of corridor
+      [0, 1.7, 3, 0, 1.5, -5],
+
+      // Approaching Room 1 (Le battant, left side, z=-12)
+      [0, 1.7, -6, 0, 1.5, -14],
+
+      // Looking into Room 1
+      [0.5, 1.7, -12, ROOMS[0].side * (hw + 3), 1.5, ROOMS[0].z],
+
+      // Past Room 1, continuing
+      [0, 1.7, -18, 0, 1.5, -26],
+
+      // Approaching Room 2 (Async, right side, z=-28)
+      [0, 1.7, -23, 0, 1.5, -30],
+
+      // Looking into Room 2
+      [-0.5, 1.7, -28, ROOMS[1].side * (hw + 3), 1.5, ROOMS[1].z],
+
+      // Past Room 2, continuing
+      [0, 1.7, -34, 0, 1.5, -42],
+
+      // Approaching Room 3 (Trading, left side, z=-44)
+      [0, 1.7, -39, 0, 1.5, -46],
+
+      // Looking into Room 3
+      [0.5, 1.7, -44, ROOMS[2].side * (hw + 3), 1.5, ROOMS[2].z],
+
+      // Past Room 3, continuing
+      [0, 1.7, -50, 0, 1.5, -58],
+
+      // Approaching Room 4 (n8n, right side, z=-60)
+      [0, 1.7, -55, 0, 1.5, -62],
+
+      // Looking into Room 4
+      [-0.5, 1.7, -60, ROOMS[3].side * (hw + 3), 1.5, ROOMS[3].z],
+
+      // End of corridor
+      [0, 1.7, -68, 0, 1.5, -75]
+    ];
+
+    // Convert to Vector3 pairs
+    cameraPath = [];
+    lookAtPath = [];
+    waypoints.forEach(function(wp) {
+      cameraPath.push(new THREE.Vector3(wp[0], wp[1], wp[2]));
+      lookAtPath.push(new THREE.Vector3(wp[3], wp[4], wp[5]));
+    });
+  }
+
+  function getCameraTransform(progress) {
+    // progress: 0..1
+    var totalSegments = cameraPath.length - 1;
+    var segment = progress * totalSegments;
+    var idx = Math.floor(segment);
+    var t = segment - idx;
+
+    idx = Math.min(idx, totalSegments - 1);
+    idx = Math.max(idx, 0);
+    var nextIdx = Math.min(idx + 1, totalSegments);
+
+    // Smooth step for t
+    t = t * t * (3 - 2 * t);
+
+    var pos = new THREE.Vector3().lerpVectors(cameraPath[idx], cameraPath[nextIdx], t);
+    var look = new THREE.Vector3().lerpVectors(lookAtPath[idx], lookAtPath[nextIdx], t);
+
+    return { position: pos, lookAt: look };
+  }
+
+  // =============================================
+  // SCROLL HANDLING
+  // =============================================
+  function onScroll() {
+    var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    var maxScroll = document.getElementById('scroll-container').offsetHeight - window.innerHeight;
+    targetScrollProgress = Math.max(0, Math.min(1, scrollTop / maxScroll));
+  }
+
+  // =============================================
+  // UI UPDATES
+  // =============================================
+  function updateUI(progress) {
+    // Progress bar
+    document.getElementById('progress-bar').style.width = (progress * 100) + '%';
+
+    // Intro overlay
+    var introEl = document.getElementById('intro-overlay');
+    if (progress > 0.02) {
+      introEl.classList.add('hidden');
+    } else {
+      introEl.classList.remove('hidden');
+    }
+
+    // Project cards visibility
+    // Each room corresponds to a range of progress
+    // With 13 waypoints (0..12), rooms are at waypoints 2, 5, 8, 11
+    var totalWP = cameraPath.length - 1;
+    var cardConfigs = [
+      { id: 'card-battant', wp: 2, range: 0.06 },
+      { id: 'card-async', wp: 5, range: 0.06 },
+      { id: 'card-trading', wp: 8, range: 0.06 },
+      { id: 'card-n8n', wp: 11, range: 0.06 }
+    ];
+
+    cardConfigs.forEach(function(cfg) {
+      var centerProgress = cfg.wp / totalWP;
+      var dist = Math.abs(progress - centerProgress);
+      var el = document.getElementById(cfg.id);
+      if (dist < cfg.range) {
+        el.classList.add('visible');
+      } else {
+        el.classList.remove('visible');
+      }
+    });
+  }
+
+  // =============================================
+  // RESIZE
+  // =============================================
+  function onResize() {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+  }
+
+  // =============================================
+  // ANIMATION LOOP
+  // =============================================
+  function animate() {
+    requestAnimationFrame(animate);
+
+    // Smooth lerp scroll progress
+    scrollProgress += (targetScrollProgress - scrollProgress) * 0.08;
+
+    // Get camera transform
+    var transform = getCameraTransform(scrollProgress);
+    camera.position.copy(transform.position);
+    camera.lookAt(transform.lookAt);
+
+    // Subtle breathing effect on lights
+    var time = clock.getElapsedTime();
+    allLights.forEach(function(light, i) {
+      var baseIntensity = light.userData.baseIntensity || light.intensity;
+      if (!light.userData.baseIntensity) light.userData.baseIntensity = baseIntensity;
+      light.intensity = baseIntensity * (0.9 + 0.1 * Math.sin(time * 2 + i * 0.5));
+    });
+
+    // Update UI
+    updateUI(scrollProgress);
+
+    renderer.render(scene, camera);
+  }
+
+  // =============================================
+  // KICK OFF
+  // =============================================
+  // Wait for Three.js to load
+  if (typeof THREE !== 'undefined') {
+    init();
+  } else {
+    window.addEventListener('load', init);
+  }
+
+})();
+</script>
+</body>
+</html>
