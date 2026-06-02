@@ -1733,6 +1733,101 @@ html,body{overflow-x:hidden;max-width:100vw;}
 
 /* ---- UTILITY ---- */
 .a-hidden{opacity:0;transform:translateY(40px);}
+
+/* ============================================================
+   ASYNC AGENCY — MOBILE FIXES (768px and below)
+   ============================================================ */
+@media(max-width:768px){
+  /* 1. Section overflow prevention */
+  #p-async section{overflow-x:hidden;}
+
+  /* 2. Hide The Breach entirely — too heavy for mobile */
+  #asyncBreachSection{display:none !important;}
+
+  /* 3. Cursor spotlight — no mouse on mobile */
+  .async-spotlight{display:none !important;}
+
+  /* 4. Dot background — heavy on mobile */
+  .async-dotbg{display:none !important;}
+
+  /* 5. Process section — remove pinning, stack vertically */
+  .ap-wrap{height:auto !important;}
+  .ap-pin{position:relative !important;height:auto !important;min-height:0 !important;}
+  .ap-steps{flex-direction:column;gap:1rem;}
+  .ap-step{opacity:1 !important;transform:none !important;padding:1.5rem 1.25rem;}
+  .ap-progress{display:none;}
+
+  /* 6. Service grid — single column */
+  #asyncSvcGrid{grid-template-columns:1fr !important;}
+
+  /* 7. Service cards — reduce padding, disable glow/hover effects */
+  .asc{padding:1.25rem;transform:none !important;box-shadow:none !important;}
+  .asc:hover{transform:none !important;box-shadow:none !important;}
+  .asc::before{display:none !important;}
+  .asc-glow{display:none !important;}
+  .asc-bar{transition:none;height:100% !important;}
+  .asc.in-view .asc-bar{height:100%;}
+  .asc-icon{width:42px;height:42px;font-size:1.2rem;margin-bottom:1rem;}
+
+  /* 8. Hero text — prevent overflow */
+  .ah-logo{letter-spacing:4px;font-size:clamp(2rem,12vw,3.5rem);}
+  .ah-tagline{font-size:.9rem;letter-spacing:0;line-height:1.7;padding:0 .5rem;}
+  .ah-label{letter-spacing:3px;font-size:.5rem;}
+  .ah-sub{letter-spacing:2px;font-size:.65rem;}
+  .ah-content{padding:1rem;}
+  .ah-tags{gap:.35rem;}
+  .ah-tags .tag{font-size:.55rem;padding:5px 10px;}
+  .ah-scroll{font-size:.5rem;}
+
+  /* 9. Hero — ensure visible without breach */
+  .ah{min-height:auto;padding:5rem 0 3rem;}
+  #asyncHero{opacity:1 !important;transform:none !important;}
+  .ah .ah-label,
+  .ah .ah-sub,
+  .ah .ah-tagline,
+  .ah .ah-tags,
+  .ah .ah-scroll,
+  .ah-letter{opacity:1 !important;transform:none !important;}
+
+  /* 10. Stats bar — already 2-col at 768, keep it */
+  .as-item{padding:1.5rem 1rem;}
+  .as-val{font-size:clamp(1.2rem,5vw,1.8rem);}
+
+  /* 11. Back button — adjust position for mobile */
+  .async-back{top:70px;left:1rem;padding:8px 12px;font-size:.6rem;letter-spacing:1px;}
+
+  /* 12. Tech items — smaller on mobile */
+  .at-item{padding:8px 14px;font-size:.6rem;}
+  .at-item:hover{transform:none !important;}
+
+  /* 13. CTA section */
+  .acta{padding:3rem 1.25rem;}
+  .acta-btn{padding:12px 24px;font-size:.7rem;letter-spacing:2px;}
+
+  /* 14. Vision cards */
+  .av-card{padding:1.5rem;}
+
+  /* 15. Orbs — reduce blur load on mobile */
+  .ah-orb{filter:blur(40px);opacity:.5;}
+
+  /* 16. Three.js canvas — reduce on mobile */
+  .ah-3d{opacity:.4;}
+}
+
+/* Very small screens (480px) */
+@media(max-width:480px){
+  /* Stats bar — single column on very small screens */
+  .as-bar{grid-template-columns:1fr !important;}
+  .as-item{border-right:none;border-bottom:1px solid rgba(168,85,247,.08);}
+  .as-item:last-child{border-bottom:none;}
+
+  /* Even smaller hero text */
+  .ah-logo{letter-spacing:2px;}
+  .ah-tagline{font-size:.82rem;}
+
+  /* Service cards — tighter */
+  .asc{padding:1rem;}
+}
 </style>
 
 <!-- BACK TO PROJECTS BUTTON -->
@@ -1942,6 +2037,9 @@ function setup(page){
 // Save pristine HTML for nuclear reset on re-entry
 const pristineHTML=page.innerHTML;
 
+// ============ MOBILE DETECTION HELPER ============
+const isMobileAsync=()=>window.innerWidth<768;
+
 // ============ THREE.JS HERO ============
 function initThree(){
   const canvas=document.getElementById('asyncThreeCanvas');
@@ -1955,7 +2053,8 @@ function initThree(){
 
   threeRenderer=new THREE.WebGLRenderer({canvas,alpha:true,antialias:true});
   threeRenderer.setSize(W,H);
-  threeRenderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
+  // On mobile, limit pixel ratio to 1 for performance
+  threeRenderer.setPixelRatio(isMobileAsync()?1:Math.min(window.devicePixelRatio,2));
 
   // Wireframe icosahedron — more visible
   threeGeo=new THREE.IcosahedronGeometry(1.8,1);
@@ -1963,7 +2062,8 @@ function initThree(){
   threeMesh=new THREE.Mesh(threeGeo,mat);
   threeScene.add(threeMesh);
 
-  // Inner glow sphere
+  // Inner glow sphere — skip on mobile for performance
+  if(!isMobileAsync()){
   const innerGeo=new THREE.IcosahedronGeometry(1.74,2);
   const innerMat=new THREE.MeshBasicMaterial({color:0x06b6d4,wireframe:true,transparent:true,opacity:.12});
   const innerMesh=new THREE.Mesh(innerGeo,innerMat);
@@ -1973,9 +2073,10 @@ function initThree(){
   const fillGeo=new THREE.IcosahedronGeometry(1.5,2);
   const fillMat=new THREE.MeshBasicMaterial({color:0xa855f7,transparent:true,opacity:.03});
   threeMesh.add(new THREE.Mesh(fillGeo,fillMat));
+  }
 
-  // Floating particles around — more visible
-  const pCount=300;
+  // Floating particles around — reduce on mobile
+  const pCount=isMobileAsync()?80:300;
   const pGeo=new THREE.BufferGeometry();
   const pPos=new Float32Array(pCount*3);
   for(let i=0;i<pCount;i++){
@@ -2013,6 +2114,8 @@ function destroyThree(){
 
 // Mouse tracking for 3D + spotlight
 function onMouseMove(e){
+  // Skip all mouse tracking on mobile (no mouse cursor)
+  if(isMobileAsync()) return;
   mouseX=(e.clientX/window.innerWidth-.5)*2;
   mouseY=(e.clientY/window.innerHeight-.5)*2;
   // Cursor spotlight
@@ -2028,6 +2131,22 @@ function onMouseMove(e){
 
 // ============ THE BREACH — FULLY REVERSIBLE PINNED ZOOM ============
 function playHeroTimeline(){
+  // --- MOBILE: skip breach entirely, show hero directly ---
+  if(isMobileAsync()){
+    gsap.set('#asyncHero',{scale:1,opacity:1});
+    gsap.set('.ah .ah-label',{opacity:1,y:0});
+    gsap.set('.ah-letter',{opacity:1,y:0,rotateX:0});
+    gsap.set('.ah .ah-sub',{opacity:1,y:0});
+    gsap.set('#ahLine',{height:60});
+    gsap.set('.ah .ah-tagline',{opacity:1,y:0});
+    gsap.set('.ah .ah-tags',{opacity:1,y:0});
+    gsap.set('.ah .ah-scroll',{opacity:.5,y:0});
+    // Show back button immediately on mobile
+    const backBtn=document.getElementById('asyncBackBtn');
+    if(backBtn){backBtn.classList.add('visible');gsap.set(backBtn,{opacity:1,x:0});}
+    return;
+  }
+
   // Force initial states for clean start & perfect reversibility
   gsap.set('#asyncHero',{scale:0.3,opacity:0,transformOrigin:'center center'});
   gsap.set('#asyncBreachOverlay',{autoAlpha:1});
@@ -2112,12 +2231,15 @@ function playHeroTimeline(){
   // Scroll hint bounce
   gsap.to('.ah-scroll',{y:8,duration:1.5,ease:'sine.inOut',yoyo:true,repeat:-1,delay:4});
 
-  // Orbs float
-  gsap.utils.toArray('.ah-orb').forEach((orb,i)=>{
-    gsap.to(orb,{x:'random(-40,40)',y:'random(-30,30)',duration:'random(4,6)',ease:'sine.inOut',yoyo:true,repeat:-1,delay:i*.5});
-  });
+  // Orbs float — skip on mobile for performance
+  if(!isMobileAsync()){
+    gsap.utils.toArray('.ah-orb').forEach((orb,i)=>{
+      gsap.to(orb,{x:'random(-40,40)',y:'random(-30,30)',duration:'random(4,6)',ease:'sine.inOut',yoyo:true,repeat:-1,delay:i*.5});
+    });
+  }
 
-  // --- PHASE 3: Letter split on scroll ---
+  // --- PHASE 3: Letter split on scroll (desktop only — too heavy on mobile) ---
+  if(!isMobileAsync()){
   const letters1=document.querySelectorAll('#asyncRow1 .ah-letter');
   const letters2=document.querySelectorAll('#asyncRow2 .ah-letter');
   const mid1=Math.floor(letters1.length/2);
@@ -2150,6 +2272,7 @@ function playHeroTimeline(){
       }
     })
   );
+  } // end desktop-only letter split
 }
 
 // ============ STATS COUNTER ============
@@ -2196,6 +2319,24 @@ function initServices(){
 function initProcess(){
   const steps=document.querySelectorAll('.ap-step');
   const stepCount=steps.length;
+
+  // --- MOBILE: no pinning, simple stagger reveal ---
+  if(isMobileAsync()){
+    steps.forEach(s=>{s.style.opacity='1';s.style.transform='none';});
+    steps.forEach((step,i)=>{
+      gsapTriggers.push(
+        ScrollTrigger.create({
+          trigger:step,
+          start:'top 90%',
+          once:true,
+          onEnter:()=>{
+            gsap.fromTo(step,{opacity:0,y:30},{opacity:1,y:0,duration:.6,ease:'expo.out',delay:i*.08});
+          }
+        })
+      );
+    });
+    return;
+  }
 
   const tl=gsap.timeline({
     scrollTrigger:{
@@ -2274,7 +2415,8 @@ function activate(){
   document.querySelectorAll('#asyncTechGrid .at-item').forEach(i=>{i.style.opacity='0';i.style.transform='translateY(20px)';});
 
   initThree();
-  window.addEventListener('mousemove',onMouseMove);
+  // Only bind mousemove on desktop (no mouse on mobile)
+  if(!isMobileAsync()) window.addEventListener('mousemove',onMouseMove);
 
   // Wait for DOM layout then init all animations
   setTimeout(()=>{
@@ -2291,7 +2433,7 @@ function activate(){
     requestAnimationFrame(()=>ScrollTrigger.refresh());
   },250);
 
-  // Fallback visibility after 3s
+  // Fallback visibility — faster on mobile (1.5s vs 3s)
   setTimeout(()=>{
     if(!page.classList.contains('active')) return;
     document.querySelectorAll('#p-async .a-hidden').forEach(el=>{
@@ -2301,7 +2443,7 @@ function activate(){
         el.style.transition='opacity .6s, transform .6s';
       }
     });
-  },3000);
+  },isMobileAsync()?1500:3000);
 }
 
 function deactivate(){
