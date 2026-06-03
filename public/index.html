@@ -2131,9 +2131,15 @@ function onMouseMove(e){
 
 // ============ THE BREACH — FULLY REVERSIBLE PINNED ZOOM ============
 function playHeroTimeline(){
-  // --- MOBILE: skip breach entirely, show hero directly ---
-  if(isMobileAsync()){
+  // --- DESKTOP + MOBILE: skip breach scrub intro, show hero directly ---
+  // Bug fix Herman 2026-06-02 : la breach scroll-scrubbed rendait la page blank
+  // jusqu'à ce que l'utilisateur scrolle. UX confuse. On désactive partout.
+  // (Voir asyncBreachSection caché en CSS aussi pour éviter le pin-spacer)
+  if(true /* was: isMobileAsync() */){
     gsap.set('#asyncHero',{scale:1,opacity:1});
+    // ⚠️ Crucial : reset .ah > * qui était mis à opacity:0 + translateY par activate() ligne 2410
+    // Sinon .ah-content (wrapper) reste invisible → tout le contenu hero invisible
+    gsap.set('#p-async .ah > *',{opacity:1,y:0,clearProps:'transform'});
     gsap.set('.ah .ah-label',{opacity:1,y:0});
     gsap.set('.ah-letter',{opacity:1,y:0,rotateX:0});
     gsap.set('.ah .ah-sub',{opacity:1,y:0});
@@ -2141,7 +2147,25 @@ function playHeroTimeline(){
     gsap.set('.ah .ah-tagline',{opacity:1,y:0});
     gsap.set('.ah .ah-tags',{opacity:1,y:0});
     gsap.set('.ah .ah-scroll',{opacity:.5,y:0});
-    // Show back button immediately on mobile
+    gsap.set('.ah-content',{opacity:1,y:0});
+    // ⚠️ NE PAS cacher la breach section (le hero est DEDANS).
+    // À la place, on force min-height auto pour qu'elle ne crée pas de pin-spacer surnuméraire.
+    const breachSec = document.getElementById('asyncBreachSection');
+    if(breachSec){
+      breachSec.style.minHeight = 'auto';
+      breachSec.style.height = 'auto';
+    }
+    // Cache visuellement les overlays/doors de la breach (mais garde le hero visible)
+    gsap.set('#asyncBreachOverlay',{autoAlpha:0});
+    gsap.set('#asyncBreachHalo',{autoAlpha:0});
+    gsap.set('#asyncBreachGlow',{autoAlpha:0});
+    gsap.set('#asyncBreachFlash',{autoAlpha:0});
+    gsap.set('#asyncDoorL',{autoAlpha:0});
+    gsap.set('#asyncDoorR',{autoAlpha:0});
+    gsap.set('#asyncDoorLabel',{autoAlpha:0});
+    gsap.set('#asyncEdgeL',{autoAlpha:0});
+    gsap.set('#asyncEdgeR',{autoAlpha:0});
+    // Show back button immediately
     const backBtn=document.getElementById('asyncBackBtn');
     if(backBtn){backBtn.classList.add('visible');gsap.set(backBtn,{opacity:1,x:0});}
     return;
