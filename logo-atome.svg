@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 220" width="220" height="220">
+  <!-- Logo Herman Vanel EI — atome -->
+  <g fill="none">
+    <circle cx="110" cy="110" r="95" stroke="#b6b6b6" stroke-width="3"/>
+    <circle cx="110" cy="110" r="70" stroke="#6e6e6e" stroke-width="4"/>
+    <circle cx="110" cy="110" r="46" stroke="#1b1b1b" stroke-width="6.5"/>
+  </g>
+  <circle cx="110" cy="110" r="21" fill="#c5322d"/>
+  <g fill="#141414">
+    <circle cx="110" cy="15" r="11"/>
+    <circle cx="110" cy="205" r="11"/>
+    <circle cx="15" cy="110" r="11"/>
+    <circle cx="205" cy="110" r="11"/>
+  </g>
+</svg>
