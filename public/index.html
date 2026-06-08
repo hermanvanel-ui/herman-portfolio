@@ -2380,9 +2380,13 @@ function initReveals(){
 
 // ============ ACTIVATE / DEACTIVATE ============
 function activate(){
-  // Scroll to top
+  // Scroll to top — gérer Lenis aussi sinon le scroll reste à sa position précédente
+  // et la breach intro est déjà "passée" (hero immédiatement visible)
   window.scrollTo(0,0);
   page.scrollTop=0;
+  document.documentElement.scrollTop=0;
+  document.body.scrollTop=0;
+  if(window.__lenis) try{window.__lenis.scrollTo(0,{immediate:true});}catch(e){}
 
   // DOM is always pristine here (either first load or after innerHTML reset)
   gsapTriggers=[];
@@ -2404,6 +2408,9 @@ function activate(){
   setTimeout(()=>{
     if(!page.classList.contains('active')) return;
     window.scrollTo(0,0);
+    document.documentElement.scrollTop=0;
+    document.body.scrollTop=0;
+    if(window.__lenis) try{window.__lenis.scrollTo(0,{immediate:true});}catch(e){}
     ScrollTrigger.refresh();
     playHeroTimeline();
     initStats();
@@ -2704,10 +2711,32 @@ function go(id, skipTransition){
   if(navEl) navEl.classList.add('active');
 
   function showNew(){
+    // ⚠️ FIX BREACH INTRO : destroy Lenis AVANT scrollTo pour async
+    // sinon Lenis garde sa position interne (ex 1500) et ScrollTrigger
+    // calcule la breach comme déjà passée → hero direct visible
+    if (id === 'async' && window.__lenisActive && lenis) {
+      try { lenis.destroy(); } catch(e){}
+      gsap.ticker.remove(window.__lenisTickFn);
+      window.__lenisActive = false;
+    }
     window.scrollTo(0,0);
+    document.documentElement.scrollTop=0;
+    document.body.scrollTop=0;
     if(oldPage){ oldPage.classList.remove('active'); gsap.set(oldPage, {clearProps:'all'}); }
     newPage.classList.add('active');
     gsap.set(newPage, {clearProps:'all'});
+    // ⚠️ BRUTE FORCE pour async : re-force le scroll sur plusieurs frames
+    // car quelque chose le restaure entre 0 et 1000ms après navigation
+    if (id === 'async') {
+      [0, 50, 100, 200, 400, 800].forEach(delay => {
+        setTimeout(() => {
+          window.scrollTo(0,0);
+          document.documentElement.scrollTop=0;
+          document.body.scrollTop=0;
+          if (delay >= 400 && window.ScrollTrigger) ScrollTrigger.refresh();
+        }, delay);
+      });
+    }
     finishNav(id);
   }
 
@@ -2735,6 +2764,12 @@ function finishNav(id){
       gsap.ticker.remove(window.__lenisTickFn);
       window.__lenisActive = false;
     }
+    // ⚠️ FIX BREACH INTRO : reset scroll natif APRÈS destroy Lenis
+    // sinon ScrollTrigger lit window.scrollY hérité de la page précédente
+    // → breach intro "déjà passée" (hero direct visible)
+    window.scrollTo(0,0);
+    document.documentElement.scrollTop=0;
+    document.body.scrollTop=0;
   } else {
     if (!window.__lenisActive) {
       lenis = new Lenis({ lerp: 0.1, smoothWheel: true });
@@ -2749,6 +2784,8 @@ function finishNav(id){
   currentPageId = id;
   window.__navigating = false;
   setTimeout(() => {
+    // Re-force scroll 0 (au cas où Lenis ou autre l'a remis)
+    if (id === 'async') { window.scrollTo(0,0); document.documentElement.scrollTop=0; document.body.scrollTop=0; }
     ScrollTrigger.refresh();
     if (pageAnimations[id] && !prefersReducedMotion) {
       pageAnimations[id]();
