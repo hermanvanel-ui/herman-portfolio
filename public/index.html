@@ -2752,152 +2752,179 @@ setInterval(()=>{mx.fillStyle='rgba(26,35,50,.05)';mx.fillRect(0,0,mc.width,mc.h
 addEventListener('resize',()=>{mc.width=innerWidth;mc.height=innerHeight;});
 
 // ===== SCULPT 3D ENGINE (mouse/touch — no camera needed) =====
+// Lazy-init: waits for THREE.js to load AND page to be visible
 (function(){
-  const wrap=document.getElementById('sculptWrap');
-  const cvs=document.getElementById('sculptCanvas');
-  if(!wrap||!cvs)return;
-  const W=()=>wrap.clientWidth, H=()=>Math.min(500,innerHeight*.6);
-  const scene=new THREE.Scene();
-  scene.background=new THREE.Color(0x0a0a0a);
-  const cam=new THREE.PerspectiveCamera(50,W()/H(),0.1,100);
-  cam.position.set(0,0,3.5);
-  const ren=new THREE.WebGLRenderer({canvas:cvs,antialias:true,alpha:false});
-  ren.setSize(W(),H());ren.setPixelRatio(Math.min(1.5,devicePixelRatio));
+  let sculptInited=false, sculptRaf=null;
+  function initSculpt(){
+    if(sculptInited)return;
+    const wrap=document.getElementById('sculptWrap');
+    const cvs=document.getElementById('sculptCanvas');
+    if(!wrap||!cvs||typeof THREE==='undefined')return;
+    // Check page is visible (not display:none) — need real dimensions
+    if(wrap.clientWidth<10)return;
+    sculptInited=true;
 
-  // Lights
-  scene.add(new THREE.AmbientLight(0x334455,0.6));
-  const dl=new THREE.DirectionalLight(0x6ee7b7,0.8);dl.position.set(3,4,5);scene.add(dl);
-  const pl=new THREE.PointLight(0x818cf8,0.5,10);pl.position.set(-3,2,2);scene.add(pl);
+    const W=()=>wrap.clientWidth, H=()=>Math.min(500,innerHeight*.6);
+    const scene=new THREE.Scene();
+    scene.background=new THREE.Color(0x0a0a0a);
+    const cam=new THREE.PerspectiveCamera(50,W()/H(),0.1,100);
+    cam.position.set(0,0,3.5);
+    const ren=new THREE.WebGLRenderer({canvas:cvs,antialias:true,alpha:false});
+    ren.setSize(W(),H());ren.setPixelRatio(Math.min(1.5,devicePixelRatio));
 
-  // IcoSphere
-  const geo=new THREE.IcosahedronGeometry(1.15,4); // 2562 vertices
-  const origPos=new Float32Array(geo.attributes.position.array);
-  const vel=new Float32Array(origPos.length); // spring velocity per vertex
-  const mat=new THREE.MeshPhysicalMaterial({
-    color:0x0d1117, metalness:0.3, roughness:0.4, clearcoat:0.6,
-    transparent:true, opacity:0.85, side:THREE.DoubleSide
-  });
-  const mesh=new THREE.Mesh(geo,mat);scene.add(mesh);
+    // Lights
+    scene.add(new THREE.AmbientLight(0x334455,0.6));
+    const dl=new THREE.DirectionalLight(0x6ee7b7,0.8);dl.position.set(3,4,5);scene.add(dl);
+    const pl=new THREE.PointLight(0x818cf8,0.5,10);pl.position.set(-3,2,2);scene.add(pl);
 
-  // Wireframe overlay
-  const wMat=new THREE.MeshBasicMaterial({color:0x6ee7b7,wireframe:true,transparent:true,opacity:0.12});
-  const wire=new THREE.Mesh(geo,wMat);scene.add(wire);
+    // IcoSphere
+    const geo=new THREE.IcosahedronGeometry(1.15,4);
+    const origPos=new Float32Array(geo.attributes.position.array);
+    const vel=new Float32Array(origPos.length);
+    const mat=new THREE.MeshPhysicalMaterial({
+      color:0x0d1117, metalness:0.3, roughness:0.4, clearcoat:0.6,
+      transparent:true, opacity:0.85, side:THREE.DoubleSide
+    });
+    const mesh=new THREE.Mesh(geo,mat);scene.add(mesh);
 
-  // Deformation color array (per-vertex)
-  const colors=new Float32Array(geo.attributes.position.count*3);
-  for(let i=0;i<colors.length;i+=3){colors[i]=0.43;colors[i+1]=0.9;colors[i+2]=0.72;} // base green
-  geo.setAttribute('color',new THREE.BufferAttribute(colors,3));
-  wMat.vertexColors=true;
+    // Wireframe overlay
+    const wMat=new THREE.MeshBasicMaterial({color:0x6ee7b7,wireframe:true,transparent:true,opacity:0.12});
+    const wire=new THREE.Mesh(geo,wMat);scene.add(wire);
 
-  // Particles
-  const PMAX=200;
-  const pGeo=new THREE.BufferGeometry();
-  const pPos=new Float32Array(PMAX*3);
-  const pVel=new Float32Array(PMAX*3);
-  const pLife=new Float32Array(PMAX);
-  pGeo.setAttribute('position',new THREE.BufferAttribute(pPos,3));
-  const pMat=new THREE.PointsMaterial({color:0x6ee7b7,size:0.035,transparent:true,opacity:0.7,sizeAttenuation:true});
-  const parts=new THREE.Points(pGeo,pMat);scene.add(parts);
-  let pIdx=0;
-  function emitParticles(pt,n){
-    for(let i=0;i<n;i++){
-      const j=pIdx%PMAX;
-      pPos[j*3]=pt.x; pPos[j*3+1]=pt.y; pPos[j*3+2]=pt.z;
-      pVel[j*3]=(Math.random()-.5)*.06; pVel[j*3+1]=(Math.random()-.5)*.06; pVel[j*3+2]=(Math.random()-.5)*.06;
-      pLife[j]=1.0; pIdx++;
-    }
-  }
-  function updateParticles(){
-    for(let i=0;i<PMAX;i++){
-      if(pLife[i]<=0)continue;
-      pLife[i]-=0.018;
-      pPos[i*3]+=pVel[i*3]; pPos[i*3+1]+=pVel[i*3+1]; pPos[i*3+2]+=pVel[i*3+2];
-      pVel[i*3+1]-=0.001; // gravity
-    }
-    pGeo.attributes.position.needsUpdate=true;
-    pMat.opacity=0.5;
-  }
+    // Deformation color array
+    const colors=new Float32Array(geo.attributes.position.count*3);
+    for(let i=0;i<colors.length;i+=3){colors[i]=0.43;colors[i+1]=0.9;colors[i+2]=0.72;}
+    geo.setAttribute('color',new THREE.BufferAttribute(colors,3));
+    wMat.vertexColors=true;
 
-  // Raycaster
-  const rc=new THREE.Raycaster();
-  const mouse=new THREE.Vector2(9999,9999);
-  let isDown=false;
-  const PUSH_R=0.45, PUSH_STR=0.012, CLICK_STR=0.04;
-  const SPRING=0.06, DAMP=0.88;
-
-  function onMove(e){
-    const r=cvs.getBoundingClientRect();
-    const cx=e.touches?e.touches[0].clientX:e.clientX;
-    const cy=e.touches?e.touches[0].clientY:e.clientY;
-    mouse.x=((cx-r.left)/r.width)*2-1;
-    mouse.y=-((cy-r.top)/r.height)*2+1;
-  }
-  cvs.addEventListener('pointermove',onMove);
-  cvs.addEventListener('touchmove',e=>{e.preventDefault();onMove(e);},{passive:false});
-  cvs.addEventListener('pointerdown',()=>isDown=true);
-  cvs.addEventListener('pointerup',()=>isDown=false);
-  cvs.addEventListener('pointerleave',()=>{mouse.set(9999,9999);isDown=false;});
-
-  // Animation loop
-  let t=0;
-  function animate(){
-    requestAnimationFrame(animate);
-    t+=0.008;
-    mesh.rotation.y=t*0.4;
-    mesh.rotation.x=Math.sin(t*0.3)*0.15;
-    wire.rotation.copy(mesh.rotation);
-
-    const pos=geo.attributes.position;
-    const str=isDown?CLICK_STR:PUSH_STR;
-
-    // Raycast for deformation
-    rc.setFromCamera(mouse,cam);
-    const hits=rc.intersectObject(mesh);
-    const hitPt=hits.length?hits[0].point:null;
-    if(hitPt&&isDown)emitParticles(hitPt,3);
-
-    // Deform + spring
-    for(let i=0;i<pos.count;i++){
-      const ix=i*3, iy=ix+1, iz=ix+2;
-      // Spring force toward original position
-      const dx=origPos[ix]-pos.array[ix];
-      const dy=origPos[iy]-pos.array[iy];
-      const dz=origPos[iz]-pos.array[iz];
-      vel[ix]=(vel[ix]+dx*SPRING)*DAMP;
-      vel[iy]=(vel[iy]+dy*SPRING)*DAMP;
-      vel[iz]=(vel[iz]+dz*SPRING)*DAMP;
-
-      // Push from cursor hit point (in local space)
-      if(hitPt){
-        const lp=mesh.worldToLocal(hitPt.clone());
-        const px=pos.array[ix]-lp.x, py=pos.array[iy]-lp.y, pz=pos.array[iz]-lp.z;
-        const d=Math.sqrt(px*px+py*py+pz*pz);
-        if(d<PUSH_R&&d>0.001){
-          const f=str*(1-d/PUSH_R);
-          vel[ix]+=px/d*f; vel[iy]+=py/d*f; vel[iz]+=pz/d*f;
-        }
+    // Particles
+    const PMAX=200;
+    const pGeo=new THREE.BufferGeometry();
+    const pPos=new Float32Array(PMAX*3);
+    const pVel=new Float32Array(PMAX*3);
+    const pLife=new Float32Array(PMAX);
+    pGeo.setAttribute('position',new THREE.BufferAttribute(pPos,3));
+    const pMat=new THREE.PointsMaterial({color:0x6ee7b7,size:0.035,transparent:true,opacity:0.7,sizeAttenuation:true});
+    const parts=new THREE.Points(pGeo,pMat);scene.add(parts);
+    let pIdx=0;
+    function emitParticles(pt,n){
+      for(let i=0;i<n;i++){
+        const j=pIdx%PMAX;
+        pPos[j*3]=pt.x;pPos[j*3+1]=pt.y;pPos[j*3+2]=pt.z;
+        pVel[j*3]=(Math.random()-.5)*.06;pVel[j*3+1]=(Math.random()-.5)*.06;pVel[j*3+2]=(Math.random()-.5)*.06;
+        pLife[j]=1.0;pIdx++;
       }
-
-      pos.array[ix]+=vel[ix]; pos.array[iy]+=vel[iy]; pos.array[iz]+=vel[iz];
-
-      // Vertex color: green→purple based on displacement
-      const disp=Math.sqrt(dx*dx+dy*dy+dz*dz);
-      const blend=Math.min(1,disp*8);
-      colors[ix]=0.43+blend*0.08; colors[iy]=0.9-blend*0.35; colors[iz]=0.72-blend*0.24;
     }
-    pos.needsUpdate=true;
-    geo.computeVertexNormals();
-    geo.attributes.color.needsUpdate=true;
+    function updateParticles(){
+      for(let i=0;i<PMAX;i++){
+        if(pLife[i]<=0)continue;
+        pLife[i]-=0.018;
+        pPos[i*3]+=pVel[i*3];pPos[i*3+1]+=pVel[i*3+1];pPos[i*3+2]+=pVel[i*3+2];
+        pVel[i*3+1]-=0.001;
+      }
+      pGeo.attributes.position.needsUpdate=true;
+      pMat.opacity=0.5;
+    }
 
-    updateParticles();
-    ren.render(scene,cam);
+    // Raycaster
+    const rc=new THREE.Raycaster();
+    const mouse=new THREE.Vector2(9999,9999);
+    let isDown=false;
+    const PUSH_R=0.45,PUSH_STR=0.012,CLICK_STR=0.04;
+    const SPRING=0.06,DAMP=0.88;
+
+    function onMove(e){
+      const r=cvs.getBoundingClientRect();
+      const cx=e.touches?e.touches[0].clientX:e.clientX;
+      const cy=e.touches?e.touches[0].clientY:e.clientY;
+      mouse.x=((cx-r.left)/r.width)*2-1;
+      mouse.y=-((cy-r.top)/r.height)*2+1;
+    }
+    cvs.addEventListener('pointermove',onMove);
+    cvs.addEventListener('touchmove',e=>{e.preventDefault();onMove(e);},{passive:false});
+    cvs.addEventListener('pointerdown',()=>isDown=true);
+    cvs.addEventListener('pointerup',()=>isDown=false);
+    cvs.addEventListener('pointerleave',()=>{mouse.set(9999,9999);isDown=false;});
+
+    // Animation loop — only runs when demo page is visible
+    let t=0, running=false;
+    function animate(){
+      if(!running)return;
+      sculptRaf=requestAnimationFrame(animate);
+      t+=0.008;
+      mesh.rotation.y=t*0.4;
+      mesh.rotation.x=Math.sin(t*0.3)*0.15;
+      wire.rotation.copy(mesh.rotation);
+
+      const pos=geo.attributes.position;
+      const str=isDown?CLICK_STR:PUSH_STR;
+
+      rc.setFromCamera(mouse,cam);
+      const hits=rc.intersectObject(mesh);
+      const hitPt=hits.length?hits[0].point:null;
+      if(hitPt&&isDown)emitParticles(hitPt,3);
+
+      for(let i=0;i<pos.count;i++){
+        const ix=i*3,iy=ix+1,iz=ix+2;
+        const dx=origPos[ix]-pos.array[ix];
+        const dy=origPos[iy]-pos.array[iy];
+        const dz=origPos[iz]-pos.array[iz];
+        vel[ix]=(vel[ix]+dx*SPRING)*DAMP;
+        vel[iy]=(vel[iy]+dy*SPRING)*DAMP;
+        vel[iz]=(vel[iz]+dz*SPRING)*DAMP;
+
+        if(hitPt){
+          const lp=mesh.worldToLocal(hitPt.clone());
+          const px=pos.array[ix]-lp.x,py=pos.array[iy]-lp.y,pz=pos.array[iz]-lp.z;
+          const d=Math.sqrt(px*px+py*py+pz*pz);
+          if(d<PUSH_R&&d>0.001){
+            const f=str*(1-d/PUSH_R);
+            vel[ix]+=px/d*f;vel[iy]+=py/d*f;vel[iz]+=pz/d*f;
+          }
+        }
+
+        pos.array[ix]+=vel[ix];pos.array[iy]+=vel[iy];pos.array[iz]+=vel[iz];
+
+        const disp=Math.sqrt(dx*dx+dy*dy+dz*dz);
+        const blend=Math.min(1,disp*8);
+        colors[ix]=0.43+blend*0.08;colors[iy]=0.9-blend*0.35;colors[iz]=0.72-blend*0.24;
+      }
+      pos.needsUpdate=true;
+      geo.computeVertexNormals();
+      geo.attributes.color.needsUpdate=true;
+
+      updateParticles();
+      ren.render(scene,cam);
+    }
+
+    // Start/stop based on page visibility
+    window._sculptStart=function(){
+      if(!running){running=true;ren.setSize(W(),H());cam.aspect=W()/H();cam.updateProjectionMatrix();animate();}
+    };
+    window._sculptStop=function(){running=false;if(sculptRaf)cancelAnimationFrame(sculptRaf);};
+
+    addEventListener('resize',()=>{
+      if(!running)return;
+      ren.setSize(W(),H());
+      cam.aspect=W()/H();cam.updateProjectionMatrix();
+    });
+
+    // Start immediately if page is already visible
+    window._sculptStart();
   }
-  animate();
 
-  addEventListener('resize',()=>{
-    ren.setSize(W(),H());
-    cam.aspect=W()/H();cam.updateProjectionMatrix();
-  });
+  // Hook into the page navigation system — try init when demo page is shown
+  const origGo=window.go;
+  if(origGo){
+    window.go=function(p){
+      origGo(p);
+      if(p==='demo'){setTimeout(()=>{initSculpt();if(window._sculptStart)window._sculptStart();},100);}
+      else{if(window._sculptStop)window._sculptStop();}
+    };
+  }
+  // Also try on DOMContentLoaded / load in case demo is the default page
+  window.addEventListener('DOMContentLoaded',()=>setTimeout(initSculpt,200));
+  window.addEventListener('load',()=>setTimeout(initSculpt,500));
 })();
 
 // ===== ANIMATED STAT COUNTERS =====
