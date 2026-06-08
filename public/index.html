@@ -2802,7 +2802,7 @@ addEventListener('resize',()=>{mc.width=innerWidth;mc.height=innerHeight;});
     function updateP(){for(var i=0;i<PMAX;i++){if(pLife[i]<=0)continue;pLife[i]-=.018;pPos[i*3]+=pVel[i*3];pPos[i*3+1]+=pVel[i*3+1];pPos[i*3+2]+=pVel[i*3+2];pVel[i*3+1]-=.001;}pGeo.attributes.position.needsUpdate=true;}
 
     var rc=new THREE.Raycaster(),mouse=new THREE.Vector2(9999,9999),isDown=false;
-    var PUSH_R=0.6,PUSH_STR=0.035,CLICK_STR=0.09,SPRING=0.045,DAMP=0.9;
+    var PUSH_R=0.9,PUSH_STR=0.15,CLICK_STR=0.35,SPRING=0.018,DAMP=0.92;
 
     cvs.addEventListener('pointermove',function(e){var r=cvs.getBoundingClientRect();mouse.x=((e.clientX-r.left)/r.width)*2-1;mouse.y=-((e.clientY-r.top)/r.height)*2+1;});
     cvs.addEventListener('touchmove',function(e){e.preventDefault();var r=cvs.getBoundingClientRect();var tc=e.touches[0];mouse.x=((tc.clientX-r.left)/r.width)*2-1;mouse.y=-((tc.clientY-r.top)/r.height)*2+1;},{passive:false});
@@ -2827,7 +2827,7 @@ addEventListener('resize',()=>{mc.width=innerWidth;mc.height=innerHeight;});
         vel[ix]=(vel[ix]+dx*SPRING)*DAMP;vel[iy]=(vel[iy]+dy*SPRING)*DAMP;vel[iz]=(vel[iz]+dz*SPRING)*DAMP;
         if(hitPt){var lp=mesh.worldToLocal(hitPt.clone());var px=pos.array[ix]-lp.x,py=pos.array[iy]-lp.y,pz=pos.array[iz]-lp.z;var d=Math.sqrt(px*px+py*py+pz*pz);if(d<PUSH_R&&d>.001){var f=str*(1-d/PUSH_R);vel[ix]+=px/d*f;vel[iy]+=py/d*f;vel[iz]+=pz/d*f;}}
         pos.array[ix]+=vel[ix];pos.array[iy]+=vel[iy];pos.array[iz]+=vel[iz];
-        var disp=Math.sqrt(dx*dx+dy*dy+dz*dz),blend=Math.min(1,disp*8);
+        var disp=Math.sqrt(dx*dx+dy*dy+dz*dz),blend=Math.min(1,disp*4);
         colors[ix]=0.37+blend*0.35;colors[iy]=0.95-blend*0.45;colors[iz]=0.78-blend*0.3;
       }
       pos.needsUpdate=true;geo.computeVertexNormals();geo.attributes.color.needsUpdate=true;
