@@ -14,7 +14,7 @@
 <meta property="og:title" content="Herman Vanel — Automatisation, IA & Développement">
 <meta property="og:description" content="21 ans, développeur autodidacte. Trading algorithmique, agents IA, workflows n8n. Co-fondateur d'Async Agency.">
 <meta property="og:image" content="images/hero-bg-canva.png">
-<meta property="og:url" content="https://hermanvanel-ui.github.io/herman-portfolio/">
+<meta property="og:url" content="https://portfoliohermanvanel.netlify.app/">
 <!-- Twitter Card -->
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Herman Vanel — Portfolio">
@@ -503,8 +503,6 @@ html,body{overflow-x:hidden;max-width:100vw;}
 <script>
 // ===== CINEMATIC INTRO ANIMATION (standalone v3) =====
 (function(){
-  sessionStorage.removeItem('intro-played'); // DEV: always replay
-
   var intro = document.getElementById('cinema-intro');
   if(!intro) return;
   var canvas = document.getElementById('cinema-canvas');
@@ -1325,7 +1323,7 @@ html,body{overflow-x:hidden;max-width:100vw;}
 <section class="section"><div class="max-w">
   <div style="margin-bottom:3rem;"><div class="s-label" data-i18n="roadmap-section-label">// la suite</div><h2 class="s-title"><span data-i18n="roadmap-section-title">Où je </span><span class="hl" data-i18n="roadmap-section-hl">vais</span></h2></div>
   <div style="max-width:700px;margin:0 auto;">
-    <p style="color:var(--text-mid);font-size:1.1rem;line-height:1.85;" data-i18n="about-roadmap-p1">Mon BUT TC se termine en 2025. L'étape suivante en 2026 : <span style="color:#fff;font-weight:600;">Epitech</span>, avec une spécialisation en intelligence artificielle. J'ai la détermination et les projets — il me manque la profondeur technique qu'une école d'ingénierie logicielle peut apporter.</p>
+    <p style="color:var(--text-mid);font-size:1.1rem;line-height:1.85;" data-i18n="about-roadmap-p1">Mon BUT TC se termine en 2026. L'étape suivante : <span style="color:#fff;font-weight:600;">Epitech</span>, avec une spécialisation en intelligence artificielle. J'ai la détermination et les projets — il me manque la profondeur technique qu'une école d'ingénierie logicielle peut apporter.</p>
     <p style="color:var(--text-mid);font-size:1.1rem;line-height:1.85;margin-top:1.25rem;" data-i18n="about-roadmap-p2">En parallèle, je continue de développer <span style="color:var(--cyan);font-weight:500;">Async Agency</span> avec mon associé. L'objectif à 5 ans : en faire notre activité principale. Nos propres clients, nos propres produits, notre propre indépendance.</p>
     <p style="color:var(--text-mid);font-size:1.1rem;line-height:1.85;margin-top:1.25rem;" data-i18n="about-roadmap-p3">Ce qui me motive, ce n'est pas un titre sur une carte de visite. C'est la liberté de choisir sur quoi je travaille, avec qui, et dans quel but.</p>
   </div>
@@ -1526,7 +1524,7 @@ html,body{overflow-x:hidden;max-width:100vw;}
       <div style="display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.75rem;">
         <span class="tag">MediaPipe Hands</span><span class="tag">Three.js r128</span><span class="tag">JavaScript</span><span class="tag">WebGL</span><span class="tag">HTML5 Canvas</span><span class="tag">API getUserMedia</span>
       </div>
-      <p class="card-sub" data-i18n="tech-summary-text">Aucun backend, aucune IA distante, aucun framework lourd. L'ensemble fonctionne localement dans le navigateur avec du JavaScript pur et deux bibliothèques open-source. L'ensemble fonctionne en temps réel, sans serveur distant.</p>
+      <p class="card-sub" data-i18n="tech-summary-text">Aucun backend, aucune IA distante, aucun framework lourd. L'ensemble fonctionne localement dans le navigateur avec du JavaScript pur et deux bibliothèques open-source, en temps réel, sans serveur distant.</p>
     </div>
   </div>
 </div></section>
@@ -1954,7 +1952,7 @@ html,body{overflow-x:hidden;max-width:100vw;}
         <div class="ap-step"><div class="ap-num">01</div><div class="ap-title" data-i18n="async-step1-title">Audit</div><p class="ap-text" data-i18n="async-step1-text">On analyse vos processus actuels pour identifier ce qui peut être automatisé.</p></div>
         <div class="ap-step"><div class="ap-num">02</div><div class="ap-title" data-i18n="async-step2-title">Prototype</div><p class="ap-text" data-i18n="async-step2-text">On construit une première version fonctionnelle en quelques jours.</p></div>
         <div class="ap-step"><div class="ap-num">03</div><div class="ap-title" data-i18n="async-step3-title">Déploiement</div><p class="ap-text" data-i18n="async-step3-text">On met en production et on connecte tous vos outils entre eux.</p></div>
-        <div class="ap-step"><div class="ap-num">04</div><div class="ap-title" data-i18n="async-step4-title">Suivi</div><p class="ap-text" data-i18n="async-step4-text">On monitore, optimise et fait évoluer vos automations en continu.</p></div>
+        <div class="ap-step"><div class="ap-num">04</div><div class="ap-title" data-i18n="async-step4-title">Suivi</div><p class="ap-text" data-i18n="async-step4-text">On monitore, optimise et fait évoluer vos automatisations en continu.</p></div>
       </div>
       <div class="ap-progress"><div class="ap-progress-fill" id="asyncProgressFill"></div></div>
     </div>
@@ -2523,7 +2521,7 @@ if(document.readyState==='loading'){
     </div>
     <div class="holo-card"><div class="corner c-tl"></div><div class="corner c-tr"></div><div class="corner c-bl"></div><div class="corner c-br"></div>
       <div style="font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--green);letter-spacing:2px;text-transform:uppercase;margin-bottom:.75rem;" data-i18n="contact-linkedin-label">LinkedIn</div>
-      <h3 class="card-title"><a href="#" style="color:var(--cyan);text-decoration:none;transition:color .3s;" data-i18n="contact-linkedin-name">Herman Vanel</a></h3>
+      <h3 class="card-title"><a href="https://www.linkedin.com/in/herman-vanel-5aba3725b/" target="_blank" rel="noopener" style="color:var(--cyan);text-decoration:none;transition:color .3s;" data-i18n="contact-linkedin-name">Herman Vanel</a></h3>
       <p class="card-text" data-i18n="contact-linkedin-text">Pour les échanges professionnels. N'hésitez pas à me contacter.</p>
     </div>
   </div>
@@ -3201,7 +3199,7 @@ const translations = {
     "roadmap-section-label": "// la suite",
     "roadmap-section-title": "Où je",
     "roadmap-section-hl": "vais",
-    "about-roadmap-p1": "Mon BUT TC se termine en 2025. L'étape suivante en 2026 : Epitech, avec une spécialisation en intelligence artificielle. J'ai la détermination et les projets — il me manque la profondeur technique qu'une école d'ingénierie logicielle peut apporter.",
+    "about-roadmap-p1": "Mon BUT TC se termine en 2026. L'étape suivante : Epitech, avec une spécialisation en intelligence artificielle. J'ai la détermination et les projets — il me manque la profondeur technique qu'une école d'ingénierie logicielle peut apporter.",
     "about-roadmap-p2": "En parallèle, je continue de développer Async Agency avec mon associé. L'objectif à 5 ans : en faire notre activité principale. Nos propres clients, nos propres produits, notre propre indépendance.",
     "about-roadmap-p3": "Ce qui me motive, ce n'est pas un titre sur une carte de visite. C'est la liberté de choisir sur quoi je travaille, avec qui, et dans quel but.",
     "roadmap-title": "ROADMAP",
@@ -3229,7 +3227,7 @@ const translations = {
     "tech-card-3-title": "Le cube est un objet 3D déformable",
     "tech-card-3-text": "Le cube est créé avec Three.js, une bibliothèque JavaScript pour la 3D dans le navigateur. C'est un cube découpé en environ 2000 petits triangles. Chaque sommet peut être déplacé individuellement par vos gestes, ce qui déforme la forme. Un système de ressort ramène les sommets à leur position d'origine quand vous retirez vos mains. Les fils lumineux entre vos doigts et le cube sont des lignes 3D animées avec du bruit sinusoïdal pour l'effet \"énergie\".",
     "tech-summary-title": "Les technos utilisées",
-    "tech-summary-text": "Aucun backend, aucune IA distante, aucun framework lourd. L'ensemble fonctionne localement dans le navigateur avec du JavaScript pur et deux bibliothèques open-source. L'ensemble fonctionne en temps réel, sans serveur distant.",
+    "tech-summary-text": "Aucun backend, aucune IA distante, aucun framework lourd. L'ensemble fonctionne localement dans le navigateur avec du JavaScript pur et deux bibliothèques open-source, en temps réel, sans serveur distant.",
     "game-section-label": "// bonus",
     "game-section-title": "Mini-jeu : ",
     "game-section-hl": "L'étudiant TC",
@@ -3298,7 +3296,7 @@ const translations = {
     "async-step3-title": "Déploiement",
     "async-step3-text": "On met en production et on connecte tous vos outils entre eux.",
     "async-step4-title": "Suivi",
-    "async-step4-text": "On monitore, optimise et fait évoluer vos automations en continu.",
+    "async-step4-text": "On monitore, optimise et fait évoluer vos automatisations en continu.",
     "async-tech-label": "// outils",
     "async-tech-title": "Stack ",
     "async-tech-hl": "technique",
@@ -3366,7 +3364,7 @@ const translations = {
     "hero-name-sub": "Herman Vanel",
     "hero-gradient": "I automate everything.",
     "hero-typing": "$ 21 y/o · Nice · trading · n8n · AI agents",
-    "hero-desc": "Student in a Sales Techniques degree, alternating with work during the day. I develop trading robots and automation systems at night. This site showcases what I can do, with functional code and real projects.",
+    "hero-desc": "Student on a work-study Sales Techniques degree, working during the day. I develop trading robots and automation systems at night. This site showcases what I can do, with functional code and real projects.",
     "marquee-label": "// skills",
     "stat-projets": "Projects completed",
     "stat-workflows": "n8n workflows",
@@ -3376,7 +3374,7 @@ const translations = {
     "acc-sec1-title": "Two lives",
     "acc-sec1-hl": "in parallel",
     "acc-sec1-card1-title": "Day: sales & field",
-    "acc-sec1-card1-p1": "I'm in my 3rd year of Sales Techniques at Nice IUT. My alternating work is at <span style=\"color:var(--cyan-bright);font-weight:600;\">PAAL</span>, an aluminum carpentry company in Contes, as marketing and sales assistant: phone prospecting, marketing development, social media management.",
+    "acc-sec1-card1-p1": "I'm in my 3rd year of Sales Techniques at Nice IUT. My work-study placement is at <span style=\"color:var(--cyan-bright);font-weight:600;\">PAAL</span>, an aluminum carpentry company in Contes, as marketing and sales assistant: phone prospecting, marketing development, social media management.",
     "acc-sec1-card1-p2": "This experience taught me to communicate, convince, and understand how a business works from the inside. It's not code, but it's essential groundwork for entrepreneurship.",
     "acc-sec1-card2-title": "Night: code & automation",
     "acc-sec1-card2-p1": "In parallel, I develop an <span style=\"color:var(--purple-bright);font-weight:600;\">Expert Advisor in MQL5</span> — a robot that analyzes financial markets and automatically places trading orders on MetaTrader 5. I also build n8n workflows, automation chains that eliminate repetitive tasks. And with a partner, we're building <span style=\"color:var(--purple-bright);font-weight:600;\">Async Agency</span>, an automation and AI agents agency for businesses.",
@@ -3388,7 +3386,7 @@ const translations = {
     "acc-sec2-card1-text": "An Expert Advisor on MetaTrader 5 (autonomous trading robot), n8n workflows to automate processes, and Async Agency in development.",
     "acc-sec2-card1-btn": "VIEW →",
     "acc-sec2-card2-title": "My journey",
-    "acc-sec2-card2-text": "Born in Ethiopia, 15 years of breakdance, BAFA, Sales Techniques degree in Nice, alternating work at PAAL, and self-taught development.",
+    "acc-sec2-card2-text": "Born in Ethiopia, 15 years of breakdance, BAFA, Sales Techniques degree in Nice, work-study at PAAL, and self-taught development.",
     "acc-sec2-card2-btn": "VIEW →",
     "acc-sec2-card3-title": "3D Demo",
     "acc-sec2-card3-text": "Sculpt a deformable 3D cube with your hands, live in the browser.",
@@ -3471,11 +3469,11 @@ const translations = {
     "skill-leadership-name": "Leadership",
     "skill-leadership-sub": "10 yrs class rep + dance teacher",
     "skill-leadership-case": "Real case",
-    "skill-leadership-text": "Class representative since middle school, for about 10 years. For 5 years, I've taught breakdance to groups of kids and teens at La Semeuse association in Nice. I also mentored 6-year-olds as an animator at Nazareth school.",
+    "skill-leadership-text": "Class representative since middle school, for about 10 years. For 5 years, I've taught breakdance to groups of kids and teens at La Semeuse association in Nice. I also supervised 6-year-olds as a youth leader at Nazareth school.",
     "skill-adaptability-name": "Adaptability",
     "skill-adaptability-sub": "All environments",
     "skill-adaptability-case": "Real case",
-    "skill-adaptability-text": "Kids animation on Wednesdays, B2B phone prospecting at PAAL during week, volunteering at Solid'Act food pantry, internship at MEI Industries, coding at night. I adapt to context and people.",
+    "skill-adaptability-text": "Youth activities on Wednesdays, B2B phone prospecting at PAAL during the week, volunteering at Solid'Act food pantry, internship at MEI Industries, coding at night. I adapt to context and people.",
     "skill-teamwork-name": "Teamwork",
     "skill-teamwork-sub": "Partner, dance, internship",
     "skill-teamwork-case": "Real case",
@@ -3496,7 +3494,7 @@ const translations = {
     "about-section1-title": "Herman",
     "about-section1-hl": "Vanel",
     "about-bio-p1": "I'm 21. Born in Ethiopia, adopted at age 2, grew up in southern France. Today I live in Nice.",
-    "about-bio-p2": "Days: finishing my Sales Techniques degree at Nice IUT, alternating with work at PAAL, an aluminum carpentry company in Contes. Phone prospecting, digital marketing, social media.",
+    "about-bio-p2": "Days: finishing my Sales Techniques degree at Nice IUT, on a work-study program at PAAL, an aluminum carpentry company in Contes. Phone prospecting, digital marketing, social media.",
     "about-bio-p3": "Nights: developing. Trading bot, automation workflows, AI agents. With my partner, we're building Async Agency. Nobody asked me to do this. I do it because I want to build autonomous systems.",
     "orbit-python": "Python",
     "orbit-js": "JavaScript",
@@ -3523,10 +3521,10 @@ const translations = {
     "tl-item2-text": "Started breakdance around age 6. It's my longest commitment. Battles taught me pressure management. Daily training instilled discipline. For 5-6 years, I've taught kids and teens at La Semeuse in Nice. Also taught in Menton for a year.",
     "tl-item3-label": "FIRST STEPS · 2020-2022",
     "tl-item3-title": "Animation, volunteering, industry",
-    "tl-item3-text": "Animated 6-year-olds at Nazareth school every Wednesday and during breaks. Volunteered at Solid'Act food pantry in Nice: reception, sales, stock, cashier. Observed at MEI Industries, sheet metal in Carros. BAFA certification in 10 months, with lifeguard qualification.",
+    "tl-item3-text": "Led activities for 6-year-olds at Nazareth school every Wednesday and during school holidays. Volunteered at Solid'Act food pantry in Nice: reception, sales, stock, cashier. Completed an observation internship at MEI Industries (sheet metal) in Carros. Earned BAFA certification in 10 months, with lifeguard qualification.",
     "tl-item4-label": "EDUCATION · 2023-2026",
     "tl-item4-title": "Business degree at Nice IUT + PAAL",
-    "tl-item4-text": "Three years in Sales Techniques. Alternating at PAAL in Contes: phone prospecting, marketing development, social media management. Discovered programming self-taught, outside class. Sales taught me persuasion. Code taught me building.",
+    "tl-item4-text": "Three years in Sales Techniques. On a work-study program at PAAL in Contes: phone prospecting, marketing development, social media management. Discovered programming self-taught, outside class. Sales taught me persuasion. Code taught me building.",
     "tl-item5-label": "BREAKTHROUGH · 2023",
     "tl-item5-title": "Trading opened coding's door",
     "tl-item5-text": "Started with trading. Wanting to automate strategies led to MQL5 for MetaTrader 5 Expert Advisor. Then Python for data analysis. Then n8n to connect tools. Then JavaScript for interfaces. Each solved problem opened a new language.",
@@ -3541,19 +3539,19 @@ const translations = {
     "val-section-hl": "defines me",
     "val-card-1-num": "01",
     "val-card-1-title": "Learn by doing",
-    "val-card-1-text": "Never took formal programming training. Facing problems, I sought solutions and learned doing. My trading bot, workflows, this site — each born from real need, not theory.",
+    "val-card-1-text": "Never took formal programming training. Facing problems, I sought solutions and learned by doing. My trading bot, workflows, this site — each born from real need, not theory.",
     "val-card-2-num": "02",
     "val-card-2-title": "Prove through action",
-    "val-card-2-text": "This site proves it: 3D demo works, design hand-coded, every project shown is real. Rather show what I can do than say it.",
+    "val-card-2-text": "This site proves it: 3D demo works, design hand-coded, every project shown is real. I'd rather show what I can do than say it.",
     "val-card-3-num": "03",
     "val-card-3-title": "Never give up",
-    "val-card-3-text": "15 years breakdance built character. When my Expert Advisor failed 50 times, I fixed it 50 times. When a workflow breaks, I debug before moving on. Perseverance isn't a word — it's daily practice.",
+    "val-card-3-text": "15 years of breakdance built character. When my Expert Advisor failed 50 times, I fixed it 50 times. When a workflow breaks, I debug before moving on. Perseverance isn't a word — it's daily practice.",
     "val-card-4-num": "04",
     "val-card-4-title": "Share knowledge",
     "val-card-4-text": "Teaching breakdance to kids for 5 years taught me to simplify concepts, be patient, adapt to levels. This same approach led me to add explanation sections on the Demo page.",
     "val-card-5-num": "05",
     "val-card-5-title": "Build for freedom",
-    "val-card-5-text": "Goal isn't a comfy job title. It's designing self-running systems. Auto trading, 24/7 workflows, AI agents — each contributes to one goal: independence.",
+    "val-card-5-text": "My goal isn't a comfy job title. It's designing self-running systems. Auto trading, 24/7 workflows, AI agents — each contributes to one goal: independence.",
     "val-card-6-num": "06",
     "val-card-6-title": "Stay curious",
     "val-card-6-text": "Three.js for 3D, MediaPipe for hand tracking, MQL5 for trading — I explore varied areas and find ways to connect them. Curiosity drives me.",
@@ -3563,7 +3561,7 @@ const translations = {
     "roadmap-section-label": "// next",
     "roadmap-section-title": "Where I'm",
     "roadmap-section-hl": "going",
-    "about-roadmap-p1": "My degree ends 2025. Next step 2026: Epitech, AI specialization. I have drive and projects — need the technical depth only a software engineering school offers.",
+    "about-roadmap-p1": "My degree ends in 2026. Next step: Epitech, AI specialization. I have the drive and projects — I need the technical depth only a software engineering school can offer.",
     "about-roadmap-p2": "Meanwhile, continuing Async Agency with my partner. 5-year goal: make it our main activity. Our own clients, products, independence.",
     "about-roadmap-p3": "What drives me isn't a title. It's freedom to choose what I work on, with whom, and why.",
     "roadmap-title": "ROADMAP",
@@ -3613,7 +3611,7 @@ const translations = {
     "game-tech-title": "Technologies used",
     "game-tech-text": "No game engine, no framework. Just JavaScript, an HTML5 canvas, and homemade physics. The portrait is embedded as base64 directly in the file.",
     "demo-footer-text": "Want to try? Launch the camera or play the mini-game!",
-    "proj-card3-teaser": "An automation agency I founded: AI workflows, conversational bots, smart agents. A real client-facing project.",
+    "proj-card3-teaser": "An automation agency I co-founded: AI workflows, conversational bots, smart agents. A real client-facing project.",
     "proj-card3-cta": "Discover the project →",
     "proj-battant-badge": "FIRST a.SYNC CLIENT",
     "proj-battant-title": "Le battant",
@@ -3727,7 +3725,8 @@ let currentLang = 'fr';
 
 function switchLang(lang) {
   currentLang = lang;
-  
+  document.documentElement.lang = lang === 'en' ? 'en' : 'fr';
+
   // Update all elements with data-i18n
   document.querySelectorAll('[data-i18n]').forEach(el => {
     const key = el.getAttribute('data-i18n');
