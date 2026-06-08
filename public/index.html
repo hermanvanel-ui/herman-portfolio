@@ -472,6 +472,21 @@ p.card-sub{color:var(--text-mid);font-size:.9rem;line-height:1.75;font-weight:40
 html,body{overflow-x:hidden;max-width:100vw;}
 .page{overflow-x:hidden;}
 
+/* ===== FIX TITRES SECTION (espacement i18n) ===== */
+/* Les valeurs i18n trimment les espaces de fin → on force un espace visuel après le premier span */
+.s-title > span:not(.hl){margin-right:.3em;}
+.s-title > span:not(.hl):empty{margin-right:0;}
+
+/* ===== FIX HERO MOBILE — supprimer le vide vertical ===== */
+@media(max-width:768px){
+  .hero{min-height:auto !important;align-items:flex-start;padding:2rem 1rem 3rem;}
+  .hero-content{padding:.5rem 1rem !important;width:100%;max-width:100%;}
+  .hero h1, .hero .typing{max-width:100%;overflow-wrap:break-word;word-wrap:break-word;hyphens:none;}
+  .hero .typing{font-size:max(.7rem,11px);white-space:normal;}
+  /* Désactiver l'animation clip-path qui peut tronquer le texte sur mobile */
+  .hero .gradient-text{clip-path:none !important;filter:none !important;display:inline-block;}
+}
+
 /* ===== MINIMUM FONT SIZE — readability ===== */
 @media(max-width:768px){
   .sk-sub,.sk-case,.htl-year{font-size:max(.6rem, 11px);}
