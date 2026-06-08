@@ -2773,35 +2773,36 @@ addEventListener('resize',()=>{mc.width=innerWidth;mc.height=innerHeight;});
     var ren=new THREE.WebGLRenderer({canvas:cvs,antialias:true,alpha:false});
     ren.setSize(W(),H());ren.setPixelRatio(Math.min(1.5,devicePixelRatio));
 
-    scene.add(new THREE.AmbientLight(0x334455,0.6));
-    var dl=new THREE.DirectionalLight(0x6ee7b7,0.8);dl.position.set(3,4,5);scene.add(dl);
-    var pl=new THREE.PointLight(0x818cf8,0.5,10);pl.position.set(-3,2,2);scene.add(pl);
+    scene.add(new THREE.AmbientLight(0x668899,1.2));
+    var dl=new THREE.DirectionalLight(0x6ee7b7,1.4);dl.position.set(3,4,5);scene.add(dl);
+    var dl2=new THREE.DirectionalLight(0xa78bfa,0.6);dl2.position.set(-3,-2,3);scene.add(dl2);
+    var pl=new THREE.PointLight(0x818cf8,1.0,12);pl.position.set(-3,2,2);scene.add(pl);
 
     var geo=new THREE.IcosahedronGeometry(1.15,4);
     var origPos=new Float32Array(geo.attributes.position.array);
     var vel=new Float32Array(origPos.length);
-    var mat=new THREE.MeshPhysicalMaterial({color:0x0d1117,metalness:0.3,roughness:0.4,clearcoat:0.6,transparent:true,opacity:0.85,side:THREE.DoubleSide});
+    var mat=new THREE.MeshPhysicalMaterial({color:0x1a2332,metalness:0.2,roughness:0.3,clearcoat:0.8,transparent:true,opacity:0.7,side:THREE.DoubleSide});
     var mesh=new THREE.Mesh(geo,mat);scene.add(mesh);
 
-    var wMat=new THREE.MeshBasicMaterial({color:0x6ee7b7,wireframe:true,transparent:true,opacity:0.12});
+    var wMat=new THREE.MeshBasicMaterial({color:0x6ee7b7,wireframe:true,transparent:true,opacity:0.35});
     var wire=new THREE.Mesh(geo,wMat);scene.add(wire);
 
     var colors=new Float32Array(geo.attributes.position.count*3);
-    for(var i=0;i<colors.length;i+=3){colors[i]=0.43;colors[i+1]=0.9;colors[i+2]=0.72;}
+    for(var i=0;i<colors.length;i+=3){colors[i]=0.37;colors[i+1]=0.95;colors[i+2]=0.78;}
     geo.setAttribute('color',new THREE.BufferAttribute(colors,3));
     wMat.vertexColors=true;
 
     var PMAX=200,pGeo=new THREE.BufferGeometry();
     var pPos=new Float32Array(PMAX*3),pVel=new Float32Array(PMAX*3),pLife=new Float32Array(PMAX);
     pGeo.setAttribute('position',new THREE.BufferAttribute(pPos,3));
-    var pMat=new THREE.PointsMaterial({color:0x6ee7b7,size:0.035,transparent:true,opacity:0.7,sizeAttenuation:true});
+    var pMat=new THREE.PointsMaterial({color:0x6ee7b7,size:0.055,transparent:true,opacity:0.85,sizeAttenuation:true});
     scene.add(new THREE.Points(pGeo,pMat));
     var pIdx=0;
     function emitP(pt,n){for(var i=0;i<n;i++){var j=pIdx%PMAX;pPos[j*3]=pt.x;pPos[j*3+1]=pt.y;pPos[j*3+2]=pt.z;pVel[j*3]=(Math.random()-.5)*.06;pVel[j*3+1]=(Math.random()-.5)*.06;pVel[j*3+2]=(Math.random()-.5)*.06;pLife[j]=1;pIdx++;}}
     function updateP(){for(var i=0;i<PMAX;i++){if(pLife[i]<=0)continue;pLife[i]-=.018;pPos[i*3]+=pVel[i*3];pPos[i*3+1]+=pVel[i*3+1];pPos[i*3+2]+=pVel[i*3+2];pVel[i*3+1]-=.001;}pGeo.attributes.position.needsUpdate=true;}
 
     var rc=new THREE.Raycaster(),mouse=new THREE.Vector2(9999,9999),isDown=false;
-    var PUSH_R=0.45,PUSH_STR=0.012,CLICK_STR=0.04,SPRING=0.06,DAMP=0.88;
+    var PUSH_R=0.6,PUSH_STR=0.035,CLICK_STR=0.09,SPRING=0.045,DAMP=0.9;
 
     cvs.addEventListener('pointermove',function(e){var r=cvs.getBoundingClientRect();mouse.x=((e.clientX-r.left)/r.width)*2-1;mouse.y=-((e.clientY-r.top)/r.height)*2+1;});
     cvs.addEventListener('touchmove',function(e){e.preventDefault();var r=cvs.getBoundingClientRect();var tc=e.touches[0];mouse.x=((tc.clientX-r.left)/r.width)*2-1;mouse.y=-((tc.clientY-r.top)/r.height)*2+1;},{passive:false});
@@ -2827,7 +2828,7 @@ addEventListener('resize',()=>{mc.width=innerWidth;mc.height=innerHeight;});
         if(hitPt){var lp=mesh.worldToLocal(hitPt.clone());var px=pos.array[ix]-lp.x,py=pos.array[iy]-lp.y,pz=pos.array[iz]-lp.z;var d=Math.sqrt(px*px+py*py+pz*pz);if(d<PUSH_R&&d>.001){var f=str*(1-d/PUSH_R);vel[ix]+=px/d*f;vel[iy]+=py/d*f;vel[iz]+=pz/d*f;}}
         pos.array[ix]+=vel[ix];pos.array[iy]+=vel[iy];pos.array[iz]+=vel[iz];
         var disp=Math.sqrt(dx*dx+dy*dy+dz*dz),blend=Math.min(1,disp*8);
-        colors[ix]=0.43+blend*.08;colors[iy]=0.9-blend*.35;colors[iz]=0.72-blend*.24;
+        colors[ix]=0.37+blend*0.35;colors[iy]=0.95-blend*0.45;colors[iz]=0.78-blend*0.3;
       }
       pos.needsUpdate=true;geo.computeVertexNormals();geo.attributes.color.needsUpdate=true;
       updateP();ren.render(scene,cam);
